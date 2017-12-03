@@ -22,6 +22,7 @@ setup_args = dict(
     url='http://github.com/ioam/pyver/',
     packages = ["pyver"],
     provides = ["pyver"],
+    scripts = ["scripts/pyver"],
     classifiers = [
         "License :: OSI Approved :: BSD License",
         "Development Status :: 5 - Production/Stable",
