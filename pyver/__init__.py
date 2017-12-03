@@ -326,3 +326,7 @@ class Version(object):
 
         if self._expected_commit not in [None, "$Format:%h$"]:
             raise Exception("Declared release does not match the VCS version tag")
+
+
+__version__ = Version(release=(0,0,1), fpath=__file__,
+                      commit="$Format:%h$", reponame="pyver")

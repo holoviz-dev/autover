@@ -10,8 +10,8 @@ except ImportError:
 
 setup_args = dict(
     name='pyver',
-    version="1.5.1",
-    description='Declarative Python programming using Parameters.',
+    version="0.0.1",
+    description='Pyver provides consistent and up-to-date `__version__` strings for Python packages.',
     long_description=open('README.rst').read() if os.path.isfile('README.rst') else 'Consult README.rst',
     author= "IOAM",
     author_email= "developers@topographica.org",
@@ -19,7 +19,7 @@ setup_args = dict(
     maintainer_email="developers@topographica.org",
     platforms=['Windows', 'Mac OS X', 'Linux'],
     license='BSD',
-    url='http://ioam.github.com/param/',
+    url='http://github.com/ioam/pyver/',
     packages = ["pyver"],
     provides = ["pyver"],
     classifiers = [
