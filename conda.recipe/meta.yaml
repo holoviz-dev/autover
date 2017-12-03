@@ -1,0 +1,25 @@
+package:
+  name: pyver
+  version: 0.0.1
+
+source:
+  path: ..
+
+build:
+  noarch: python
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - python
+  run:
+    - python
+
+test:
+  imports:
+    - pyver
+
+about:
+  home: https://github.com/ioam/pyver
+  summary: Pyver provides consistent and up-to-date `__version__` strings for Python packages.
+  license: BSD 3-Clause
