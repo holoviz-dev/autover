@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ioam/pyver.svg?branch=master)](https://travis-ci.org/ioam/pyver)
+
 Pyver provides:
 
   1. Consistent and up-to-date `__version__` strings for Python
