@@ -1,0 +1,15 @@
+language: python
+python:
+  - "2.7"
+  - "3.6"
+
+# no dependencies for py2.7+ (coveralls, nose, flake8 only needed for testing)
+install:
+  - pip install coveralls flake8 nose
+  - pip freeze
+
+script:
+  - nosetests --with-doctest --with-coverage --cover-package=pyver
+  - flake8 --exit-zero --ignore=E,W pyver
+
+after_success: coveralls
