@@ -16,7 +16,7 @@ def pyver(*packages):
         try:
             module = importlib.import_module(package)
             loc =  os.path.dirname(module.__file__)
-    
+
             try:
                 ver = str(module.__version__)
             except Exception:
