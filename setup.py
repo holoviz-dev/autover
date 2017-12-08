@@ -9,9 +9,9 @@ except ImportError:
 
 
 setup_args = dict(
-    name='pyver',
+    name='autover',
     version="0.0.1",
-    description='Pyver provides consistent and up-to-date `__version__` strings for Python packages.',
+    description='Autover provides consistent and up-to-date `__version__` strings for Python packages.',
     long_description=open('README.rst').read() if os.path.isfile('README.rst') else 'Consult README.rst',
     author= "IOAM",
     author_email= "developers@topographica.org",
@@ -19,10 +19,10 @@ setup_args = dict(
     maintainer_email="developers@topographica.org",
     platforms=['Windows', 'Mac OS X', 'Linux'],
     license='BSD',
-    url='http://github.com/ioam/pyver/',
-    packages = ["pyver"],
-    provides = ["pyver"],
-    scripts = ["scripts/pyver"],
+    url='http://github.com/ioam/autover/',
+    packages = ["autover"],
+    provides = ["autover"],
+    scripts = ["scripts/autover"],
     classifiers = [
         "License :: OSI Approved :: BSD License",
         "Development Status :: 5 - Production/Stable",
@@ -42,7 +42,7 @@ setup_args = dict(
 if __name__=="__main__":
 
     if ('upload' in sys.argv) or ('sdist' in sys.argv):
-        import pyver
-        pyver.__version__.verify(setup_args['version'])
+        import autover
+        autover.__version__.verify(setup_args['version'])
 
     setup(**setup_args)

@@ -1,5 +1,5 @@
 package:
-  name: pyver
+  name: autover
   version: 0.0.1
 
 source:
@@ -17,9 +17,9 @@ requirements:
 
 test:
   imports:
-    - pyver
+    - autover
 
 about:
-  home: https://github.com/ioam/pyver
-  summary: Pyver provides consistent and up-to-date `__version__` strings for Python packages.
+  home: https://github.com/ioam/autover
+  summary: Autover provides consistent and up-to-date `__version__` strings for Python packages.
   license: BSD 3-Clause

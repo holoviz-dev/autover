@@ -30,7 +30,7 @@ To use Version in a project that provides a Python package named
 2. Assuming that the current version of your package is 1.0.0, add the
    following lines to your ``package/__init__.py``::
 
-     from pyver import Version
+     from autover import Version
      __version__ = Version(release=(1,0,0), fpath=__file__,
                            commit="$Format:%h$", reponame="packagegit")
 
@@ -74,7 +74,7 @@ any kind expressed or implied.  Anyone is free to copy, modify,
 publish, use, compile, sell, or distribute it under any license, for
 any purpose, commercial or non-commercial, and by any means.  The
 original file is maintained at:
-https://github.com/ioam/pyver/blob/master/pyver/__init__.py
+https://github.com/ioam/autover/blob/master/autover/__init__.py
 """
 
 
@@ -198,7 +198,7 @@ class Version(object):
         try:
             if self.reponame is not None:
                 # Verify this is the correct repository (since fpath could
-                # be an unrelated git repository, and pyver could just have
+                # be an unrelated git repository, and autover could just have
                 # been copied/installed into it).
                 output = run_cmd([cmd, 'remote', '-v'],
                                  cwd=os.path.dirname(self.fpath))
@@ -329,4 +329,4 @@ class Version(object):
 
 
 __version__ = Version(release=(0,0,1), fpath=__file__,
-                      commit="$Format:%h$", reponame="pyver")
+                      commit="$Format:%h$", reponame="autover")

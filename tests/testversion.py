@@ -1,8 +1,8 @@
 """
-Unit test for pyver.Version
+Unit test for autover.Version
 """
 import unittest
-from pyver import Version
+from autover import Version
 
 
 class TestVersion(unittest.TestCase):

@@ -9,7 +9,7 @@ install:
   - pip freeze
 
 script:
-  - nosetests --with-doctest --with-coverage --cover-package=pyver
-  - flake8 --exit-zero --ignore=E,W pyver
+  - nosetests --with-doctest --with-coverage --cover-package=autover
+  - flake8 --exit-zero --ignore=E,W autover
 
 after_success: coveralls

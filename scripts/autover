@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # Import and print the library version and filesystem location for each Python package or shell command specified
 #
-# bash usage: $ pyver numpy pandas python conda
-# python usage: >>> import pyver ; pyver("numpy","pandas","python","conda")
+# bash usage: $ autover numpy pandas python conda
+# python usage: >>> import autover ; autover("numpy","pandas","python","conda")
 
 from __future__ import print_function
 import os.path, importlib, subprocess
 
-def pyver(*packages):
+def autover(*packages):
     """Import and print location and version information for specified Python packages"""
     for package in packages:
         loc = "not installed in this environment"
@@ -45,4 +45,4 @@ def pyver(*packages):
 
 if __name__ == "__main__":
     import sys
-    pyver(*(sys.argv[1:]))
+    autover(*(sys.argv[1:]))
