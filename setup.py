@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import os
 import sys
 
@@ -25,15 +24,11 @@ setup_args = dict(
     scripts = ["scripts/autover"],
     classifiers = [
         "License :: OSI Approved :: BSD License",
-        "Development Status :: 5 - Production/Stable",
-        "Programming Language :: Python :: 2.6",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
-        "Intended Audience :: Science/Research",
         "Intended Audience :: Developers",
         "Natural Language :: English",
-        "Topic :: Scientific/Engineering",
         "Topic :: Software Development :: Libraries"]
 )
 
