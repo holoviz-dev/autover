@@ -2,10 +2,13 @@ sudo: false
 
 language: python
 
+# TODO: restore two guards below before merge
+# (only want to upload packages from master)
 stages:
   - test
   - name: conda_package
-# TODO: restore below before merge
+#    if: branch = master AND type != pull_request
+  - name: pypi_package
 #    if: branch = master AND type != pull_request
 
 jobs:
@@ -36,13 +39,16 @@ jobs:
         - conda build conda.recipe/
         - anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/autover*.tar.bz2
 
-# TODO: can't test til on master
-# TODO: need autover owner password
-#deploy:
-#  provider: pypi
-#  distributions: "sdist bdist_wheel"
-#  on:
-#    tags: true
-#  user: ?
-#  password:
-#    secure: ?
+    - <<: *tests
+      stage: pypi_package
+      install:
+      script:
+      # could instead use real pypi when tag is release style
+      deploy:
+        provider: pypi
+        server: https://test.pypi.org/legacy/
+        distributions: "sdist bdist_wheel"
+        user: ${TESTPYPI_USERNAME}
+        password: ${TESTPYPI_PASSWORD}
+        on:
+          tags: true
