@@ -259,7 +259,7 @@ class Version(object):
             return release
 
         dirty_status = '-dirty' if self.dirty else ''
-        return '%s-%s-g%s%s' % (release, self.commit_count if self.commit_count else 'x',
+        return '%s-%s-g%s%s' % (release, 'x' if (self.commit_count is None) else self.commit_count,
                                 self.commit, dirty_status)
 
     def __repr__(self):
