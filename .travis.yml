@@ -1,7 +1,5 @@
 language: python
 
-# TODO: restore two guards below before merge
-# (only want to upload packages from master)
 stages:
   - test
   - name: conda_package
