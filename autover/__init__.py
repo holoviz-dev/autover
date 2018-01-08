@@ -347,7 +347,7 @@ class Version(object):
         if self.dirty:
             raise Exception("Current working directory is dirty.")
 
-        if self.release != self.expected_release:
+        if self.expected_release is not None and self.release != self.expected_release:
             raise Exception("Declared release does not match current release tag.")
 
         if self.commit_count !=0:
