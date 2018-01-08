@@ -357,5 +357,17 @@ class Version(object):
             raise Exception("Declared release does not match the VCS version tag")
 
 
+
+def get_setup_version(setup_path, reponame):
+    """
+    Helper for use in setup.py to get the version from the .version file (if available)
+    or more up-to-date information from git describe (if available).
+
+    Assumes the __init__.py will be found in the directory
+    {reponame}/__init__.py relative to setup.py.
+    """
+    fpath = os.path.join(setup_path, reponame, "__init__.py")
+    version = Version(fpath=fpath, reponame=reponame)
+    return str(version)
 __version__ = Version(release=None, fpath=__file__,
                       commit="$Format:%h$", reponame="autover")
