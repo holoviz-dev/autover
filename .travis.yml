@@ -1,3 +1,7 @@
+git:
+  # ensure we get a tag...
+  depth: 1000
+
 language: python
 
 # TODO: restore two guards below before merge
