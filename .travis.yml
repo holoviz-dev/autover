@@ -1,7 +1,3 @@
-git:
-  # ensure we get a tag...
-  depth: 1000
-
 language: python
 
 # TODO: restore two guards below before merge
@@ -42,8 +38,8 @@ jobs:
 
     - <<: *tests
       stage: pypi_package
-      install:
-      script:
+      install: true
+      script: true
       # could instead use real pypi when tag is release style
       deploy:
         provider: pypi
