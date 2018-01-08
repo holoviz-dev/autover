@@ -36,8 +36,7 @@ jobs:
         - conda update conda
         - conda install "conda-build=3.0.25" anaconda-client
       script:
-        - conda build conda.recipe/
-        - anaconda -t $CONDA_UPLOAD_TOKEN upload --force -u cball $HOME/miniconda/conda-bld/noarch/autover*.tar.bz2
+        - conda build --token $CONDA_UPLOAD_TOKEN --user cball conda.recipe/
 
     - <<: *tests
       stage: pypi_package
