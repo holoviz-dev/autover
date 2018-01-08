@@ -197,6 +197,7 @@ class Version(object):
 
 
     def git_fetch(self, cmd='git'):
+        commit_argument = self._commit
         try:
             if self.reponame is not None:
                 # Verify this is the correct repository (since fpath could
@@ -215,7 +216,16 @@ class Version(object):
                              cwd=os.path.dirname(self.fpath))
         except Exception as e:
             try:
-                output = self._update_from_file()
+                output = self._output_from_file()
+                self._update_from_vcs(output)
+
+                # If an explicit commit was supplied (e.g from git
+                # archive), it should take precedence over the file.
+                if commit_argument:
+                    self._commit = commit_argument
+                    self._commit_count = None
+                return
+
             except FileNotFoundError:
                 if e.args[1] == 'fatal: No names found, cannot describe anything.':
                     raise Exception("Cannot find any git version tags of format v*.*")
@@ -224,7 +234,8 @@ class Version(object):
 
         self._update_from_vcs(output)
 
-    def _update_from_file(self):
+
+    def _output_from_file(self):
         """
         Read the version from a .version file that may exist alongside __init__.py.
 
