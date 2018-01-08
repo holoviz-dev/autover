@@ -129,6 +129,10 @@ class Version(object):
     the following line in the .gitattributes file of your project::
 
       __init__.py export-subst
+
+    Note that to support pip installation directly from GitHub via git
+    archive, a .version file must be tracked by the repo to supply the
+    release number (otherwise only the short SHA is available).
     """
 
     def __init__(self, release=None, fpath=None, commit=None,
