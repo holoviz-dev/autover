@@ -218,7 +218,7 @@ class Version(object):
 
             output = run_cmd([cmd, 'describe', '--long', '--match', 'v*.*', '--dirty'],
                              cwd=os.path.dirname(self.fpath))
-        except Exception as e:
+        except Exception as e1:
             try:
                 output = self._output_from_file()
                 self._update_from_vcs(output)
@@ -230,8 +230,8 @@ class Version(object):
                     self._commit_count = None
                 return
 
-            except FileNotFoundError:
-                if e.args[1] == 'fatal: No names found, cannot describe anything.':
+            except IOError as e2:
+                if e1.args[1] == 'fatal: No names found, cannot describe anything.':
                     raise Exception("Cannot find any git version tags of format v*.*")
                 # If there is any other error, return (release value still useful)
                 return self
