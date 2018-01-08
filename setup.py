@@ -49,7 +49,7 @@ setup_args = dict(
 
 if __name__=="__main__":
 
-    if ('upload' in sys.argv) or ('sdist' in sys.argv):
+    if 'upload' in sys.argv:
         import autover
         autover.__version__.verify(setup_args['version'])
 
