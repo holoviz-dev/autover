@@ -34,6 +34,7 @@ setup_args = dict(
     url='http://github.com/ioam/autover/',
     packages = ["autover"],
     provides = ["autover"],
+    include_package_data=True,
     scripts = ["scripts/autover"],
     classifiers = [
         "License :: OSI Approved :: BSD License",
