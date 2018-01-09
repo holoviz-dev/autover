@@ -1,11 +1,12 @@
 language: python
 
+# TODO: add appropriate guards once auto packaging is figured out.
 stages:
   - test
   - name: conda_package
-    if: branch = master AND type != pull_request
+#    if: branch = master AND type != pull_request
   - name: pypi_package
-    if: branch = master AND type != pull_request
+#    if: branch = master AND type != pull_request
 
 jobs:
   fast_finish: true
