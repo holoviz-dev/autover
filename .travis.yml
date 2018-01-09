@@ -46,7 +46,7 @@ jobs:
         # could instead use real pypi when tag is release style
         server: https://test.pypi.org/legacy/
         distributions: "sdist bdist_wheel"
-        user: ${TESTPYPI_USERNAME}
-        password: ${TESTPYPI_PASSWORD}
+        user: ${PYPI_USERNAME}
+        password: ${PYPI_PASSWORD}
         on:
           tags: true
