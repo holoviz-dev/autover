@@ -1,15 +1,51 @@
 language: python
-python:
-  - "2.7"
-  - "3.6"
 
-# no dependencies for py2.7+ (coveralls, nose, flake8 only needed for testing)
-install:
-  - pip install coveralls flake8 nose
-  - pip freeze
+stages:
+  - test
+  - name: conda_package
+    if: branch = master AND type != pull_request
+  - name: pypi_package
+    if: branch = master AND type != pull_request
 
-script:
-  - nosetests --with-doctest --with-coverage --cover-package=autover
-  - flake8 --exit-zero --ignore=E,W autover
+jobs:
+  fast_finish: true
+  include:
+    - &tests
+      stage: test
+      python: 3.6
+      env: TOX_ENV=py36
+      install:
+        - pip install tox
+      script:
+        - tox -e $TOX_ENV
 
-after_success: coveralls
+    - <<: *tests
+      python: 2.7
+      env: TOX_ENV=py27
+
+    - stage: conda_package
+      install:
+        - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+        - bash miniconda.sh -b -p $HOME/miniconda
+        - export PATH="$HOME/miniconda/bin:$PATH"
+        - conda config --set always_yes yes --set changeps1 no
+        - conda update conda
+        - conda install "conda-build=3.0.25" anaconda-client
+      script:
+        - git describe --long --match v*.* > autover/.version
+        - conda build --token $CONDA_UPLOAD_TOKEN --user cball conda.recipe/
+
+    - <<: *tests
+      stage: pypi_package
+      install: true
+      script:
+        - git describe --long --match v*.* > autover/.version
+      deploy:
+        provider: pypi
+        # could instead use real pypi when tag is release style
+        server: https://test.pypi.org/legacy/
+        distributions: "sdist bdist_wheel"
+        user: ${TESTPYPI_USERNAME}
+        password: ${TESTPYPI_PASSWORD}
+        on:
+          tags: true
