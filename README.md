@@ -10,4 +10,4 @@ Autover provides:
      location for each Python package specified; see the [autover
      script](https://github.com/ioam/autover/blob/master/scripts/autover).
 
-Authors: Jean-Luc Stevens and James A. Bednar
+Authors: Jean-Luc Stevens, Chris Ball and James A. Bednar
