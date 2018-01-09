@@ -48,5 +48,6 @@ jobs:
         distributions: "sdist bdist_wheel"
         user: ${PYPI_USERNAME}
         password: ${PYPI_PASSWORD}
+        skip_cleanup: true
         on:
           tags: true
