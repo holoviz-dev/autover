@@ -33,14 +33,12 @@ jobs:
         - conda update conda
         - conda install "conda-build=3.0.25" anaconda-client
       script:
-        - git describe --long --match v*.* | tr -d '\n' > autover/.version
         - conda build --token $CONDA_UPLOAD_TOKEN --user cball conda.recipe/
 
     - <<: *tests
       stage: pypi_package
       install: true
-      script:
-        - git describe --long --match v*.* | tr -d '\n' > autover/.version
+      script: true
       deploy:
         provider: pypi
         # could instead use real pypi when tag is release style

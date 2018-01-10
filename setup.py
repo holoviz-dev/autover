@@ -14,7 +14,10 @@ def get_setup_version(reponame):
     """
     try:
         import autover
-        return autover.get_setup_version(os.getcwd(), reponame)
+        vstring =  autover.get_setup_version(os.getcwd(), reponame)
+        with open('./autover/.version', 'w') as f:
+            f.write('v'+vstring)
+        return vstring
     except ImportError:
         print("WARNING: To get fully up-to-date version information 'pip install autover'.")
         return open('./autover/.version', 'r').read()
