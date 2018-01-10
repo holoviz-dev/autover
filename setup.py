@@ -17,8 +17,9 @@ def get_setup_version(reponame):
         vstring =  autover.get_setup_version(os.getcwd(), reponame)
 
         try:
+            describe_string = autover.get_setup_version(os.getcwd(), reponame, describe=True)
             with open('./autover/.version', 'w') as f:
-                f.write(autover.get_setup_version(os.getcwd(), reponame, describe=True))
+                f.write(describe_string)
         except:
             pass
         return vstring
