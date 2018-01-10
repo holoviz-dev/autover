@@ -33,7 +33,7 @@ jobs:
         - conda update conda
         - conda install "conda-build=3.0.25" anaconda-client
       script:
-        - git describe --long --match v*.* > autover/.version
+        - git describe --long --match v*.* | tr -d '\n' > autover/.version
         - conda build --token $CONDA_UPLOAD_TOKEN --user cball conda.recipe/
 
     - <<: *tests
