@@ -15,8 +15,12 @@ def get_setup_version(reponame):
     try:
         import autover
         vstring =  autover.get_setup_version(os.getcwd(), reponame)
-        with open('./autover/.version', 'w') as f:
-            f.write(autover.get_setup_version(os.getcwd(), reponame, describe=True))
+
+        try:
+            with open('./autover/.version', 'w') as f:
+                f.write(autover.get_setup_version(os.getcwd(), reponame, describe=True))
+        except:
+            pass
         return vstring
 
     except ImportError:
