@@ -200,8 +200,9 @@ class Version(object):
         return self
 
 
-    def git_fetch(self, cmd='git'):
+    def git_fetch(self, cmd='git', as_string=False):
         commit_argument = self._commit
+        output = None
         try:
             if self.reponame is not None:
                 # Verify this is the correct repository (since fpath could
@@ -218,10 +219,12 @@ class Version(object):
 
             output = run_cmd([cmd, 'describe', '--long', '--match', 'v*.*', '--dirty'],
                              cwd=os.path.dirname(self.fpath))
+            if as_string: return output
         except Exception as e1:
             try:
                 output = self._output_from_file()
                 self._update_from_vcs(output)
+                if as_string: return output
 
                 # If an explicit commit was supplied (e.g from git
                 # archive), it should take precedence over the file.
@@ -372,8 +375,7 @@ def get_setup_version(setup_path, reponame):
     """
     fpath = os.path.join(setup_path, reponame, "__init__.py")
     version = Version(fpath=fpath, reponame=reponame)
-    version._dirty = False
-    return str(version)
+    return version.git_fetch(as_string=True)
 
 __version__ = Version(release=None, fpath=__file__,
                       commit="$Format:%h$", reponame="autover")
