@@ -12,6 +12,8 @@ def get_setup_version(reponame):
     Helper to get the current version from either git describe or the
     .version file (if available).
     """
+    if 'upload' in sys.argv:
+        return open('./autover/.version', 'r').read()
     try:
         import autover
         return autover.get_setup_version(os.getcwd(), reponame)
