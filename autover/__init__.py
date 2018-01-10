@@ -372,6 +372,8 @@ def get_setup_version(setup_path, reponame):
     """
     fpath = os.path.join(setup_path, reponame, "__init__.py")
     version = Version(fpath=fpath, reponame=reponame)
+    version._dirty = False
     return str(version)
+
 __version__ = Version(release=None, fpath=__file__,
                       commit="$Format:%h$", reponame="autover")

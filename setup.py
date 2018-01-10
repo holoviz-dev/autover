@@ -12,7 +12,12 @@ def get_setup_version(reponame):
     Helper to get the current version from either git describe or the
     .version file (if available).
     """
-    return open('./autover/.version', 'r').read()
+    try:
+        import autover
+        return autover.get_setup_version(os.getcwd(), reponame)
+    except ImportError:
+        print("WARNING: To get fully up-to-date version information 'pip install autover'.")
+        return open('./autover/.version', 'r').read()
 
 
 setup_args = dict(
