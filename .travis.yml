@@ -6,7 +6,7 @@ language: python
 stages:
   - test
   - name: conda_package
-    if: (branch = master AND type != pull_request) OR (tag IS present)
+#    if: (branch = master AND type != pull_request) OR (tag IS present)
   - name: pypi_package
     if: tag IS present
 
@@ -15,16 +15,21 @@ jobs:
   include:
     - &tests
       stage: test
-      python: 3.6
-      env: TOX_ENV=py36
+      python: 2.7
+      env: TOX_ENV=py27
       install:
         - pip install tox
       script:
         - tox -e $TOX_ENV
 
     - <<: *tests
-      python: 2.7
-      env: TOX_ENV=py27
+      python: 3.6
+      env: TOX_ENV=py36
+      script:
+        ### (1) verify installed python package
+        - GIT_VERSION=$(git describe --long) tox -e $TOX_ENV
+        ### (2) verify autover imported from github source dir
+        - scripts/tmpverify
 
     - stage: conda_package
       install:
@@ -38,7 +43,7 @@ jobs:
         - conda build conda.recipe
       after_success:
         - export LABEL="--label dev" && [[ ! -z "$TRAVIS_TAG" ]] && LABEL=""
-        - anaconda --token $CONDA_UPLOAD_TOKEN upload --user cball ${LABEL} $(conda build --output conda.recipe)
+#        - anaconda --token $CONDA_UPLOAD_TOKEN upload --user cball ${LABEL} $(conda build --output conda.recipe)
 
     - <<: *tests
       stage: pypi_package
