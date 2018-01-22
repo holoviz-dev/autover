@@ -44,7 +44,7 @@ setup_args = dict(
     packages = ["autover"],
     provides = ["autover"],
     include_package_data=True,
-    scripts = ["scripts/autover"],
+    scripts = ["scripts/autover","scripts/tmpverify"],
     classifiers = [
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 2.7",

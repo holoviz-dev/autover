@@ -18,6 +18,9 @@ requirements:
 test:
   imports:
     - autover
+  commands:
+    # verify conda-installed autover
+    - tmpverify {{ environ['GIT_DESCRIBE_TAG'] }} {{ environ['GIT_DESCRIBE_NUMBER'] }} {{ environ['GIT_DESCRIBE_HASH'] }}
 
 about:
   home: https://github.com/ioam/autover
