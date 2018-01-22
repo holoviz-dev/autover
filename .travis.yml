@@ -36,8 +36,10 @@ jobs:
         - conda install "conda-build=3.0.25" anaconda-client
       script:
         - conda build conda.recipe
+        - echo $TRAVIS_TAG
       after_success:
         - export LABEL="--label dev" && [[ -z "$TRAVIS_TAG" ]] && LABEL=""
+        - echo $LABEL
         - anaconda --token $CONDA_UPLOAD_TOKEN upload --user cball ${LABEL} $(conda build --output conda.recipe)
 
     - <<: *tests
