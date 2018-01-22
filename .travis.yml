@@ -6,9 +6,9 @@ language: python
 stages:
   - test
   - name: conda_package
-    if: branch = master AND type != pull_request
+    if: (branch = master AND type != pull_request) OR (tag IS present)
   - name: pypi_package
-    if: branch = master AND type != pull_request
+    if: tag IS present
 
 jobs:
   fast_finish: true
@@ -52,5 +52,3 @@ jobs:
         user: ${PYPI_USERNAME}
         password: ${PYPI_PASSWORD}
         skip_cleanup: true
-        on:
-          tags: true
