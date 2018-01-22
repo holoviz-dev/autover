@@ -29,7 +29,7 @@ jobs:
         ### (1) verify installed python package
         - GIT_VERSION=$(git describe --long) tox -e $TOX_ENV
         ### (2) verify autover imported from github source dir
-        - scripts/tmpverify
+        - python scripts/tmpverify
 
     - stage: conda_package
       install:
