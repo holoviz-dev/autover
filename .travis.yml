@@ -28,8 +28,13 @@ jobs:
       script:
         ### (1) verify installed python package
         - GIT_VERSION=$(git describe --long) tox -e $TOX_ENV
-        ### (2) verify autover imported from github source dir
-        - python scripts/tmpverify
+        ### (2) verify in this git checkout
+        - PYTHONPATH=. ./scripts/tmpverify
+        ### (3) verify develop install
+        - pip install -e .
+	- mkdir $HOME/tmp123
+	- cd $HOME/tmp123
+        - GIT_VERSION=$(git describe --long) tmpverify
 
     - stage: conda_package
       install:
