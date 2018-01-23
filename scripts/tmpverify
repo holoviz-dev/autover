@@ -3,12 +3,12 @@
 import autover
 
 ###############
-# (1) pep440 compliant?
+# (a) pep440 compliant?
 import pkg_resources._vendor.packaging.version as packaging_version
 packaging_version.Version(str(autover.__version__))
 
 ###############
-# (2) following desired 'predicted version + hash' scheme?
+# (b) following desired 'predicted version + hash' scheme?
 # v0.2.0-5-g85da374 --> 0.2.1.dev5+g85da374
 import subprocess
 import sys
@@ -36,7 +36,7 @@ predicted_version='.'.join(str(x) for x in newv)+'.dev'+commits+"+"+sha;
 assert autover.__version__==predicted_version, '%s != %s'%(autover.__version__,predicted_version)
 
 ###############
-# (3) setup.py version matches __version__ (only relevant in a source dir)
+# (c) setup.py version matches __version__ (only relevant in a source dir)
 try:
     import setup
     assert setup.setup_args['version'] == str(autover.__version__), 'setup version %s != autover.__version__ %s'%(setup.setup_args['version'], str(autover.__version__))
