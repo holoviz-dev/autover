@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+
+import autover
+
+###############
+# (a) pep440 compliant?
+import pkg_resources._vendor.packaging.version as packaging_version
+packaging_version.Version(str(autover.__version__))
+
+###############
+# (b) following desired 'predicted version + hash' scheme?
+# v0.2.0-5-g85da374 --> 0.2.1.dev5+g85da374
+import subprocess
+import sys
+import os
+
+GIT_VERSION = os.environ.get("GIT_VERSION")
+
+if len(sys.argv)>1:
+    v=sys.argv[1]
+    commits=sys.argv[2]
+    sha=sys.argv[3]
+    print("Git info read from arguments: %s %s %s"%(v,commits,sha))
+elif GIT_VERSION is not None:
+    v,commits,sha=GIT_VERSION.split('-')
+    print("Git info read from GIT_VERSION: %s %s %s"%(v,commits,sha))
+else:
+    desc=subprocess.check_output(['git','describe','--long']).decode('utf8')
+    v,commits,sha=desc.split('-')
+    print("Git info collected from git: %s %s %s"%(v,commits,sha))
+
+newv=[int(x) for x in v[1::].split('.')];
+newv[-1]+=1;
+predicted_version='.'.join(str(x) for x in newv)+'.dev'+commits+"+"+sha;
+
+assert autover.__version__==predicted_version, '%s != %s'%(autover.__version__,predicted_version)
+
+###############
+# (c) setup.py version matches __version__ (only relevant in a source dir)
+try:
+    import setup
+    assert setup.setup_args['version'] == str(autover.__version__), 'setup version %s != autover.__version__ %s'%(setup.setup_args['version'], str(autover.__version__))
+except ImportError:
+    print("skipping setup.py check")
