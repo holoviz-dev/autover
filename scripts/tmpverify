@@ -8,7 +8,8 @@ import pkg_resources._vendor.packaging.version as packaging_version
 packaging_version.Version(str(autover.__version__))
 
 ###############
-# (2) following desired 'predicted version' scheme?
+# (2) following desired 'predicted version + hash' scheme?
+# v0.2.0-5-g85da374 --> 0.2.1.dev5+g85da374
 import subprocess
 import sys
 import os
