@@ -31,10 +31,11 @@ jobs:
         ### (2) verify in this git checkout
         - PYTHONPATH=. ./scripts/tmpverify
         ### (3) verify develop install
+        - export GIT_VERSION=$(git describe --long)
         - pip install -e .
         - mkdir $HOME/tmp123
         - cd $HOME/tmp123
-        - GIT_VERSION=$(git describe --long) tmpverify
+        - tmpverify
 
     - stage: conda_package
       install:
