@@ -12,13 +12,14 @@ def get_setup_version(reponame):
     Helper to get the current version from either git describe or the
     .version file (if available).
     """
+    version_file_path = os.path.join('.', reponame '.version')
     try:
         import autover
         vstring =  autover.get_setup_version(os.getcwd(), reponame)
 
         try:
             describe_string = autover.get_setup_version(os.getcwd(), reponame, describe=True)
-            with open('./autover/.version', 'w') as f:
+            with open(version_file_path, 'w') as f:
                 f.write(describe_string)
         except:
             pass
@@ -26,7 +27,7 @@ def get_setup_version(reponame):
 
     except ImportError:
         print("WARNING: To get fully up-to-date version information 'pip install autover'.")
-        return open('./autover/.version', 'r').read()
+        return open(version_file_path, 'r').read()
 
 
 setup_args = dict(
