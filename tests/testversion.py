@@ -4,6 +4,17 @@ Unit test for autover.Version
 import unittest
 from autover import Version
 
+from collections import OrderedDict
+# Mapping from git describe output to results.
+describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
+                               {'kwargs' : dict(release=(1,0,5)),
+                                '__str__': '1.0.5.post42+abcdefgh',
+                                'release': (1,0,5),
+                                'commit_count': 42,
+                                'commit': 'abcdefgh',
+                                'dirty': False,
+                                'prerelease': None})])
+
 
 class TestVersion(unittest.TestCase):
 
@@ -59,12 +70,23 @@ class TestVersion(unittest.TestCase):
     #  Update from VCS (currently git describe) #
     #===========================================#
 
-    def test_version_simple_git_describe(self):
-        v105 = Version(release=(1,0,5))
-        v105._update_from_vcs('v1.0.5-42-gabcdefgh')
-        self.assertEqual(v105.release, (1,0,5))
-        self.assertEqual(v105.commit_count, 42)
-        self.assertEqual(v105.commit, 'abcdefgh')
+    def test_git_describes(self):
+
+        for description, expected in describe_tests.items():
+            v = Version(**expected['kwargs'])
+            v._update_from_vcs(description)
+            self.assertEqual(str(v), expected['__str__'])
+            self.assertEqual(v.release, expected['release'])
+            self.assertEqual(v.commit_count, expected['commit_count'])
+            self.assertEqual(v.commit, expected['commit'])
+            self.assertEqual(v.dirty, expected['dirty'])
+            self.assertEqual(v.prerelease, expected['prerelease'])
+
+
+
+
+
+
 
 if __name__ == "__main__":
     import nose
