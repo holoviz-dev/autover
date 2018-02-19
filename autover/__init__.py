@@ -284,8 +284,7 @@ class Version(object):
 
     def abbrev(self):
         """
-        Abbreviated string representation, optionally declaring whether it is
-        a development version.
+        Abbreviated string representation of just the release number.
         """
         return '.'.join(str(el) for el in self.release)
 
