@@ -302,10 +302,12 @@ class Version(object):
         elif self.commit_count == 0:
             return release + prerelease
 
+        dirty = '-dirty' if self.dirty else ''
         postcount = self.commit_count_prefix + str(self.commit_count)
 
-        return '%s%s%s%s' % (release, prerelease, postcount,
-                             '' if self.commit is None else '+' + self.commit)
+        components = [release, prerelease, postcount,
+                      '' if self.commit is None else '+' + self.commit, dirty]
+        return ''.join(components)
 
     def __repr__(self):
         return str(self)
