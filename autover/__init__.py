@@ -129,21 +129,19 @@ class Version(object):
     release number (otherwise only the short SHA is available).
     """
 
-    def __init__(self, release=None, fpath=None, commit=None,
-                 reponame=None, commit_count=0):
+    def __init__(self, release=None, fpath=None, commit=None, reponame=None):
         """
         :release:      Release tuple (corresponding to the current VCS tag)
         :commit        Short SHA. Set to '$Format:%h$' for git archive support.
         :fpath:        Set to ``__file__`` to access version control information
         :reponame:     Used to verify VCS repository name.
-        :commit_count  Override Commits since last release.
         """
         self.fpath = fpath
         self._expected_commit = commit
         self.expected_release = release
 
         self._commit = None if commit in [None, "$Format:%h$"] else commit
-        self._commit_count = commit_count
+        self._commit_count = None
         self._release = None
         self._dirty = False
         self.reponame = reponame
