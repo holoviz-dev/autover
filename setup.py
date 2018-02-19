@@ -12,7 +12,7 @@ def get_setup_version(reponame):
     Helper to get the current version from either git describe or the
     .version file (if available).
     """
-    version_file_path = os.path.join('.', reponame '.version')
+    version_file_path = os.path.join('.', reponame, '.version')
     try:
         import autover
         vstring =  autover.get_setup_version(os.getcwd(), reponame)
