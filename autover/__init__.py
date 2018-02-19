@@ -309,37 +309,6 @@ class Version(object):
         return '.'.join(str(el) for el in self.release) + \
             (dev_suffix if self.commit_count > 0 or self.dirty else "")
 
-
-    def __eq__(self, other):
-        """
-        Two versions are considered equivalent if and only if they are
-        from the same release, with the same commit count, and are not
-        dirty.  Any dirty version is considered different from any
-        other version, since it could potentially have any arbitrary
-        changes even for the same release and commit count.
-        """
-        if self.dirty or other.dirty: return False
-        return ((self.release, self.commit_count, self.dev)
-                == (other.release, other.commit_count, other.dev))
-
-    def __gt__(self, other):
-        if self.release == other.release:
-            if self.dev == other.dev:
-                return self.commit_count > other.commit_count
-            elif None in [self.dev, other.dev]:
-                return self.dev is None
-            else:
-                return self.dev > other.dev
-        else:
-            return (self.release, self.commit_count) > (other.release, other.commit_count)
-
-    def __lt__(self, other):
-        if self==other:
-            return False
-        else:
-            return not (self > other)
-
-
     def verify(self, string_version=None):
         """
         Check that the version information is consistent with the VCS
