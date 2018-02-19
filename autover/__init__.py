@@ -335,7 +335,7 @@ class Version(object):
         postcount = self.commit_count_prefix + str(self.commit_count)
 
         components = [release, prerelease, postcount,
-                      '' if self.commit is None else '+' + self.commit, dirty]
+                      '' if self.commit is None else '+g' + self.commit, dirty]
         return ''.join(components)
 
     def __repr__(self):

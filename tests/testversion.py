@@ -8,7 +8,7 @@ from collections import OrderedDict
 # Mapping from git describe output to results.
 describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
                                {'kwargs' : dict(release=(1,0,5)),
-                                '__str__': '1.0.5.post42+abcdefgh',
+                                '__str__': '1.0.5.post42+gabcdefgh',
                                 'release': (1,0,5),
                                 'commit_count': 42,
                                 'commit': 'abcdefgh',
@@ -17,7 +17,7 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
 
                               ('v0.2.0.a1-11-g2fb12e0',
                                {'kwargs' : {},
-                                '__str__': '0.2.0.a1.post11+2fb12e0',
+                                '__str__': '0.2.0.a1.post11+g2fb12e0',
                                 'release': (0,2,0),
                                 'commit_count': 11,
                                 'commit': '2fb12e0',
@@ -28,7 +28,7 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
 
                              ('v0.2.0.a1-13-g9edb975-dirty',
                                {'kwargs' : {},
-                                '__str__': '0.2.0.a1.post13+9edb975-dirty',
+                                '__str__': '0.2.0.a1.post13+g9edb975-dirty',
                                 'release': (0,2,0),
                                 'commit_count': 13,
                                 'commit': '9edb975',
@@ -61,7 +61,7 @@ class TestVersion(unittest.TestCase):
 
     def test_repr_v101(self):
         v101 = Version(release=(1,0,1), commit='fffffff')
-        if repr(v101) != '1.0.1.post0+fffffff':
+        if repr(v101) != '1.0.1.post0+gfffffff':
             raise AssertionError('Unexpected version string returned')
 
     def test_version_init_v101(self):
