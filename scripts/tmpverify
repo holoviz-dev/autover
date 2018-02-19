@@ -8,8 +8,8 @@ import pkg_resources._vendor.packaging.version as packaging_version
 packaging_version.Version(str(autover.__version__))
 
 ###############
-# (b) following desired 'predicted version + hash' scheme?
-# v0.2.0-5-g85da374 --> 0.2.1.dev5+g85da374
+# (b) following desired 'latest master' version scheme?
+# v0.2.0-5-g85da374 --> 0.2.0.post5+g85da374
 import subprocess
 import sys
 import os
@@ -30,8 +30,8 @@ else:
     print("Git info collected from git: %s %s %s"%(v,commits,sha))
 
 newv=[int(x) for x in v[1::].split('.')];
-newv[-1]+=1;
-predicted_version='.'.join(str(x) for x in newv)+'.dev'+commits+"+"+sha;
+#newv[-1]+=1;
+predicted_version='.'.join(str(x) for x in newv)+'.post'+commits+"+"+sha;
 
 assert autover.__version__==predicted_version, '%s != %s'%(autover.__version__,predicted_version)
 
@@ -42,3 +42,6 @@ try:
     assert setup.setup_args['version'] == str(autover.__version__), 'setup version %s != autover.__version__ %s'%(setup.setup_args['version'], str(autover.__version__))
 except ImportError:
     print("skipping setup.py check")
+
+###############
+# (d) git tag alpha ... TODO
