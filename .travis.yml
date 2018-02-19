@@ -29,10 +29,10 @@ jobs:
         ### (1) verify installed python package
         - GIT_VERSION=$(git describe --long) tox -e $TOX_ENV
         ### (2) verify in this git checkout
-	- git reset --hard
+        - git reset --hard
         - PYTHONPATH=. ./scripts/tmpverify
         ### (3) verify develop install
-	- git reset --hard
+        - git reset --hard
         - export GIT_VERSION=$(git describe --long)
         - pip install -e .
         - mkdir $HOME/tmp123
