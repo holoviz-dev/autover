@@ -99,58 +99,6 @@ class TestVersion(unittest.TestCase):
         self.assertEqual(v105.dev, 4)
         self.assertEqual(v105.commit, 'abcdefgh')
 
-    #===========================#
-    #  Comparisons and equality #
-    #===========================#
-
-    def test_version_less_than(self):
-        v1 = Version(release=(1,0))
-        v101 = Version(release=(1,0,1))
-        self.assertEqual((v1 < v101), True)
-
-    def test_version_less_than_dev(self):
-        v101 = Version(release=(1,0,1))
-        v101dev2 = Version(release=(1,0,1), dev=2)
-        self.assertEqual((v101dev2 < v101), True)
-
-    def test_version_less_than_dev_number(self):
-        v101dev1 = Version(release=(1,0,1), dev=1)
-        v101dev2 = Version(release=(1,0,1), dev=2)
-        self.assertEqual((v101dev1 < v101dev2), True)
-
-    def test_version_greater_than(self):
-        v1 = Version(release=(1,0))
-        v101 = Version(release=(1,0,1))
-        self.assertEqual((v1 > v101), False)
-
-    def test_version_greater_than_dev(self):
-        v101 = Version(release=(1,0,1))
-        v102dev3 = Version(release=(1,0,2), dev=3)
-        self.assertEqual((v102dev3 > v101), True)
-
-    def test_version_eq_v1(self):
-        v1 = Version(release=(1,0))
-        self.assertEqual(v1==v1, True)
-
-    def test_version_eq_v101(self):
-        v101 = Version(release=(1,0,1))
-        self.assertEqual(v101==v101, True)
-
-    def test_version_eq_v101_dev(self):
-        v101dev3 = Version(release=(1,0,1), dev=3)
-        self.assertEqual(v101dev3==v101dev3, True)
-
-    def test_version_neq_v101_dev(self):
-        v101dev2 = Version(release=(1,0,1), dev=2)
-        v101dev3 = Version(release=(1,0,1), dev=3)
-        self.assertEqual(v101dev2!=v101dev3, True)
-
-    def test_version_neq(self):
-        v1 = Version(release=(1,0))
-        v101 = Version(release=(1,0,1))
-        self.assertEqual(v1 !=v101, True)
-
-
 if __name__ == "__main__":
     import nose
     nose.runmodule()
