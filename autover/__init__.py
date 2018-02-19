@@ -106,17 +106,19 @@ class Version(object):
     two or three numeric versioning levels typical.
 
     During development, a command like ``git describe`` will be used to
-    compute the number of commits since the last version tag, the
-    short commit hash, and whether the commit is dirty (has changes
-    not yet committed). Version tags must start with a lowercase 'v'
-    and have a period in them, e.g. v2.0, v0.9.8 or v0.1.
+    compute the number of commits since the last version tag, the short
+    commit hash, and whether the commit is dirty (has changes not yet
+    committed). Version tags must start with a lowercase 'v' and have a
+    period in them, e.g. v2.0, v0.9.8 or v0.1 and may include the PEP440
+    prerelease identifiers of 'a' (alpha) 'b' (beta) or 'rc' (release
+    candidate) allowing tags such as v2.0.a3, v0.9.8.b3 or v0.1.rc5.
 
     Also note that when version control system (VCS) information is
-    used, the comparison operators take into account the number of
-    commits since the last version tag. This approach is often useful
-    in practice to decide which version is newer for a single
-    developer, but will not necessarily be reliable when comparing
-    against a different fork or branch in a distributed VCS.
+    used, the number of commits since the last version tag is
+    determined. This approach is often useful in practice to decide
+    which version is newer for a single developer, but will not
+    necessarily be reliable when comparing against a different fork or
+    branch in a distributed VCS.
 
     For git, if you want version control information available even in
     an exported archive (e.g. a .zip file from GitHub), you can set
@@ -127,9 +129,17 @@ class Version(object):
     Note that to support pip installation directly from GitHub via git
     archive, a .version file must be tracked by the repo to supply the
     release number (otherwise only the short SHA is available).
-    """
 
-    def __init__(self, release=None, fpath=None, commit=None, reponame=None):
+    The PEP440 format returned is [N!]N(.N)*[{a|b|rc}N][.postN+SHA]
+    where everything before .postN is obtained from the tag, the N in
+    .postN is the number of commits since the last tag and the SHA is
+    obtained via git describe. This later portion is only shown if the
+    commit count since the last tag is non zero. Instead of '.post', an
+    alternate valid prefix such as '.rev', '_rev', '_r' or '.r' may be
+    supplied."""
+
+    def __init__(self, release=None, fpath=None, commit=None, reponame=None,
+                 commit_count_prefix='.post'):
         """
         :release:      Release tuple (corresponding to the current VCS tag)
         :commit        Short SHA. Set to '$Format:%h$' for git archive support.
@@ -141,10 +151,20 @@ class Version(object):
         self.expected_release = release
 
         self._commit = None if commit in [None, "$Format:%h$"] else commit
-        self._commit_count = None
+        self._commit_count = 0
         self._release = None
         self._dirty = False
+        self._prerelease = None
         self.reponame = reponame
+        self.commit_count_prefix = commit_count_prefix
+
+    @property
+    def prerelease(self):
+        """
+        Either None or one of 'aN' (alpha), 'bN' (beta) or 'rcN'
+        (release candidate) where N is an integer.
+        """
+        return self.fetch()._prerelease
 
     @property
     def release(self):
@@ -248,7 +268,13 @@ class Version(object):
     def _update_from_vcs(self, output):
         "Update state based on the VCS state e.g the output of git describe"
         split = output[1:].split('-')
-        self._release = tuple(int(el) for el in split[0].split('.'))
+        dot_split = split[0].split('.')
+        for prefix in ['a','b','rc']:
+            if dot_split[-1].startswith(prefix):
+                self._prerelease = dot_split[-1]
+                dot_split = dot_split[:-1]
+
+        self._release = tuple(int(el) for el in dot_split)
         self._commit_count = int(split[1])
         self._commit = str(split[2][1:]) # Strip out 'g' prefix ('g'=>'git')
         self._dirty = (split[-1]=='dirty')
@@ -269,15 +295,17 @@ class Version(object):
         """
         if self.release is None: return 'None'
         release = '.'.join(str(el) for el in self.release)
+        prerelease = '' if self.prerelease is None else ('.' + self.prerelease)
 
         if (self._expected_commit is not None) and  ("$Format" not in self._expected_commit):
             pass  # Concrete commit supplied - print full version string
-        elif (self.commit_count == 0 and not self.dirty):
-            return release
+        elif self.commit_count == 0:
+            return release + prerelease
 
-        dirty_status = '-dirty' if self.dirty else ''
-        return '%s-%s-g%s%s' % (release, 'x' if (self.commit_count is None) else self.commit_count,
-                                self.commit, dirty_status)
+        postcount = self.commit_count_prefix + str(self.commit_count)
+
+        return '%s%s%s%s' % (release, prerelease, postcount,
+                             '' if self.commit is None else '+' + self.commit)
 
     def __repr__(self):
         return str(self)
