@@ -111,12 +111,6 @@ class Version(object):
     not yet committed). Version tags must start with a lowercase 'v'
     and have a period in them, e.g. v2.0, v0.9.8 or v0.1.
 
-    Development versions are supported by setting the dev argument to an
-    appropriate dev version number. The corresponding tag can be PEP440
-    compliant (using .devX) of the form v0.1.dev3, v1.9.0.dev2 etc but
-    it doesn't have to be as the dot may be omitted i.e v0.1dev3,
-    v1.9.0dev2 etc.
-
     Also note that when version control system (VCS) information is
     used, the comparison operators take into account the number of
     commits since the last version tag. This approach is often useful
@@ -136,14 +130,13 @@ class Version(object):
     """
 
     def __init__(self, release=None, fpath=None, commit=None,
-                 reponame=None, dev=None, commit_count=0):
+                 reponame=None, commit_count=0):
         """
         :release:      Release tuple (corresponding to the current VCS tag)
         :commit        Short SHA. Set to '$Format:%h$' for git archive support.
         :fpath:        Set to ``__file__`` to access version control information
         :reponame:     Used to verify VCS repository name.
-        :dev:          Development version number. None if not a development version.
-        :commit_count  Commits since last release. Set for dev releases.
+        :commit_count  Override Commits since last release.
         """
         self.fpath = fpath
         self._expected_commit = commit
@@ -154,7 +147,6 @@ class Version(object):
         self._release = None
         self._dirty = False
         self.reponame = reponame
-        self.dev = dev
 
     @property
     def release(self):
@@ -258,14 +250,6 @@ class Version(object):
     def _update_from_vcs(self, output):
         "Update state based on the VCS state e.g the output of git describe"
         split = output[1:].split('-')
-        if 'dev' in split[0]:
-            dev_split = split[0].split('dev')
-            self.dev = int(dev_split[1])
-            split[0] = dev_split[0]
-            # Remove the pep440 dot if present
-            if split[0].endswith('.'):
-                split[0] = dev_split[0][:-1]
-
         self._release = tuple(int(el) for el in split[0].split('.'))
         self._commit_count = int(split[1])
         self._commit = str(split[2][1:]) # Strip out 'g' prefix ('g'=>'git')
@@ -287,7 +271,6 @@ class Version(object):
         """
         if self.release is None: return 'None'
         release = '.'.join(str(el) for el in self.release)
-        release = '%s.dev%d' % (release, self.dev) if self.dev is not None else release
 
         if (self._expected_commit is not None) and  ("$Format" not in self._expected_commit):
             pass  # Concrete commit supplied - print full version string
@@ -301,13 +284,12 @@ class Version(object):
     def __repr__(self):
         return str(self)
 
-    def abbrev(self,dev_suffix=""):
+    def abbrev(self):
         """
         Abbreviated string representation, optionally declaring whether it is
         a development version.
         """
-        return '.'.join(str(el) for el in self.release) + \
-            (dev_suffix if self.commit_count > 0 or self.dirty else "")
+        return '.'.join(str(el) for el in self.release)
 
     def verify(self, string_version=None):
         """
