@@ -13,7 +13,28 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
                                 'commit_count': 42,
                                 'commit': 'abcdefgh',
                                 'dirty': False,
-                                'prerelease': None})])
+                                'prerelease': None}),
+
+                              ('v0.2.0.a1-11-g2fb12e0',
+                               {'kwargs' : {},
+                                '__str__': '0.2.0.a1.post11+2fb12e0',
+                                'release': (0,2,0),
+                                'commit_count': 11,
+                                'commit': '2fb12e0',
+                                'dirty': False,
+                                'prerelease': 'a1'}),
+
+
+
+                             ('v0.2.0.a1-13-g9edb975-dirty',
+                               {'kwargs' : {},
+                                '__str__': '0.2.0.a1.post13+9edb975-dirty',
+                                'release': (0,2,0),
+                                'commit_count': 13,
+                                'commit': '9edb975',
+                                'dirty': True,
+                                'prerelease': 'a1'})])
+
 
 
 class TestVersion(unittest.TestCase):
@@ -83,10 +104,16 @@ class TestVersion(unittest.TestCase):
     #  Update from VCS (currently git describe) #
     #===========================================#
 
+    # TODO: Generate tests dynamically
+
     def test_git_describe_0(self):
         self.git_describe_check(describe_tests, 0)
 
+    def test_git_describe_1(self):
+        self.git_describe_check(describe_tests, 1)
 
+    def test_git_describe_2(self):
+        self.git_describe_check(describe_tests, 2)
 
 
 
