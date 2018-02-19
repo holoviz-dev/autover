@@ -18,6 +18,19 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
 
 class TestVersion(unittest.TestCase):
 
+
+    def git_describe_check(self, describe_tests, index):
+        description = list(describe_tests.keys())[index]
+        expected = describe_tests[description]
+        v = Version(**expected['kwargs'])
+        v._update_from_vcs(description)
+        self.assertEqual(str(v), expected['__str__'])
+        self.assertEqual(v.release, expected['release'])
+        self.assertEqual(v.commit_count, expected['commit_count'])
+        self.assertEqual(v.commit, expected['commit'])
+        self.assertEqual(v.dirty, expected['dirty'])
+        self.assertEqual(v.prerelease, expected['prerelease'])
+
     def test_version_init_v1(self):
         Version(release=(1,0))
 
@@ -70,18 +83,8 @@ class TestVersion(unittest.TestCase):
     #  Update from VCS (currently git describe) #
     #===========================================#
 
-    def test_git_describes(self):
-
-        for description, expected in describe_tests.items():
-            v = Version(**expected['kwargs'])
-            v._update_from_vcs(description)
-            self.assertEqual(str(v), expected['__str__'])
-            self.assertEqual(v.release, expected['release'])
-            self.assertEqual(v.commit_count, expected['commit_count'])
-            self.assertEqual(v.commit, expected['commit'])
-            self.assertEqual(v.dirty, expected['dirty'])
-            self.assertEqual(v.prerelease, expected['prerelease'])
-
+    def test_git_describe_0(self):
+        self.git_describe_check(describe_tests, 0)
 
 
 
