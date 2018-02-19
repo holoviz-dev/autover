@@ -29,8 +29,10 @@ jobs:
         ### (1) verify installed python package
         - GIT_VERSION=$(git describe --long) tox -e $TOX_ENV
         ### (2) verify in this git checkout
+	- git reset --hard
         - PYTHONPATH=. ./scripts/tmpverify
         ### (3) verify develop install
+	- git reset --hard
         - export GIT_VERSION=$(git describe --long)
         - pip install -e .
         - mkdir $HOME/tmp123
@@ -44,7 +46,7 @@ jobs:
         - export PATH="$HOME/miniconda/bin:$PATH"
         - conda config --set always_yes yes --set changeps1 no
         - conda update conda
-        - conda install "conda-build=3.0.25" anaconda-client
+        - conda install conda-build anaconda-client
       script:
         - conda build conda.recipe
       after_success:
