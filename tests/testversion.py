@@ -24,8 +24,6 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
                                 'dirty': False,
                                 'prerelease': 'a1'}),
 
-
-
                              ('v0.2.0.a1-13-g9edb975-dirty',
                                {'kwargs' : {},
                                 '__str__': '0.2.0.a1.post13+g9edb975-dirty',
@@ -33,7 +31,26 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
                                 'commit_count': 13,
                                 'commit': '9edb975',
                                 'dirty': True,
-                                'prerelease': 'a1'})])
+                                'prerelease': 'a1'}),
+
+                             ('v0.5.1.rc2-0-g9edb976',
+                               {'kwargs' : {},
+                                '__str__': '0.5.1.rc2',
+                                'release': (0,5,1),
+                                'commit_count': 0,
+                                'commit': '9edb976',
+                                'dirty': False,
+                                'prerelease': 'rc2'}),
+
+                             ('v0.4.1.b2-19-g9edb980-dirty',
+                               {'kwargs' : dict(commit_count_prefix='_r'),
+                                '__str__': '0.4.1.b2_r19+g9edb980-dirty',
+                                'release': (0,4,1),
+                                'commit_count': 19,
+                                'commit': '9edb980',
+                                'dirty': True,
+                                'prerelease': 'b2'})
+])
 
 
 
@@ -115,8 +132,11 @@ class TestVersion(unittest.TestCase):
     def test_git_describe_2(self):
         self.git_describe_check(describe_tests, 2)
 
+    def test_git_describe_3(self):
+        self.git_describe_check(describe_tests, 3)
 
-
+    def test_git_describe_4(self):
+        self.git_describe_check(describe_tests, 4)
 
 if __name__ == "__main__":
     import nose
