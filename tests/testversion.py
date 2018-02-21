@@ -49,7 +49,17 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
                                 'commit_count': 19,
                                 'commit': '9edb980',
                                 'dirty': True,
-                                'prerelease': 'b2'})
+                                'prerelease': 'b2'}),
+
+                              ('v0.5.7.rc2-92-g9edb976',
+                               {'kwargs' : dict(archive_commit='1234567'),
+                                '__str__': '0.5.7.rc2.post0+g1234567-gitarchive',
+                                'release': (0,5,7),
+                                'commit_count': None,
+                                'commit': '9edb976',
+                                'dirty': False,
+                                'prerelease': 'rc2'})
+
 ])
 
 
@@ -78,8 +88,7 @@ class TestVersion(unittest.TestCase):
 
     def test_repr_v101(self):
         v101 = Version(release=(1,0,1), commit='fffffff')
-        if repr(v101) != '1.0.1.post0+gfffffff':
-            raise AssertionError('Unexpected version string returned')
+        self.assertEqual(repr(v101), '1.0.1+gfffffff')
 
     def test_version_init_v101(self):
         Version(release=(1,0,1))
@@ -108,10 +117,6 @@ class TestVersion(unittest.TestCase):
         v101 = Version(release=(1,0,1))
         self.assertEqual(v101.dirty, False)
 
-    def test_version_v101_commit_count(self):
-        v101 = Version(release=(1,0,1))
-        self.assertEqual(v101.commit_count, 0)
-
     def test_version_commit(self):
         "No version control system assumed for tests"
         v1 = Version(release=(1,0), commit='shortSHA')
@@ -137,6 +142,9 @@ class TestVersion(unittest.TestCase):
 
     def test_git_describe_4(self):
         self.git_describe_check(describe_tests, 4)
+
+    def test_git_describe_5(self):
+        self.git_describe_check(describe_tests, 5)
 
 if __name__ == "__main__":
     import nose
