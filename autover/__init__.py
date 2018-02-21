@@ -268,13 +268,13 @@ class Version(object):
             try:
                 output = self._output_from_file()
                 self._update_from_vcs(output)
+                self._commit_count = None
                 if as_string: return output
 
                 # If an explicit commit was supplied (e.g from git
                 # archive), it should take precedence over the file.
                 if commit_argument:
                     self._commit = commit_argument
-                    self._commit_count = None
                 return
 
             except IOError as e2:
