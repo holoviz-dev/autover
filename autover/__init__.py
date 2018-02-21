@@ -184,6 +184,7 @@ class Version(object):
         self._release = None
         self._dirty = False
         self._prerelease = None
+
         self.archive_commit= archive_commit
 
         self.reponame = reponame
@@ -427,6 +428,5 @@ def get_setup_version(setup_path, reponame, describe=False,
         return vstring
 
 
-version = Version(release=None, fpath=__file__,
-                  archive_commit="$Format:%h$", reponame="autover")
+version = Version(release=None, fpath=__file__, reponame="autover")
 __version__ = str(version)
