@@ -180,7 +180,7 @@ class Version(object):
         self.expected_release = release
 
         self._commit = None if (commit is None or commit.startswith("$Format")) else commit
-        self._commit_count = 0
+        self._commit_count = None
         self._release = None
         self._dirty = False
         self._prerelease = None
