@@ -34,9 +34,9 @@ jobs:
         - tmpverify
     - <<: *tests
       before_install:
-	- echo two > two
-	- git commit -m 'two' two
-	- git tag -a -v 2.0.0a -m "two"
+        - echo two > two
+        - git commit -m 'two' two
+        - git tag -a -v 2.0.0a -m "two"
 
     - stage: conda_package
       install:
