@@ -37,7 +37,7 @@ jobs:
         - echo two > two
         - git add two
         - git commit -m 'two' two
-        - git tag -a 2.0.0a -m "two"
+        - git tag -a v2.0.0a -m "two"
 
     - stage: conda_package
       install:
