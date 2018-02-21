@@ -179,12 +179,16 @@ class Version(object):
         self._expected_commit = commit
         self.expected_release = release
 
+        print("IN CONSTRUCTOR: %s" % archive_commit)
+
         self._commit = None if (commit is None or commit.startswith("$Format")) else commit
         self._commit_count = None
         self._release = None
         self._dirty = False
         self._prerelease = None
         self.archive_commit= archive_commit
+
+        print("IN CONSTRUCTOR (self): %s" % archive_commit)
         self.reponame = reponame
         self.commit_count_prefix = commit_count_prefix
 
@@ -336,9 +340,11 @@ class Version(object):
 
         dirty = '-dirty' if self.dirty else ''
 
+        print("IN __str__: %s" % self.archive_commit)
         archive_commit = ''
         if self.archive_commit is not None and self.archive_commit != self.commit:
             archive_commit = '-TEST-%s' % self.archive_commit
+            print("IN branch: %s" % archive_commit)
 
         postcount = self.commit_count_prefix + str(self.commit_count)
         components = [release, prerelease, postcount,
@@ -401,6 +407,7 @@ def get_setup_version(setup_path, reponame, describe=False,
     be useful if you want to make sure packages are not built from a
     dirty repository state.
     """
+    print("IN get_setup_version: %s" % archive_commit)
     policies = ['raise','report', 'strip']
     if dirty not in policies:
         raise AssertionError("get_setup_version dirty policy must be in %r" % policies)
