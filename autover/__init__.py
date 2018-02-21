@@ -337,7 +337,7 @@ class Version(object):
 
         archive_commit = ''
         if self.archive_commit is not None and self.archive_commit != self.commit:
-            archive_commit = '-gitarchive:%s' % self.archive_commit
+            archive_commit = '-TEST-%s' % self.archive_commit
 
         postcount = self.commit_count_prefix + str(self.commit_count)
         components = [release, prerelease, postcount,
