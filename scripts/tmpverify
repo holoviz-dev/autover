@@ -33,13 +33,13 @@ expected_version=v[1::]
 if int(commits) > 0:
     expected_version += '.post'+commits+"+"+sha;
 
-assert autover.__version__.startswith(expected_version), '%r does not start with %r' % (autover.__version__,expected_version)
+assert autover.__version__ == expected_version, 'autover.__version__ %r does not match %r' % (autover.__version__,expected_version)
 
 ###############
 # (c) setup.py version matches __version__ (only relevant in a source dir)
 try:
     import setup
-    assert autover.__version__.startswith(setup.setup_args['version']), 'autover.__version__ %r does not start with setup version %r'%(autover.__version__, setup.setup_args['version'])
+    assert autover.__version__ == setup.setup_args['version'], 'autover.__version__ %r does not match setup version %r'%(autover.__version__, setup.setup_args['version'])
 except ImportError:
     print("skipping setup.py check")
 
