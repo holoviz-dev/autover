@@ -266,7 +266,8 @@ class Version(object):
             try:
                 output = self._output_from_file()
                 self._update_from_vcs(output)
-                self._commit_count = None
+                if self._known_stale():
+                    self._commit_count = None
                 if as_string: return output
 
                 # If an explicit commit was supplied (e.g from git
@@ -283,6 +284,11 @@ class Version(object):
 
         self._update_from_vcs(output)
 
+
+    def _known_stale(self):
+        return (self.archive_commit is not None
+                and not self.archive_commit.startswith('$Format')
+                and self.archive_commit != self.commit)
 
     def _output_from_file(self):
         """
@@ -336,9 +342,7 @@ class Version(object):
         commit = self.commit
         dirty = '-dirty' if self.dirty else ''
         archive_commit = ''
-        if (self.archive_commit is not None
-            and not self.archive_commit.startswith('$Format')
-            and self.archive_commit != commit):
+        if self._known_stale():
             archive_commit = '-gitarchive'
             commit = self.archive_commit
 
