@@ -31,7 +31,9 @@ else:
 
 newv=[int(x) for x in v[1::].split('.')];
 #newv[-1]+=1;
-expected_version='.'.join(str(x) for x in newv)+'.post'+commits+"+"+sha;
+expected_version='.'.join(str(x) for x in newv)
+if int(commits) > 0:
+    expected_version += '.post'+commits+"+"+sha;
 
 assert autover.__version__.startswith(expected_version), '%r does not start with %r' % (autover.__version__,expected_version)
 
