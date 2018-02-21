@@ -343,10 +343,14 @@ class Version(object):
         print("IN __str__: %s" % self.archive_commit)
         archive_commit = ''
         if self.archive_commit is not None and self.archive_commit != self.commit:
-            archive_commit = '-TEST-%s' % self.archive_commit
+            archive_commit = '-gitarchive-%s' % self.archive_commit
             print("IN branch: %s" % archive_commit)
 
-        postcount = self.commit_count_prefix + str(self.commit_count)
+        if self.commit_count is not None:
+            postcount = self.commit_count_prefix + str(self.commit_count)
+        else:
+            postcount = self.commit_count_prefix + '0'
+
         components = [release, prerelease, postcount,
                       '' if self.commit is None else '+g' + self.commit, dirty,
                       archive_commit]
