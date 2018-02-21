@@ -29,9 +29,7 @@ else:
     v,commits,sha=desc.split('-')
     print("Git info collected from git: %s %s %s"%(v,commits,sha))
 
-newv=[int(x) for x in v[1::].split('.')];
-#newv[-1]+=1;
-expected_version='.'.join(str(x) for x in newv)
+expected_version=v[1::]
 if int(commits) > 0:
     expected_version += '.post'+commits+"+"+sha;
 
