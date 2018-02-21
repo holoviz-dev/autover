@@ -17,8 +17,8 @@ jobs:
       stage: test
       python: 3.6
       env:
+        - DESC="from current repo"      
         - TOX_ENV=py36
-        - DESC="from_current_repo"
       install:
         - pip install tox
       script:
@@ -37,8 +37,8 @@ jobs:
 
     - <<: *tests
       env:
+        - DESC="from release tag"      
         - TOX_ENV=py36
-        - DESC="from_release_tag"
       before_install:
         - echo two > two
         - git add two
@@ -47,8 +47,8 @@ jobs:
 
     - <<: *tests
       env:
+        - DESC="from prerelease tag"      
         - TOX_ENV=py36
-        - DESC="from_prerelease_tag"
       before_install:
         - echo two > two
         - git add two
@@ -57,8 +57,8 @@ jobs:
 
     - <<: *tests
       env:
+        - DESC="from release tag plus commits"      
         - TOX_ENV=py36
-        - DESC="from_release_tag_plus_commits"
       before_install:
         - echo two > two
         - git add two
@@ -70,8 +70,8 @@ jobs:
     - &tests
       stage: test
       env:
+        - DESC="test pkg_depends"      
         - TOX_ENV=py36
-        - DESC="test_pkg_depends"
       python: 3.6
       env: TOX_ENV=py36
       before_install:
