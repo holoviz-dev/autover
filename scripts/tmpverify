@@ -25,16 +25,15 @@ elif GIT_VERSION is not None:
     v,commits,sha=GIT_VERSION.split('-')
     print("Git info read from GIT_VERSION: %s %s %s"%(v,commits,sha))
 else:
-    desc=subprocess.check_output(['git','describe','--long']).decode('utf8')
+    desc=subprocess.check_output(['git','describe','--long']).decode('utf8').strip()
     v,commits,sha=desc.split('-')
     print("Git info collected from git: %s %s %s"%(v,commits,sha))
 
 newv=[int(x) for x in v[1::].split('.')];
 #newv[-1]+=1;
-predicted_version='.'.join(str(x) for x in newv)+'.post'+commits+"+"+sha;
-predicted_version = predicted_version.strip() # Strip off trailing newline
+expected_version='.'.join(str(x) for x in newv)+'.post'+commits+"+"+sha;
 
-assert autover.__version__.startswith(predicted_version), '%r does not start with %r' % (autover.__version__,predicted_version)
+assert autover.__version__.startswith(expected_version), '%r does not start with %r' % (autover.__version__,expected_version)
 
 ###############
 # (c) setup.py version matches __version__ (only relevant in a source dir)
