@@ -57,7 +57,7 @@ jobs:
 
     - <<: *tests
       env:
-        - DESC="from release tag plus commits"      
+        - DESC="from prerelease tag plus commits"      
         - TOX_ENV=py36
       before_install:
         - echo two > two
