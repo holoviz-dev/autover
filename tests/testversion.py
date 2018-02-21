@@ -55,7 +55,7 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
                                {'kwargs' : dict(archive_commit='1234567'),
                                 '__str__': '0.5.7.rc2.post0+g1234567-gitarchive',
                                 'release': (0,5,7),
-                                'commit_count': 92,
+                                'commit_count': None,
                                 'commit': '9edb976',
                                 'dirty': False,
                                 'prerelease': 'rc2'})
