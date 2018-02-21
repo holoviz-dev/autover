@@ -1,6 +1,8 @@
+{% set sdata = load_setup_py_data() %}
+
 package:
   name: autover
-  version: {{ environ['GIT_DESCRIBE_TAG'].lstrip('v') }}.{{ GIT_BUILD_STR }}
+  version: {{ sdata['version'] }}
 
 source:
   path: ..
@@ -23,6 +25,6 @@ test:
     - tmpverify {{ environ['GIT_DESCRIBE_TAG'] }} {{ environ['GIT_DESCRIBE_NUMBER'] }} {{ environ['GIT_DESCRIBE_HASH'] }}
 
 about:
-  home: https://github.com/ioam/autover
-  summary: Autover provides consistent and up-to-date `__version__` strings for Python packages.
-  license: BSD 3-Clause
+  home: {{ sdata['url'] }}
+  summary: {{ sdata['description'] }}
+  license: {{ sdata['license'] }}
