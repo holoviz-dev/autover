@@ -337,8 +337,8 @@ class Version(object):
 
         dirty = '-dirty' if self.dirty else ''
         archive_commit = ''
-        if (not self.archive_commit.startswith('$Format')
-            and self.archive_commit is not None
+        if (self.archive_commit is not None
+            and not self.archive_commit.startswith('$Format')
             and self.archive_commit != self.commit):
             archive_commit = '-gitarchive-%s' % self.archive_commit
 
