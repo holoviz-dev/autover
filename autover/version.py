@@ -342,7 +342,7 @@ class Version(object):
         """
         if self.release is None: return 'None'
         release = '.'.join(str(el) for el in self.release)
-        prerelease = '' if self.prerelease is None else ('.' + self.prerelease)
+        prerelease = '' if self.prerelease is None else self.prerelease
 
         if self.commit_count == 0:
             return release + prerelease
