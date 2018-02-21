@@ -13,11 +13,12 @@ stages:
 jobs:
   fast_finish: true
   include:
-    # test from unknown state (whatever state repository is currently in)
     - &tests
       stage: test
       python: 3.6
-      env: TOX_ENV=py36
+      env:
+        - TOX_ENV=py36
+        - DESC="from_current_repo"
       install:
         - pip install tox
       script:
@@ -33,22 +34,31 @@ jobs:
         - mkdir $HOME/tmp123
         - cd $HOME/tmp123
         - tmpverify
-    # test from release tag
+
     - <<: *tests
+      env:
+        - TOX_ENV=py36
+        - DESC="from_release_tag"
       before_install:
         - echo two > two
         - git add two
         - git commit -m 'two' two
-        - git tag -a v2.0.0 -m "two"    
-    # test from prerelease tag
+        - git tag -a v2.0.0 -m "two"
+
     - <<: *tests
+      env:
+        - TOX_ENV=py36
+        - DESC="from_prerelease_tag"
       before_install:
         - echo two > two
         - git add two
         - git commit -m 'two' two
         - git tag -a v2.0.0a -m "two"
-    # test from prerelease tag plus some commits
+
     - <<: *tests
+      env:
+        - TOX_ENV=py36
+        - DESC="from_release_tag_plus_commits"
       before_install:
         - echo two > two
         - git add two
@@ -57,22 +67,22 @@ jobs:
         - echo twotwo > two
         - git commit -m 'two' two
 
-#    # test a package that depends on autover
-#    - &tests
-#      stage: test
-#      python: 3.6
-#      env: TOX_ENV=py36
-#      before_install:
-#        - pip install -e .
-#      install:
-#        - cp -r examples/pkg_depend $HOME/
-#        - cd $HOME/pkg_depend
-#        - git init
-#        - git add .
-#        - git commit -m "init"
-#        - git tag -a v0.0.1 -m "one"
-#      script: true
-
+    - &tests
+      stage: test
+      env:
+        - TOX_ENV=py36
+        - DESC="test_pkg_depends"
+      python: 3.6
+      env: TOX_ENV=py36
+      before_install:
+        - pip install -e .
+        - cp -r examples/pkg_depend $HOME/
+        - cd $HOME/pkg_depend
+        - git init
+        - git add .
+        - git commit -m "init"
+        - git tag -a v0.0.1 -m "one"
+      install: true
 
     - stage: conda_package
       install:
