@@ -13,17 +13,7 @@ stages:
 jobs:
   fast_finish: true
   include:
-#    - &tests
-#      stage: test
-#      python: 2.7
-#      env: TOX_ENV=py27
-#      install:
-#        - pip install tox
-#      script:
-#        - tox -e $TOX_ENV
-
-#    - <<: *tests
-    - stage:test
+    - stage: test
       python: 3.6
       env: TOX_ENV=py36
       install:
