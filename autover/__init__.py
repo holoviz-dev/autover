@@ -342,10 +342,12 @@ class Version(object):
             and self.archive_commit != self.commit):
             archive_commit = '-gitarchive-g%s' % self.archive_commit
 
-        if self.commit_count is not None:
+        if self.commit_count is None:
+            postcount = self.commit_count_prefix + '0'
+        elif self.commit_count != 0:
             postcount = self.commit_count_prefix + str(self.commit_count)
         else:
-            postcount = self.commit_count_prefix + '0'
+            postcount = ''
 
         components = [release, prerelease, postcount,
                       '' if self.commit is None else '+g' + self.commit, dirty,
