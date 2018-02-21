@@ -296,7 +296,7 @@ class Version(object):
         """
         vfile = os.path.join(os.path.dirname(self.fpath), '.version')
         with open(vfile, 'r') as f:
-            return f.read()
+            return f.read().strip()
 
 
     def _update_from_vcs(self, output):
