@@ -168,7 +168,7 @@ class Version(object):
     supplied."""
 
     def __init__(self, release=None, fpath=None, commit=None, reponame=None,
-                 commit_count_prefix='.post'):
+                 commit_count_prefix='.post', archive_commit=None):
         """
         :release:      Release tuple (corresponding to the current VCS tag)
         :commit        Short SHA. Set to '$Format:%h$' for git archive support.
@@ -185,6 +185,7 @@ class Version(object):
         self._dirty = False
         self._stale = False
         self._prerelease = None
+        self._archive_commit= archive_commit
         self.reponame = reponame
         self.commit_count_prefix = commit_count_prefix
 
@@ -312,9 +313,8 @@ class Version(object):
         self._release = tuple(int(el) for el in dot_split)
         self._commit_count = int(split[1])
 
-        specified_commit = self._commit
         commit = str(split[2][1:]) # Strip out 'g' prefix ('g'=>'git')
-        if specified_commit is not None and specified_commit != commit:
+        if self._archive_commit is not None and self._archive_commit != commit:
             self._stale = True
         self._commit = commit
 
@@ -385,7 +385,8 @@ class Version(object):
 
 
 
-def get_setup_version(setup_path, reponame, describe=False, dirty='strip'):
+def get_setup_version(setup_path, reponame, describe=False,
+                      dirty='strip', archive_commit=None):
     """
     Helper for use in setup.py to get the version from the .version file (if available)
     or more up-to-date information from git describe (if available).
@@ -409,7 +410,7 @@ def get_setup_version(setup_path, reponame, describe=False, dirty='strip'):
         raise AssertionError("get_setup_version dirty policy must be in %r" % policies)
 
     fpath = os.path.join(setup_path, reponame, "__init__.py")
-    version = Version(fpath=fpath, reponame=reponame, commit='$Format:%h$')
+    version = Version(fpath=fpath, reponame=reponame, archive_commit=archive_commit)
     if describe:
         vstring = version.git_fetch(as_string=True)
     else:
