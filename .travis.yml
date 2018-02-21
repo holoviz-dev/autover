@@ -13,6 +13,7 @@ stages:
 jobs:
   fast_finish: true
   include:
+    # test from unknown state (whatever state repository is currently in)
     - &tests
       stage: test
       python: 3.6
@@ -32,14 +33,21 @@ jobs:
         - mkdir $HOME/tmp123
         - cd $HOME/tmp123
         - tmpverify
-    # test prerelease tag
+    # test from release tag
+    - <<: *tests
+      before_install:
+        - echo two > two
+        - git add two
+        - git commit -m 'two' two
+        - git tag -a v2.0.0 -m "two"    
+    # test from prerelease tag
     - <<: *tests
       before_install:
         - echo two > two
         - git add two
         - git commit -m 'two' two
         - git tag -a v2.0.0a -m "two"
-    # test prerelease tag plus some commits
+    # test from prerelease tag plus some commits
     - <<: *tests
       before_install:
         - echo two > two
