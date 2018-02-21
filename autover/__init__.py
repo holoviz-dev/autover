@@ -340,10 +340,10 @@ class Version(object):
         if (self.archive_commit is not None
             and not self.archive_commit.startswith('$Format')
             and self.archive_commit != self.commit):
-            archive_commit = '-gitarchive-%s' % self.archive_commit
+            archive_commit = '-gitarchive-g%s' % self.archive_commit
 
         if self.commit_count is not None:
-            postcount = self.commit_count_prefix + 'g' + str(self.commit_count)
+            postcount = self.commit_count_prefix + str(self.commit_count)
         else:
             postcount = self.commit_count_prefix + '0'
 
