@@ -109,7 +109,7 @@ https://github.com/ioam/autover/blob/master/autover/__init__.py
 
 __author__ = 'Jean-Luc Stevens'
 
-import os, subprocess
+import os, subprocess, json
 
 def run_cmd(args, cwd=None):
     proc = subprocess.Popen(args, stdout=subprocess.PIPE,
@@ -306,7 +306,7 @@ class Version(object):
         """
         vfile = os.path.join(os.path.dirname(self.fpath), '.version')
         with open(vfile, 'r') as f:
-            return f.read().strip()
+            return json.loads(f.read())['git_describe']
 
 
     def _update_from_vcs(self, output):

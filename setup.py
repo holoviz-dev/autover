@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 
 try:
     from setuptools import setup
@@ -25,14 +26,15 @@ def get_setup_version(reponame):
                                                         dirty='strip',
                                                         archive_commit="$Format:%h$")
             with open(version_file_path, 'w') as f:
-                f.write(describe_string)
+                f.write(json.dumps({'git_describe':describe_string,
+                                    'version_string': vstring}))
         except:
             pass
         return vstring
 
     except ImportError:
         print("WARNING: To get fully up-to-date version information 'pip install autover'.")
-        return open(version_file_path, 'r').read()
+        return json.load(open(version_file_path, 'r'))['version_string']
 
 
 setup_args = dict(
