@@ -46,7 +46,7 @@ jobs:
         - echo two > two
         - git add two
         - git commit -m 'two' two
-        - GIT tag -a v2.0.0 -m "two"
+        - git tag -a v2.0.0 -m "two"
         - echo three >> two
         - git commit -m "three" two
 
