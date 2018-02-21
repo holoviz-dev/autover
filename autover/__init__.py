@@ -183,6 +183,7 @@ class Version(object):
         self._commit_count = 0
         self._release = None
         self._dirty = False
+        self._stale = False
         self._prerelease = None
         self.reponame = reponame
         self.commit_count_prefix = commit_count_prefix
@@ -214,6 +215,11 @@ class Version(object):
     def dirty(self):
         "True if there are uncommited changes, False otherwise"
         return self.fetch()._dirty
+
+    @property
+    def stale(self):
+        "True if reported version is from file and may be stale"
+        return self.fetch()._stale
 
 
     def fetch(self):
@@ -305,7 +311,13 @@ class Version(object):
 
         self._release = tuple(int(el) for el in dot_split)
         self._commit_count = int(split[1])
-        self._commit = str(split[2][1:]) # Strip out 'g' prefix ('g'=>'git')
+
+        specified_commit = self._commit
+        commit = str(split[2][1:]) # Strip out 'g' prefix ('g'=>'git')
+        if specified_commit is not None and specified_commit != commit:
+            self._stale = True
+        self._commit = commit
+
         self._dirty = (split[-1]=='dirty')
         return self
 
@@ -332,10 +344,11 @@ class Version(object):
             return release + prerelease
 
         dirty = '-dirty' if self.dirty else ''
+        stale = '-stale' if self.stale else ''
         postcount = self.commit_count_prefix + str(self.commit_count)
 
         components = [release, prerelease, postcount,
-                      '' if self.commit is None else '+g' + self.commit, dirty]
+                      '' if self.commit is None else '+g' + self.commit, dirty, stale]
         return ''.join(components)
 
     def __repr__(self):
@@ -396,7 +409,7 @@ def get_setup_version(setup_path, reponame, describe=False, dirty='strip'):
         raise AssertionError("get_setup_version dirty policy must be in %r" % policies)
 
     fpath = os.path.join(setup_path, reponame, "__init__.py")
-    version = Version(fpath=fpath, reponame=reponame)
+    version = Version(fpath=fpath, reponame=reponame, commit='$Format:%h$')
     if describe:
         vstring = version.git_fetch(as_string=True)
     else:
