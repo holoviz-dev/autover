@@ -67,19 +67,19 @@ jobs:
         - echo twotwo > two
         - git commit -m 'two' two
 
-    - << *tests
-      env:
-        - DESC="test pkg_depends"      
-        - TOX_ENV=py36
-      before_install:
-        - pip install -e .
-        - cp -r examples/pkg_depend $HOME/
-        - cd $HOME/pkg_depend
-        - git init
-        - git add .
-        - git commit -m "init"
-        - git tag -a v0.0.1 -m "one"
-      install: true
+#    - << *tests
+#      env:
+#        - DESC="test pkg_depends"      
+#        - TOX_ENV=py36
+#      before_install:
+#        - pip install -e .
+#        - cp -r examples/pkg_depend $HOME/
+#        - cd $HOME/pkg_depend
+#        - git init
+#        - git add .
+#        - git commit -m "init"
+#        - git tag -a v0.0.1 -m "one"
+#      install: true
 
     - stage: conda_package
       install:
