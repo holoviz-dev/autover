@@ -342,7 +342,9 @@ class Version(object):
 
         print("IN __str__: %s" % self.archive_commit)
         archive_commit = ''
-        if self.archive_commit is not None and self.archive_commit != self.commit:
+        if (not self.archive_commit.startswith('$Format')
+            and self.archive_commit is not None
+            and self.archive_commit != self.commit):
             archive_commit = '-gitarchive-%s' % self.archive_commit
             print("IN branch: %s" % archive_commit)
 
