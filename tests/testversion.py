@@ -49,7 +49,17 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
                                 'commit_count': 19,
                                 'commit': '9edb980',
                                 'dirty': True,
-                                'prerelease': 'b2'})
+                                'prerelease': 'b2'}),
+
+                              ('v0.5.7.rc2-92-g9edb976',
+                               {'kwargs' : dict(archive_commit='1234567'),
+                                '__str__': '0.5.7.rc2.post92+g9edb976-gitarchive-g1234567',
+                                'release': (0,5,7),
+                                'commit_count': 92,
+                                'commit': '9edb976',
+                                'dirty': False,
+                                'prerelease': 'rc2'})
+
 ])
 
 
@@ -132,6 +142,9 @@ class TestVersion(unittest.TestCase):
 
     def test_git_describe_4(self):
         self.git_describe_check(describe_tests, 4)
+
+    def test_git_describe_5(self):
+        self.git_describe_check(describe_tests, 5)
 
 if __name__ == "__main__":
     import nose
