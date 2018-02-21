@@ -1,5 +1,8 @@
 language: python
 
+git:
+  depth: 100
+
 # TODO: add appropriate guards (e.g. only deploy on tag matching
 # certain pattern) once auto packaging is figured out.
 
