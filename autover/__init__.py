@@ -421,4 +421,4 @@ def get_setup_version(setup_path, reponame, describe=False,
 
 
 __version__ = Version(release=None, fpath=__file__,
-                      commit="$Format:%h$", reponame="autover")
+                      archive_commit="$Format:%h$", reponame="autover")
