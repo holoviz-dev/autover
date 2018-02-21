@@ -72,7 +72,7 @@ To use Version in a project that provides a Python package named
 
   You need to use an annotated tag (i.e the -a flag) and you can use
   PEP440 compliant strings as long as they start with a 'v' e.g
-  v1.0.1.a1 v2.3.rc5 etc.
+  v1.0.1a1 v2.3rc5 etc.
 
 If you chose to specify explicit version strings in setup.py and
 __init__.py and used the verify method, running ``setup.py`` to make a
@@ -314,9 +314,11 @@ class Version(object):
         split = output[1:].split('-')
         dot_split = split[0].split('.')
         for prefix in ['a','b','rc']:
-            if dot_split[-1].startswith(prefix):
-                self._prerelease = dot_split[-1]
-                dot_split = dot_split[:-1]
+            if prefix in dot_split[-1]:
+                prefix_split = dot_split[-1].split(prefix)
+                self._prerelease = prefix + prefix_split[-1]
+                dot_split[-1] = prefix_split[0]
+
 
         self._release = tuple(int(el) for el in dot_split)
         self._commit_count = int(split[1])
