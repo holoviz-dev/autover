@@ -13,18 +13,21 @@ stages:
 jobs:
   fast_finish: true
   include:
-    - &tests
-      stage: test
-      python: 2.7
-      env: TOX_ENV=py27
-      install:
-        - pip install tox
-      script:
-        - tox -e $TOX_ENV
+#    - &tests
+#      stage: test
+#      python: 2.7
+#      env: TOX_ENV=py27
+#      install:
+#        - pip install tox
+#      script:
+#        - tox -e $TOX_ENV
 
-    - <<: *tests
+#    - <<: *tests
+    - stage:test
       python: 3.6
       env: TOX_ENV=py36
+      install:
+        - pip install tox
       script:
         ### (1) verify installed python package
         - GIT_VERSION=$(git describe --long) tox -e $TOX_ENV
