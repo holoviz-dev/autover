@@ -329,10 +329,7 @@ class Version(object):
         release = '.'.join(str(el) for el in self.release)
         prerelease = '' if self.prerelease is None else ('.' + self.prerelease)
 
-        if ((self._expected_commit is not None) and
-            not self._expected_commit.startswith("$Format")):
-            pass  # Concrete commit supplied - print full version string
-        elif self.commit_count == 0:
+        if self.commit_count == 0:
             return release + prerelease
 
         dirty = '-dirty' if self.dirty else ''
@@ -344,7 +341,9 @@ class Version(object):
 
         if archive_commit!='' and self.commit_count is None:
             postcount = self.commit_count_prefix + '0'
-        elif archive_commit!='' and self.commit_count != 0:
+        elif self.commit_count is None:
+            postcount = ''
+        elif self.commit_count != 0:
             postcount = self.commit_count_prefix + str(self.commit_count)
         else:
             postcount = ''
