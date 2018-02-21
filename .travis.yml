@@ -57,6 +57,23 @@ jobs:
         - echo twotwo > two
         - git commit -m 'two' two
 
+#    # test a package that depends on autover
+#    - &tests
+#      stage: test
+#      python: 3.6
+#      env: TOX_ENV=py36
+#      before_install:
+#        - pip install -e .
+#      install:
+#        - cp -r examples/pkg_depend $HOME/
+#        - cd $HOME/pkg_depend
+#        - git init
+#        - git add .
+#        - git commit -m "init"
+#        - git tag -a v0.0.1 -m "one"
+#      script: true
+
+
     - stage: conda_package
       install:
         - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
