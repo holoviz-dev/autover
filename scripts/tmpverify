@@ -5,7 +5,7 @@ import autover
 ###############
 # (a) pep440 compliant?
 import pkg_resources._vendor.packaging.version as packaging_version
-packaging_version.Version(str(autover.__version__))
+packaging_version.Version(autover.__version__)
 
 ###############
 # (b) following desired 'latest master' version scheme?
