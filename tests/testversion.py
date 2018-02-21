@@ -78,8 +78,7 @@ class TestVersion(unittest.TestCase):
 
     def test_repr_v101(self):
         v101 = Version(release=(1,0,1), commit='fffffff')
-        if repr(v101) != '1.0.1.post0+gfffffff':
-            raise AssertionError('Unexpected version string returned')
+        self.assertEqual(repr(v101), '1.0.1+gfffffff')
 
     def test_version_init_v101(self):
         Version(release=(1,0,1))
@@ -107,10 +106,6 @@ class TestVersion(unittest.TestCase):
     def test_version_v101_dirty(self):
         v101 = Version(release=(1,0,1))
         self.assertEqual(v101.dirty, False)
-
-    def test_version_v101_commit_count(self):
-        v101 = Version(release=(1,0,1))
-        self.assertEqual(v101.commit_count, 0)
 
     def test_version_commit(self):
         "No version control system assumed for tests"
