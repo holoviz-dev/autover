@@ -71,7 +71,6 @@ jobs:
       env:
         - DESC="test pkg_depends"      
         - TOX_ENV=py36
-      env: TOX_ENV=py36
       before_install:
         - pip install -e .
         - cp -r examples/pkg_depend $HOME/
