@@ -420,5 +420,6 @@ def get_setup_version(setup_path, reponame, describe=False,
         return vstring
 
 
-__version__ = Version(release=None, fpath=__file__,
-                      archive_commit="$Format:%h$", reponame="autover")
+version = Version(release=None, fpath=__file__,
+                  archive_commit="$Format:%h$", reponame="autover")
+__version__ = str(version)
