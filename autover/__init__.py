@@ -333,24 +333,24 @@ class Version(object):
         if self.commit_count == 0:
             return release + prerelease
 
+        commit = self.commit
         dirty = '-dirty' if self.dirty else ''
         archive_commit = ''
         if (self.archive_commit is not None
             and not self.archive_commit.startswith('$Format')
-            and self.archive_commit != self.commit):
-            archive_commit = '-gitarchive-g%s' % self.archive_commit
+            and self.archive_commit != commit):
+            archive_commit = '-gitarchive'
+            commit = self.archive_commit
 
-        if archive_commit!='' and self.commit_count is None:
+        if archive_commit != '':
             postcount = self.commit_count_prefix + '0'
-        elif self.commit_count is None:
-            postcount = ''
-        elif self.commit_count != 0:
+        elif self.commit_count not in [0, None]:
             postcount = self.commit_count_prefix + str(self.commit_count)
         else:
             postcount = ''
 
         components = [release, prerelease, postcount,
-                      '' if self.commit is None else '+g' + self.commit, dirty,
+                      '' if commit is None else '+g' + commit, dirty,
                       archive_commit]
         return ''.join(components)
 
