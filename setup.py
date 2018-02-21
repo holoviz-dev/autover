@@ -16,12 +16,12 @@ def get_setup_version(reponame):
     basepath = os.path.split(__file__)[0]
     version_file_path = os.path.join(basepath, reponame, '.version')
     try:
-        import autover
-        vstring =  autover.get_setup_version(basepath, reponame, dirty='strip',
+        from autover import Version
+        vstring =  Version.get_setup_version(basepath, reponame, dirty='strip',
                                              archive_commit="$Format:%h$")
 
         try: # Will only work if in a git repo and git is available
-            describe_string = autover.get_setup_version(basepath, reponame,
+            describe_string = Version.get_setup_version(basepath, reponame,
                                                         describe=True,
                                                         dirty='strip',
                                                         archive_commit="$Format:%h$")
