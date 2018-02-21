@@ -42,6 +42,8 @@ try:
     assert autover.__version__ == setup.setup_args['version'], 'autover.__version__ %r does not match setup version %r'%(autover.__version__, setup.setup_args['version'])
 except ImportError:
     print("skipping setup.py check")
+    import traceback
+    traceback.print_exc()
 
 ###############
 # (d) git tag alpha ... TODO
