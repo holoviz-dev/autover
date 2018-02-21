@@ -67,12 +67,10 @@ jobs:
         - echo twotwo > two
         - git commit -m 'two' two
 
-    - &tests
-      stage: test
+    - << *tests
       env:
         - DESC="test pkg_depends"      
         - TOX_ENV=py36
-      python: 3.6
       env: TOX_ENV=py36
       before_install:
         - pip install -e .
