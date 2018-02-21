@@ -179,7 +179,7 @@ class Version(object):
         self._expected_commit = commit
         self.expected_release = release
 
-        self._commit = None if commit in [None, "$Format:%h$"] else commit
+        self._commit = None if (commit is None or commit.startswith("$Format")) else commit
         self._commit_count = 0
         self._release = None
         self._dirty = False
@@ -328,7 +328,8 @@ class Version(object):
         release = '.'.join(str(el) for el in self.release)
         prerelease = '' if self.prerelease is None else ('.' + self.prerelease)
 
-        if (self._expected_commit is not None) and  ("$Format" not in self._expected_commit):
+        if ((self._expected_commit is not None) and
+            not self._expected_commit.startswith("$Format")):
             pass  # Concrete commit supplied - print full version string
         elif self.commit_count == 0:
             return release + prerelease
@@ -374,7 +375,8 @@ class Version(object):
         if self.commit_count !=0:
             raise Exception("Please update the VCS version tag before release.")
 
-        if self._expected_commit not in [None, "$Format:%h$"]:
+        if (self._expected_commit is not None
+            and not self._expected_commit.startswith( "$Format")):
             raise Exception("Declared release does not match the VCS version tag")
 
 
