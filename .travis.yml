@@ -13,7 +13,8 @@ stages:
 jobs:
   fast_finish: true
   include:
-    - stage: test
+    - &tests
+      stage: test
       python: 3.6
       env: TOX_ENV=py36
       install:
