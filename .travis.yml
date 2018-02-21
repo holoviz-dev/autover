@@ -32,12 +32,22 @@ jobs:
         - mkdir $HOME/tmp123
         - cd $HOME/tmp123
         - tmpverify
+    # test prerelease tag
     - <<: *tests
       before_install:
         - echo two > two
         - git add two
         - git commit -m 'two' two
         - git tag -a v2.0.0a -m "two"
+    # test prerelease tag plus some commits
+    - <<: *tests
+      before_install:
+        - echo two > two
+        - git add two
+        - git commit -m 'two' two
+        - git tag -a v2.0.0a -m "two"
+        - echo twotwo > two
+        - git commit -m 'two' two
 
     - stage: conda_package
       install:
