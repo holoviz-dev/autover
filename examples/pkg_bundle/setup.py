@@ -33,10 +33,9 @@ def get_setup_version(reponame):
         return json.load(open(version_file_path, 'r'))['version_string']
 
 setup_args = dict(
-    name='pkg_depend',
-    version=get_setup_version("pkg_depend"),
-    packages = ["pkg_depend"],
-    install_requires = ['autover'],
+    name='pkg_bundle',
+    version=get_setup_version("pkg_bundle"),
+    packages = ["pkg_bundle"],
     scripts = ["scripts/tmpverify"],
 )
 
