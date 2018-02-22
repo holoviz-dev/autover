@@ -259,7 +259,7 @@ class Version(object):
                 if not any(m in output for m in repo_matches):
                     return self
 
-            output = run_cmd([cmd, 'describe', '--long', '--match', 'v*.*', '--dirty'],
+            output = run_cmd([cmd, 'describe', '--long', '--match', "'v*.*'", '--dirty'],
                              cwd=os.path.dirname(self.fpath))
             if as_string: return output
         except Exception as e1:
