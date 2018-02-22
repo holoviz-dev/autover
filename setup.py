@@ -9,7 +9,7 @@ except ImportError:
     from distutils.core import setup
 
 
-def embed_version(basepath, reponame, ref='pep440_fix'):
+def embed_autover(basepath, reponame, ref='pep440_fix'):
     """
     Autover is purely a build time dependency in all cases (conda and
     pip) except for when you use pip's remote git support [git+url] as
@@ -24,9 +24,9 @@ def embed_version(basepath, reponame, ref='pep440_fix'):
     except: from urllib import urlopen
     response = urlopen('https://github.com/ioam/autover/archive/{ref}.zip'.format(ref=ref))
     zf = zipfile.ZipFile(io.BytesIO(response.read()))
-    embed_version = zf.read('autover-{ref}/autover/version.py'.format(ref=ref))
-    with open(os.path.join(basepath, reponame, 'version.py'), 'wb') as f:
-        f.write(embed_version)
+    embed_autover = zf.read('autover-{ref}/autover/autover.py'.format(ref=ref))
+    with open(os.path.join(basepath, reponame, 'autover.py'), 'wb') as f:
+        f.write(embed_autover)
 
 
 def get_setup_version(reponame):
@@ -36,18 +36,18 @@ def get_setup_version(reponame):
     """
     basepath = os.path.split(__file__)[0]
     version_file_path = os.path.join(basepath, reponame, '.version')
-    version = None
-    try: version = importlib.import_module(reponame + ".version") # Bundled
+    autover = None
+    try: autover = importlib.import_module(reponame + ".autover") # Bundled
     except:  # autover available as package
-        try: from autover import version
+        try: import autover
         except:
-            try: from param import version # Try to get it from param
+            try: from param import autover # Try to get it from param
             except:
-                embed_version(basepath, reponame)
-                version = importlib.import_module(reponame + ".version")
+                embed_autover(basepath, reponame)
+                autover = importlib.import_module(reponame + ".autover")
 
-    if version is not None:
-        return version.Version.setup_version(basepath, reponame, dirty='strip',
+    if autover is not None:
+        return autover.Version.setup_version(basepath, reponame, dirty='strip',
                                              archive_commit="$Format:%h$")
     else:
         print("WARNING: To get fully up-to-date version information 'pip install autover'.")

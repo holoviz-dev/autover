@@ -1,4 +1,4 @@
-from .version import Version
+from .autover import Version
 
 versionobj = Version(release=None, fpath=__file__,
                      archive_commit="$Format:%h$", reponame="autover")
