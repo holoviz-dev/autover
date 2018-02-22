@@ -1,7 +1,7 @@
 language: python
 
 git:
-  depth: 100
+  depth: 200
 
 # TODO: add appropriate guards (e.g. only deploy on tag matching
 # certain pattern) once auto packaging is figured out.
