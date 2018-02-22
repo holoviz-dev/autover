@@ -453,3 +453,23 @@ class Version(object):
             return vstring.replace('-dirty', '')
         else:
             return vstring
+
+    @classmethod
+    def setup_version(cls, setup_path, reponame, archive_commit=None, dirty='strip'):
+        vstring =  Version.get_setup_version(setup_path,
+                                             reponame,
+                                             describe=False,
+                                             dirty=dirty,
+                                             archive_commit=archive_commit)
+        try:
+            # Will only work if in a git repo and git is available
+            describe_string = Version.get_setup_version(setup_path,
+                                                        reponame,
+                                                        describe=True,
+                                                        dirty=dirty,
+                                                        archive_commit=archive_commit)
+            with open(os.path.join(setup_path, reponame, '.version'), 'w') as f:
+                f.write(json.dumps({'git_describe':  describe_string,
+                                    'version_string': vstring}))
+        except: pass
+        return vstring
