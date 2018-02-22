@@ -1,25 +1,26 @@
 #!/usr/bin/env python
 
-import autover
+import sys
+module_name = sys.argv[1]
+module = __import__(module_name)
 
 ###############
 # (a) pep440 compliant?
 import pkg_resources._vendor.packaging.version as packaging_version
-packaging_version.Version(autover.__version__)
+packaging_version.Version(module.__version__)
 
 ###############
 # (b) following desired 'latest master' version scheme?
 # v0.2.0-5-g85da374 --> 0.2.0.post5+g85da374
 import subprocess
-import sys
 import os
 
 GIT_VERSION = os.environ.get("GIT_VERSION")
 
-if len(sys.argv)>1:
-    v=sys.argv[1]
-    commits=sys.argv[2]
-    sha=sys.argv[3]
+if len(sys.argv)>2:
+    v=sys.argv[2]
+    commits=sys.argv[3]
+    sha=sys.argv[4]
     print("Git info read from arguments: %s %s %s"%(v,commits,sha))
 elif GIT_VERSION is not None:
     v,commits,sha=GIT_VERSION.split('-')
@@ -33,17 +34,15 @@ expected_version=v[1::]
 if int(commits) > 0:
     expected_version += '.post'+commits+"+"+sha;
 
-assert autover.__version__ == expected_version, 'autover.__version__ %r does not match %r' % (autover.__version__,expected_version)
+assert module.__version__ == expected_version, '%s.__version__ %r does not match %r' % (module_name,module.__version__,expected_version)
 
 ###############
 # (c) setup.py version matches __version__ (only relevant in a source dir)
 try:
     import setup
-    assert autover.__version__ == setup.setup_args['version'], 'autover.__version__ %r does not match setup version %r'%(autover.__version__, setup.setup_args['version'])
+    assert module.__version__ == setup.setup_args['version'], '%s.__version__ %r does not match setup version %r'%(module_name,module.__version__, setup.setup_args['version'])
 except ImportError:
     print("skipping setup.py check")
     import traceback
     traceback.print_exc()
 
-###############
-# (d) git tag alpha ... TODO

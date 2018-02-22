@@ -22,7 +22,7 @@ test:
     - autover
   commands:
     # verify conda-installed autover
-    - tmpverify {{ environ['GIT_DESCRIBE_TAG'] }} {{ environ['GIT_DESCRIBE_NUMBER'] }} {{ environ['GIT_DESCRIBE_HASH'] }}
+    - tmpverify autover {{ environ['GIT_DESCRIBE_TAG'] }} {{ environ['GIT_DESCRIBE_NUMBER'] }} {{ environ['GIT_DESCRIBE_HASH'] }}
 
 about:
   home: {{ sdata['url'] }}
