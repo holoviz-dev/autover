@@ -6,3 +6,6 @@ git init
 git add .
 git commit -m "init"
 git tag -a v0.0.1 -m "one"
+echo two > two
+git add two
+git commit -m "two"
