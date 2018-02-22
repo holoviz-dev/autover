@@ -91,11 +91,11 @@ jobs:
       env:
         - DESC="test pkg_depends"
         - TOX_ENV=py36
-        - MODULE=pkg_depends    
+        - MODULE=pkg_depend
       before_install:
         - pip install .
-        - cp -r examples/pkg_depend $HOME/
-        - cd $HOME/pkg_depend
+        - cp -r examples/$MODULE $HOME/
+        - cd $HOME/$MODULE
         - git init
         - git add .
         - git commit -m "init"
@@ -107,8 +107,8 @@ jobs:
         - TOX_ENV=py36
         - MODULE=pkg_bundle     
       before_install:
-        - cp -r examples/pkg_bundle $HOME/
-        - cd $HOME/pkg_bundle
+        - cp -r examples/$MODULE $HOME/
+        - cd $HOME/$MODULE
         - git init
         - git add .
         - git commit -m "init"
@@ -120,8 +120,8 @@ jobs:
         - TOX_ENV=py36
         - MODULE=pkg_params 
       before_install:
-        - cp -r examples/pkg_params $HOME/
-        - cd $HOME/pkg_params
+        - cp -r examples/$MODULE $HOME/
+        - cd $HOME/$MODULE
         - git init
         - git add .
         - git commit -m "init"
