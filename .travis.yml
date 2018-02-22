@@ -133,19 +133,6 @@ jobs:
       env:
         - DESC="example pip+git"
         - TOX_ENV=py36
-        - MODULE=pkg_depend
-      before_install:
-        - ./travis_test_pkg_setup.sh
-        - pip install git+file://$HOME/$MODULE
-      install: true
-      script:
-        ### (1) verify installed python package
-        - GIT_VERSION=$(git describe --long) scripts/tmpverify $MODULE
-
-    - <<: *tests
-      env:
-        - DESC="example pip+git"
-        - TOX_ENV=py36
         - MODULE=pkg_bundle
       before_install:
         - ./travis_test_pkg_setup.sh
@@ -167,11 +154,6 @@ jobs:
       script:
         ### (1) verify installed python package
         - GIT_VERSION=$(git describe --long) scripts/tmpverify $MODULE
-
-    # TODO test:
-    #  * the various example packages when installed via:
-    #      1. pip from remote git
-    #      2. pip from git archive
 
     - stage: conda_package
       install:
