@@ -29,10 +29,8 @@ jobs:
         ### (1) verify installed python package
         - GIT_VERSION=$(git describe --long) tox -e $TOX_ENV
         ### (2) verify in this git checkout
-        - git reset --hard
         - PYTHONPATH=. ./scripts/tmpverify $MODULE
         ### (3) verify develop install
-        - git reset --hard
         - export GIT_VERSION=$(git describe --long)
         - pip install -e .
         - mkdir $HOME/tmp123
@@ -95,6 +93,7 @@ jobs:
       before_install:
         - pip install .
         - ./travis_test_pkg_setup.sh
+        - cd $HOME/$MODULE
 
     - <<: *tests
       env:
@@ -103,6 +102,7 @@ jobs:
         - MODULE=pkg_bundle
       before_install:
         - ./travis_test_pkg_setup.sh
+        - cd $HOME/$MODULE
 
     - <<: *tests
       env:
@@ -111,7 +111,20 @@ jobs:
         - MODULE=pkg_params
       before_install:
         - ./travis_test_pkg_setup.sh
+        - cd $HOME/$MODULE
 
+    - <<: *tests
+      env:
+        - DESC="test pkg_depends pip+git"
+        - TOX_ENV=py36
+        - MODULE=pkg_depend
+      before_install:
+        - ./travis_test_pkg_setup.sh
+        - pip install git+file://$HOME/$MODULE
+      install: true
+      script:
+        ### (1) verify installed python package
+        - GIT_VERSION=$(git describe --long) scripts/tmpverify $MODULE
 
     # TODO test:
     #  * the various example packages when installed via:
