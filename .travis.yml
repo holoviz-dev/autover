@@ -94,8 +94,6 @@ jobs:
         - git add .
         - git commit -m "init"
         - git tag -a v0.0.1 -m "one"
-#      install:
-#        - pip install tox
 
     - stage: conda_package
       install:
