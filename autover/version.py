@@ -265,7 +265,8 @@ class Version(object):
         except Exception as e1:
             try:
                 output = self._output_from_file()
-                self._update_from_vcs(output)
+                if output is not None:
+                    self._update_from_vcs(output)
                 if self._known_stale():
                     self._commit_count = None
                 if as_string: return output
@@ -304,9 +305,12 @@ class Version(object):
 
         git describe --long --match v*.*
         """
-        vfile = os.path.join(os.path.dirname(self.fpath), '.version')
-        with open(vfile, 'r') as f:
-            return json.loads(f.read())['git_describe']
+        try:
+            vfile = os.path.join(os.path.dirname(self.fpath), '.version')
+            with open(vfile, 'r') as f:
+                return json.loads(f.read())['git_describe']
+        except: # File may be missing if using pip + git archive
+            return None
 
 
     def _update_from_vcs(self, output):
