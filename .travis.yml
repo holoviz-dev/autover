@@ -87,7 +87,7 @@ jobs:
 
     - <<: *tests
       env:
-        - DESC="test pkg_depends"
+        - DESC="example"
         - TOX_ENV=py36
         - MODULE=pkg_depend
       before_install:
@@ -97,7 +97,7 @@ jobs:
 
     - <<: *tests
       env:
-        - DESC="test pkg_bundle"
+        - DESC="example"
         - TOX_ENV=py36
         - MODULE=pkg_bundle
       before_install:
@@ -106,7 +106,7 @@ jobs:
 
     - <<: *tests
       env:
-        - DESC="test pkg_params"
+        - DESC="example"
         - TOX_ENV=py36
         - MODULE=pkg_params
       before_install:
@@ -115,9 +115,48 @@ jobs:
 
     - <<: *tests
       env:
-        - DESC="test pkg_depends pip+git"
+        - DESC="example pip+git"
         - TOX_ENV=py36
         - MODULE=pkg_depend
+      before_install:
+        - ./travis_test_pkg_setup.sh
+        - pip install git+file://$HOME/$MODULE
+      install: true
+      script:
+        ### (1) verify installed python package
+        - GIT_VERSION=$(git describe --long) scripts/tmpverify $MODULE
+
+    - <<: *tests
+      env:
+        - DESC="example pip+git"
+        - TOX_ENV=py36
+        - MODULE=pkg_depend
+      before_install:
+        - ./travis_test_pkg_setup.sh
+        - pip install git+file://$HOME/$MODULE
+      install: true
+      script:
+        ### (1) verify installed python package
+        - GIT_VERSION=$(git describe --long) scripts/tmpverify $MODULE
+
+    - <<: *tests
+      env:
+        - DESC="example pip+git"
+        - TOX_ENV=py36
+        - MODULE=pkg_bundle
+      before_install:
+        - ./travis_test_pkg_setup.sh
+        - pip install git+file://$HOME/$MODULE
+      install: true
+      script:
+        ### (1) verify installed python package
+        - GIT_VERSION=$(git describe --long) scripts/tmpverify $MODULE
+
+    - <<: *tests
+      env:
+        - DESC="example pip+git"
+        - TOX_ENV=py36
+        - MODULE=pkg_params
       before_install:
         - ./travis_test_pkg_setup.sh
         - pip install git+file://$HOME/$MODULE
