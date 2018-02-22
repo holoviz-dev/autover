@@ -43,7 +43,7 @@ jobs:
       env:
         - DESC="from release tag"
         - TOX_ENV=py36
-        - MODULE=autover        
+        - MODULE=autover
       before_install:
         - echo two > two
         - git add two
@@ -54,7 +54,7 @@ jobs:
       env:
         - DESC="from release tag plus commits"
         - TOX_ENV=py36
-        - MODULE=autover        
+        - MODULE=autover
       before_install:
         - echo two > two
         - git add two
@@ -67,7 +67,7 @@ jobs:
       env:
         - DESC="from prerelease tag"
         - TOX_ENV=py36
-        - MODULE=autover        
+        - MODULE=autover
       before_install:
         - echo two > two
         - git add two
@@ -78,7 +78,7 @@ jobs:
       env:
         - DESC="from prerelease tag plus commits"
         - TOX_ENV=py36
-        - MODULE=autover        
+        - MODULE=autover
       before_install:
         - echo two > two
         - git add two
@@ -94,38 +94,23 @@ jobs:
         - MODULE=pkg_depend
       before_install:
         - pip install .
-        - cp -r examples/$MODULE $HOME/
-        - cd $HOME/$MODULE
-        - git init
-        - git add .
-        - git commit -m "init"
-        - git tag -a v0.0.1 -m "one"
+        - ./travis_test_pkg_setup.sh
 
     - <<: *tests
       env:
         - DESC="test pkg_bundle"
         - TOX_ENV=py36
-        - MODULE=pkg_bundle     
+        - MODULE=pkg_bundle
       before_install:
-        - cp -r examples/$MODULE $HOME/
-        - cd $HOME/$MODULE
-        - git init
-        - git add .
-        - git commit -m "init"
-        - git tag -a v0.0.1 -m "one"
+        - ./travis_test_pkg_setup.sh
 
     - <<: *tests
       env:
         - DESC="test pkg_params"
         - TOX_ENV=py36
-        - MODULE=pkg_params 
+        - MODULE=pkg_params
       before_install:
-        - cp -r examples/$MODULE $HOME/
-        - cd $HOME/$MODULE
-        - git init
-        - git add .
-        - git commit -m "init"
-        - git tag -a v0.0.1 -m "one"
+        - ./travis_test_pkg_setup.sh
 
 
     # TODO test:
