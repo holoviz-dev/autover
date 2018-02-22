@@ -27,7 +27,7 @@ jobs:
         - pip install tox
       script:
         ### (1) verify installed python package
-        - GIT_VERSION=$(git describe --long) SHARED_PACKAGES=$PWD/dist tox -e $TOX_ENV
+        - GIT_VERSION=$(git describe --long) SHARED_PACKAGES=$TRAVIS_BUILD_DIR/dist tox -e $TOX_ENV
         ### (2) verify in this git checkout
         - PYTHONPATH=. ./scripts/tmpverify $MODULE
         ### (3) verify develop install
