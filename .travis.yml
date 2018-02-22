@@ -88,45 +88,32 @@ jobs:
         - git commit -m 'two' two
 
     - <<: *tests
+      &pkg_tests
       env:
         - DESC="test pkg_depends"
         - TOX_ENV=py36
         - MODULE=pkg_depends    
       before_install:
-        - pip install .
-        - cp -r examples/pkg_depend $HOME/
-        - cd $HOME/pkg_depend
+# decide how to install autover for pkg_depends (maybe like this, but make one of the other pkg_ be pkg_tests
+#        - pip install .
+        - cp -r examples/$MODULE $HOME/
+        - cd $HOME/$MODULE
         - git init
         - git add .
         - git commit -m "init"
         - git tag -a v0.0.1 -m "one"
 
-    - <<: *tests
+    - <<: *pkg_tests
       env:
         - DESC="test pkg_bundle"
         - TOX_ENV=py36
         - MODULE=pkg_bundle     
-      before_install:
-        - cp -r examples/pkg_bundle $HOME/
-        - cd $HOME/pkg_bundle
-        - git init
-        - git add .
-        - git commit -m "init"
-        - git tag -a v0.0.1 -m "one"
 
-    - <<: *tests
+    - <<: *pkg_tests
       env:
         - DESC="test pkg_params"
         - TOX_ENV=py36
-        - MODULE=pkg_params 
-      before_install:
-        - cp -r examples/pkg_params $HOME/
-        - cd $HOME/pkg_params
-        - git init
-        - git add .
-        - git commit -m "init"
-        - git tag -a v0.0.1 -m "one"
-
+        - MODULE=pkg_params
 
     # TODO test:
     #  * the various example packages when installed via:
