@@ -1,4 +1,4 @@
-from autover.version import Version
+from .version import Version
 
 versionobj = Version(release=None, fpath=__file__,
                      archive_commit="$Format:%h$", reponame="pkg_bundle")
