@@ -349,7 +349,8 @@ class Version(object):
 
         (with "v" prefix removed).
         """
-        if self.release is None: return 'None'
+        known_stale = self._known_stale()
+        if self.release is None and not known_stale: return 'None'
         release = '.'.join(str(el) for el in self.release)
         prerelease = '' if self.prerelease is None else self.prerelease
 
@@ -359,7 +360,7 @@ class Version(object):
         commit = self.commit
         dirty = '-dirty' if self.dirty else ''
         archive_commit = ''
-        if self._known_stale():
+        if known_stale:
             archive_commit = '-gitarchive'
             commit = self.archive_commit
 
