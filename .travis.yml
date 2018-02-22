@@ -93,13 +93,18 @@ jobs:
         - TOX_ENV=py36
         - MODULE=pkg_depends	
       before_install:
-        - pip install -e .
+        - pip install .
         - cp -r examples/pkg_depend $HOME/
         - cd $HOME/pkg_depend
         - git init
         - git add .
         - git commit -m "init"
         - git tag -a v0.0.1 -m "one"
+
+    # TODO test:
+    #  * the various example packages when installed via:
+    #      1. pip from remote git
+    #      2. pip from git archive
 
     - stage: conda_package
       install:
