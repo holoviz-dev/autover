@@ -353,7 +353,7 @@ class Version(object):
         if self.release is None and not known_stale:
             return 'None'
         elif self.release is None and known_stale:
-            return 'g' + self.archive_commit
+            return '0.0.0+g{SHA}-gitarchive'.format(SHA=self.archive_commit)
 
         release = '.'.join(str(el) for el in self.release)
         prerelease = '' if self.prerelease is None else self.prerelease
