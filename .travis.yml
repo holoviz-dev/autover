@@ -22,6 +22,7 @@ jobs:
       env:
         - DESC="from current repo"
         - TOX_ENV=py36
+        - MODULE=autover
       install:
         - pip install tox
       script:
@@ -29,19 +30,20 @@ jobs:
         - GIT_VERSION=$(git describe --long) tox -e $TOX_ENV
         ### (2) verify in this git checkout
         - git reset --hard
-        - PYTHONPATH=. ./scripts/tmpverify
+        - PYTHONPATH=. ./scripts/tmpverify $MODULE
         ### (3) verify develop install
         - git reset --hard
         - export GIT_VERSION=$(git describe --long)
         - pip install -e .
         - mkdir $HOME/tmp123
         - cd $HOME/tmp123
-        - tmpverify
+        - tmpverify $MODULE
 
     - <<: *tests
       env:
         - DESC="from release tag"
         - TOX_ENV=py36
+        - MODULE=autover	
       before_install:
         - echo two > two
         - git add two
@@ -52,6 +54,7 @@ jobs:
       env:
         - DESC="from release tag plus commits"
         - TOX_ENV=py36
+        - MODULE=autover	
       before_install:
         - echo two > two
         - git add two
@@ -64,6 +67,7 @@ jobs:
       env:
         - DESC="from prerelease tag"
         - TOX_ENV=py36
+        - MODULE=autover	
       before_install:
         - echo two > two
         - git add two
@@ -74,6 +78,7 @@ jobs:
       env:
         - DESC="from prerelease tag plus commits"
         - TOX_ENV=py36
+        - MODULE=autover	
       before_install:
         - echo two > two
         - git add two
@@ -86,6 +91,7 @@ jobs:
       env:
         - DESC="test pkg_depends"
         - TOX_ENV=py36
+        - MODULE=pkg_depends	
       before_install:
         - pip install -e .
         - cp -r examples/pkg_depend $HOME/
