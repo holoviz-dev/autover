@@ -265,7 +265,8 @@ class Version(object):
         except Exception as e1:
             try:
                 output = self._output_from_file()
-                self._update_from_vcs(output)
+                if output is not None:
+                    self._update_from_vcs(output)
                 if self._known_stale():
                     self._commit_count = None
                 if as_string: return output
@@ -290,9 +291,14 @@ class Version(object):
         The commit is known to be from a file (and therefore stale) if a
         SHA is supplied by git archive and doesn't match the parsed commit.
         """
+        if self._output_from_file() is None:
+            commit = None
+        else:
+            commit = self.commit
+
         known_stale = (self.archive_commit is not None
                        and not self.archive_commit.startswith('$Format')
-                       and self.archive_commit != self.commit)
+                       and self.archive_commit != commit)
         if known_stale: self._commit_count = None
         return known_stale
 
@@ -304,9 +310,12 @@ class Version(object):
 
         git describe --long --match v*.*
         """
-        vfile = os.path.join(os.path.dirname(self.fpath), '.version')
-        with open(vfile, 'r') as f:
-            return json.loads(f.read())['git_describe']
+        try:
+            vfile = os.path.join(os.path.dirname(self.fpath), '.version')
+            with open(vfile, 'r') as f:
+                return json.loads(f.read())['git_describe']
+        except: # File may be missing if using pip + git archive
+            return None
 
 
     def _update_from_vcs(self, output):
@@ -340,7 +349,12 @@ class Version(object):
 
         (with "v" prefix removed).
         """
-        if self.release is None: return 'None'
+        known_stale = self._known_stale()
+        if self.release is None and not known_stale:
+            return 'None'
+        elif self.release is None and known_stale:
+            return '0.0.0+g{SHA}-gitarchive'.format(SHA=self.archive_commit)
+
         release = '.'.join(str(el) for el in self.release)
         prerelease = '' if self.prerelease is None else self.prerelease
 
@@ -350,7 +364,7 @@ class Version(object):
         commit = self.commit
         dirty = '-dirty' if self.dirty else ''
         archive_commit = ''
-        if self._known_stale():
+        if known_stale:
             archive_commit = '-gitarchive'
             commit = self.archive_commit
 
