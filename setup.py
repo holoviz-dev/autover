@@ -1,12 +1,8 @@
 import os
-import sys
 import json
 import importlib
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup
 
 
 def embed_version(basepath, reponame, ref='pep440_fix'):
