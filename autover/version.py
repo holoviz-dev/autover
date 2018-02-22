@@ -350,7 +350,11 @@ class Version(object):
         (with "v" prefix removed).
         """
         known_stale = self._known_stale()
-        if self.release is None and not known_stale: return 'None'
+        if self.release is None and not known_stale:
+            return 'None'
+        elif self.release is None and known_stale:
+            return self.archive_commit
+
         release = '.'.join(str(el) for el in self.release)
         prerelease = '' if self.prerelease is None else self.prerelease
 
