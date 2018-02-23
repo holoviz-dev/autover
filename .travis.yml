@@ -41,7 +41,7 @@ jobs:
         - mkdir $HOME/tmp123
         - cd $HOME/tmp123
         - pwd   
-        - tmpverify $MODULE
+        - PYTHONPATH=. tmpverify $MODULE
 
     - <<: *tests
       env:

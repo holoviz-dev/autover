@@ -38,14 +38,14 @@ assert module.__version__ == expected_version, '%s.__version__ %r does not match
 
 ###############
 # (c) setup.py version matches __version__ (only relevant in a source dir)
-try:
-    print(os.getcwd())
-    print(sys.path)
-    import setup
-    print(setup.__file__)
-    assert module.__version__ == setup.setup_args['version'], '%s.__version__ %r does not match setup version %r'%(module_name,module.__version__, setup.setup_args['version'])
-except ImportError:
-    print("skipping setup.py check")
-    import traceback
-    traceback.print_exc()
-
+if os.path.exists("setup.py"):
+    try:
+        print(os.getcwd())
+        print(sys.path)
+        import setup
+        print(setup.__file__)
+        assert module.__version__ == setup.setup_args['version'], '%s.__version__ %r does not match setup version %r'%(module_name,module.__version__, setup.setup_args['version'])
+    except ImportError:
+        print("skipping setup.py check")
+        import traceback
+        traceback.print_exc()
