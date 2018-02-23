@@ -140,6 +140,7 @@ jobs:
       before_install:
         - ./travis_test_pkg_setup.sh
         - pip install git+file://$HOME/$MODULE
+        - cd $HOME/$MODULE
       install: true
       script:
         ### (1) verify installed python package
@@ -153,6 +154,7 @@ jobs:
       before_install:
         - ./travis_test_pkg_setup.sh
         - pip install git+file://$HOME/$MODULE
+        - cd $HOME/$MODULE      
       install: true
       script:
         ### (1) verify installed python package
