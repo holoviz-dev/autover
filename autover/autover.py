@@ -252,7 +252,8 @@ class Version(object):
                 # been copied/installed into it).
                 output = run_cmd([cmd, 'remote', '-v'],
                                  cwd=os.path.dirname(self.fpath))
-                repo_matches = ['/' + self.reponame + '.git' ,
+                repo_matches = ['', # No remote set
+                                '/' + self.reponame + '.git' ,
                                 # A remote 'server:reponame.git' can also be referred
                                 # to (i.e. cloned) as `server:reponame`.
                                 '/' + self.reponame + ' ']
