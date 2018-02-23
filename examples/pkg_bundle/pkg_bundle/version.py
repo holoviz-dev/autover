@@ -265,7 +265,6 @@ class Version(object):
                              cwd=os.path.dirname(self.fpath))
             if as_string: return output
         except Exception as e1:
-            print("GIT DESCRIBE FAILED")
             try:
                 output = self._output_from_file()
                 if output is not None:
@@ -281,7 +280,6 @@ class Version(object):
                 return
 
             except IOError as e2:
-                print("NO NAMES FOUND")
                 if e1.args[1] == 'fatal: No names found, cannot describe anything.':
                     raise Exception("Cannot find any git version tags of format v*.*")
                 # If there is any other error, return (release value still useful)
@@ -324,7 +322,6 @@ class Version(object):
 
     def _update_from_vcs(self, output):
         "Update state based on the VCS state e.g the output of git describe"
-        print("UPDATE FROM VCS: %s" % output)
         split = output[1:].split('-')
         dot_split = split[0].split('.')
         for prefix in ['a','b','rc']:
