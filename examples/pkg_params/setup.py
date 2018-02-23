@@ -3,7 +3,7 @@ import json
 
 from setuptools import setup
 
-def embed_version(basepath, reponame, ref='pep440_fix'):
+def embed_version(basepath, reponame, ref='pep440-after-pep440_fix'):
     """
     Autover is purely a build time dependency in all cases (conda and
     pip) except for when you use pip's remote git support [git+url] as
