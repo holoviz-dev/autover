@@ -45,6 +45,7 @@ setup_args = dict(
     name='pkg_depend',
     version=get_setup_version("pkg_depend"),
     packages = ["pkg_depend"],
+    package_data = {'pkg_depend': ['.version']},
     install_requires = ['autover'],
     scripts = ["scripts/tmpverify"],
 )
