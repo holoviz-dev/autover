@@ -93,10 +93,7 @@ jobs:
         - TOX_ENV=py36
         - MODULE=pkg_depend
       before_install:
-        ## TODO: doesn't the autover autodownload work?
-        # should be able to remove this, right?
         - pip install -e .
-        ## 
         - python setup.py bdist_wheel
         - ./travis_test_pkg_setup.sh
         - cd $HOME/$MODULE
