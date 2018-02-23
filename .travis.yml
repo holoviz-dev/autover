@@ -102,6 +102,16 @@ jobs:
 
     - <<: *tests
       env:
+        - DESC="example auto dl"
+        - TOX_ENV=py36
+        - MODULE=pkg_depend
+      before_install:
+        - python setup.py bdist_wheel
+        - ./travis_test_pkg_setup.sh
+        - cd $HOME/$MODULE
+
+    - <<: *tests
+      env:
         - DESC="example"
         - TOX_ENV=py36
         - MODULE=pkg_bundle
