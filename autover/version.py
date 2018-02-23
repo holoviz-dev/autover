@@ -66,7 +66,7 @@ To use Version in a project that provides a Python package named
   building a package (e.g not dirty).
 
 4. Tag the version of the repository to be released with a string of
-   the form v*.*, i.e. ``v1.0.0`` in this example.  E.g. for git::
+   the form v*.*.*, i.e. ``v1.0.0`` in this example.  E.g. for git::
 
      git tag -a v1.0.0 -m 'Release version 1.0.0' ; git push
 
@@ -259,7 +259,8 @@ class Version(object):
                 if not any(m in output for m in repo_matches):
                     return self
 
-            output = run_cmd([cmd, 'describe', '--long', '--match', "'v*.*'", '--dirty'],
+            output = run_cmd([cmd, 'describe', '--long', '--match',
+                              "v[0-9]*.[0-9]*.[0-9]*", '--dirty'],
                              cwd=os.path.dirname(self.fpath))
             if as_string: return output
         except Exception as e1:
