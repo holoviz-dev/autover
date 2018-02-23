@@ -44,3 +44,5 @@ if os.path.exists("setup.py"):
     import setup
     print(setup.__file__)
     assert module.__version__ == setup.setup_args['version'], '%s.__version__ %r does not match setup version %r'%(module_name,module.__version__, setup.setup_args['version'])
+else:
+    print("No setup.py in %s; skipping test."%os.getcwd())
