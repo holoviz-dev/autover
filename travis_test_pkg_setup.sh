@@ -1,6 +1,8 @@
 #!/bin/bash
 
 cp -r examples/$MODULE $HOME/
+mkdir $HOME/$MODULE/scripts
+cp scripts/tmpverify $HOME/$MODULE/scripts
 cd $HOME/$MODULE
 git init
 git add .

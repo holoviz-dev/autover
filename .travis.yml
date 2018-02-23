@@ -26,6 +26,7 @@ jobs:
       install:
         - pip install tox
       script:
+        - pwd
         - git describe --long --match "v*.*" --dirty
         ### (1) verify installed python package
         - GIT_VERSION=$(git describe --long) SHARED_PACKAGES=$TRAVIS_BUILD_DIR/dist tox -e $TOX_ENV
