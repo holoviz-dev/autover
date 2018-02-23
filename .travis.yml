@@ -29,7 +29,7 @@ jobs:
         - pwd
         - git describe --long --match "v*.*" --dirty
         ### (1) verify installed python package
-        - GIT_VERSION=$(git describe --long) tox -e $TOX_ENV
+        - GIT_VERSION=$(git describe --long) SHARED_PACKAGES=$TRAVIS_BUILD_DIR/dist tox -e $TOX_ENV
         ### (2) verify in this git checkout
         - PYTHONPATH=. ./scripts/tmpverify $MODULE
         ### (3) verify develop install
@@ -94,6 +94,7 @@ jobs:
         - MODULE=pkg_depend
       before_install:
         - pip install -e .
+        - python setup.py bdist_wheel
         - ./travis_test_pkg_setup.sh
         - cd $HOME/$MODULE
 
@@ -103,6 +104,7 @@ jobs:
         - TOX_ENV=py36
         - MODULE=pkg_depend
       before_install:
+        - python setup.py bdist_wheel
         - ./travis_test_pkg_setup.sh
         - cd $HOME/$MODULE
 
