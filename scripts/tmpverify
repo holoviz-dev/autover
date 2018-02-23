@@ -28,7 +28,7 @@ elif GIT_VERSION is not None:
 else:
     desc=subprocess.check_output(['git','describe','--long']).decode('utf8').strip()
     v,commits,sha=desc.split('-')
-    print("Git info collected from git: %s %s %s"%(v,commits,sha))
+    print("Git info collected from git in %s: %s %s %s"%(os.getcwd(),v,commits,sha))
 
 expected_version=v[1::]
 if int(commits) > 0:

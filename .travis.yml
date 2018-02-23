@@ -29,14 +29,18 @@ jobs:
         - pwd
         - git describe --long --match "v*.*" --dirty
         ### (1) verify installed python package
+        - pwd
         - GIT_VERSION=$(git describe --long) SHARED_PACKAGES=$TRAVIS_BUILD_DIR/dist tox -e $TOX_ENV
         ### (2) verify in this git checkout
+        - pwd   
         - PYTHONPATH=. ./scripts/tmpverify $MODULE
         ### (3) verify develop install
+        - pwd   
         - export GIT_VERSION=$(git describe --long)
         - pip install -e .
         - mkdir $HOME/tmp123
         - cd $HOME/tmp123
+        - pwd   
         - tmpverify $MODULE
 
     - <<: *tests
