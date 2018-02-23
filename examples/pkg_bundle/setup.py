@@ -53,6 +53,7 @@ setup_args = dict(
     name='pkg_bundle',
     version=get_setup_version("pkg_bundle"),
     packages = ["pkg_bundle"],
+    package_data = {'pkg_depend': ['.version']},
     scripts = ["scripts/tmpverify"],
 )
 
