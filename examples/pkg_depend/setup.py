@@ -32,7 +32,15 @@ def get_setup_version(reponame):
     basepath = os.path.split(__file__)[0]
     version_file_path = os.path.join(basepath, reponame, '.version')
     version = None
-    from autover import version
+    try: version = importlib.import_module(reponame + ".version") # Bundled
+    except:  # autover available as package
+        try: from autover import version
+        except:
+            try: from param import version # Try to get it from param
+            except:
+                embed_version(basepath, reponame)
+                version = importlib.import_module(reponame + ".version")
+
     if version is not None:
         return version.Version.setup_version(basepath, reponame, dirty='strip',
                                              archive_commit="$Format:%h$")
