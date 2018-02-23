@@ -94,6 +94,7 @@ jobs:
         - MODULE=pkg_depend
       before_install:
         - pip install -e .
+        # build package so it's available for tox
         - python setup.py bdist_wheel
         - ./travis_test_pkg_setup.sh
         - cd $HOME/$MODULE
@@ -104,6 +105,7 @@ jobs:
         - TOX_ENV=py36
         - MODULE=pkg_depend
       before_install:
+        # build package so it's available for tox
         - python setup.py bdist_wheel
         - ./travis_test_pkg_setup.sh
         - cd $HOME/$MODULE
