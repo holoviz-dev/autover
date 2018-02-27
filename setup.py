@@ -24,8 +24,8 @@ def embed_autover(basepath, reponame, ref='pep440_fix'):
     except: from urllib import urlopen
     response = urlopen('https://github.com/ioam/autover/archive/{ref}.zip'.format(ref=ref))
     zf = zipfile.ZipFile(io.BytesIO(response.read()))
-    embed_autover = zf.read('autover-{ref}/autover/autover.py'.format(ref=ref))
-    with open(os.path.join(basepath, reponame, 'autover.py'), 'wb') as f:
+    embed_autover = zf.read('autover-{ref}/autover/version.py'.format(ref=ref))
+    with open(os.path.join(basepath, reponame, 'version.py'), 'wb') as f:
         f.write(embed_autover)
 
 
@@ -36,18 +36,18 @@ def get_setup_version(reponame):
     """
     basepath = os.path.split(__file__)[0]
     version_file_path = os.path.join(basepath, reponame, '.version')
-    autover = None
-    try: autover = importlib.import_module(reponame + ".autover") # Bundled
+    version = None
+    try: version = importlib.import_module(reponame + ".version") # Bundled
     except:  # autover available as package
-        try: import autover
+        try: from autover import version
         except:
-            try: from param import autover # Try to get it from param
+            try: from param import version # Try to get it from param
             except:
                 embed_autover(basepath, reponame)
-                autover = importlib.import_module(reponame + ".autover")
+                version = importlib.import_module(reponame + ".version")
 
-    if autover is not None:
-        return autover.Version.setup_version(basepath, reponame, dirty='strip',
+    if version is not None:
+        return version.Version.setup_version(basepath, reponame, dirty='strip',
                                              archive_commit="$Format:%h$")
     else:
         print("WARNING: To get fully up-to-date version information 'pip install autover'.")
