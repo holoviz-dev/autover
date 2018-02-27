@@ -4,7 +4,6 @@ import importlib
 
 from setuptools import setup
 
-
 def embed_version(basepath, reponame, ref='pep440-after-pep440_fix'):
     """
     Autover is purely a build time dependency in all cases (conda and
@@ -20,9 +19,9 @@ def embed_version(basepath, reponame, ref='pep440-after-pep440_fix'):
     except: from urllib import urlopen
     response = urlopen('https://github.com/ioam/autover/archive/{ref}.zip'.format(ref=ref))
     zf = zipfile.ZipFile(io.BytesIO(response.read()))
-    embed_version = zf.read('autover-{ref}/autover/version.py'.format(ref=ref))
+    embed_autover = zf.read('autover-{ref}/autover/version.py'.format(ref=ref))
     with open(os.path.join(basepath, reponame, 'version.py'), 'wb') as f:
-        f.write(embed_version)
+        f.write(embed_autover)
 
 
 def get_setup_version(reponame):
@@ -39,7 +38,7 @@ def get_setup_version(reponame):
         except:
             try: from param import version # Try to get it from param
             except:
-                embed_version(basepath, reponame)
+                embed_autover(basepath, reponame)
                 version = importlib.import_module(reponame + ".version")
 
     if version is not None:
