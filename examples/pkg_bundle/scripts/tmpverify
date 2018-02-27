@@ -17,18 +17,20 @@ import os
 
 GIT_VERSION = os.environ.get("GIT_VERSION")
 
-if len(sys.argv)>2:
+if len(sys.argv)==5:
     v=sys.argv[2]
     commits=sys.argv[3]
     sha=sys.argv[4]
     print("Git info read from arguments: %s %s %s"%(v,commits,sha))
-elif GIT_VERSION is not None:
-    v,commits,sha=GIT_VERSION.split('-')
+elif len(sys.argv)==3:
+    v,commits,sha=sys.argv[2].split('-')
     print("Git info read from GIT_VERSION: %s %s %s"%(v,commits,sha))
-else:
+elif len(sys.argv)==2:
     desc=subprocess.check_output(['git','describe','--long']).decode('utf8').strip()
     v,commits,sha=desc.split('-')
     print("Git info collected from git in %s: %s %s %s"%(os.getcwd(),v,commits,sha))
+else:
+    raise ValueError
 
 expected_version=v[1::]
 if int(commits) > 0:

@@ -23,106 +23,96 @@ jobs:
         - DESC="from current repo"
         - TOX_ENV=py36
         - MODULE=autover
-      install:
-        - pip install tox
+      before_install:
+        - pip install pyct tox
+      install: true
       script:
-        - pwd
-        - git describe --long --match "v*.*" --dirty
-        ### (1) verify installed python package
-        - pwd
-        - GIT_VERSION=$(git describe --long) SHARED_PACKAGES=$TRAVIS_BUILD_DIR/dist tox -e $TOX_ENV
-        ### (2) verify in this git checkout
-        - pwd   
-        - PYTHONPATH=. ./scripts/tmpverify $MODULE
-        ### (3) verify develop install
-        - pwd   
-        - export GIT_VERSION=$(git describe --long)
-        - pip install -e .
-        - mkdir $HOME/tmp123
-        - cd $HOME/tmp123
-        - pwd   
-        - PYTHONPATH=. tmpverify $MODULE
+        - doit original_script --example=$MODULE
 
     - <<: *tests
       env:
         - DESC="from release tag"
         - TOX_ENV=py36
         - MODULE=autover
-      before_install:
-        - echo two > two
-        - git add two
-        - git commit -m 'two' two
-        - git tag -a v2.0.0 -m "two"
+      install:
+        - doit git_init
+        - doit release_tag
 
     - <<: *tests
       env:
         - DESC="from release tag plus commits"
         - TOX_ENV=py36
         - MODULE=autover
-      before_install:
-        - echo two > two
-        - git add two
-        - git commit -m 'two' two
-        - git tag -a v2.0.0 -m "two"
-        - echo three >> two
-        - git commit -m "three" two
+      install:
+        - doit git_init
+        - doit release_tag
+        - doit after_tag
 
     - <<: *tests
       env:
         - DESC="from prerelease tag"
         - TOX_ENV=py36
         - MODULE=autover
-      before_install:
-        - echo two > two
-        - git add two
-        - git commit -m 'two' two
-        - git tag -a v2.0.0a -m "two"
+      install:
+        - doit git_init
+        - doit prerelease_tag
 
     - <<: *tests
       env:
         - DESC="from prerelease tag plus commits"
         - TOX_ENV=py36
         - MODULE=autover
-      before_install:
-        - echo two > two
-        - git add two
-        - git commit -m 'two' two
-        - git tag -a v2.0.0a -m "two"
-        - echo twotwo > two
-        - git commit -m 'two' two
+      install:
+        - doit git_init
+        - doit prerelease_tag
+        - doit after_tag
 
-    - <<: *tests
+
+##############################
+
+
+    - &example_tests
+      stage: test
+      python: 3.6
       env:
         - DESC="example"
         - TOX_ENV=py36
         - MODULE=pkg_depend
+        # TODO: what's right for travis?
+        - EXTRA="--dir=/tmp/"
       before_install:
+        - pip install pyct tox
+        - doit $EXTRA copy_example_project --example=$MODULE
+        - doit $EXTRA git_init  
+      install:
         - pip install -e .
         # build package so it's available for tox
         - python setup.py bdist_wheel
-        - ./travis_test_pkg_setup.sh
-        - cd $HOME/$MODULE
+      script:
+        - doit $EXTRA original_script --example=$MODULE
 
-    - <<: *tests
+
+    - <<: *example_tests
       env:
         - DESC="example auto dl"
         - TOX_ENV=py36
         - MODULE=pkg_depend
-      before_install:
+        # TODO: what's right for travis?
+        - EXTRA="--dir=/tmp/"   
+      install:
         # build package so it's available for tox
         - python setup.py bdist_wheel
-        - ./travis_test_pkg_setup.sh
-        - cd $HOME/$MODULE
 
-    - <<: *tests
+    - <<: *example_tests
       env:
         - DESC="example"
         - TOX_ENV=py36
         - MODULE=pkg_bundle
-      before_install:
-        - ./travis_test_pkg_setup.sh
-        - cd $HOME/$MODULE
+        # TODO: what's right for travis?
+        - EXTRA="--dir=/tmp/"   
+      install: true     
 
+# to be revisited; for testing dependency via param
 #    - <<: *tests
 #      env:
 #        - DESC="example"
@@ -132,34 +122,31 @@ jobs:
 #        - ./travis_test_pkg_setup.sh
 #        - cd $HOME/$MODULE
 
-    - <<: *tests
+    - <<: *example_tests
       env:
         - DESC="example pip+git"
         - TOX_ENV=py36
         - MODULE=pkg_depend
-      before_install:
-        - ./travis_test_pkg_setup.sh
-        - pip install git+file://$HOME/$MODULE
-        - cd $HOME/$MODULE
-      install: true
+        # TODO: what's right for travis?
+        - EXTRA="--dir=/tmp/"
+      install:
+        - pip install git+file://tmp
       script:
-        ### (1) verify installed python package
-        - GIT_VERSION=$(git describe --long) scripts/tmpverify $MODULE
+        - doit $EXTRA verify_installed_version --example=$MODULE
 
-    - <<: *tests
+    - <<: *example_tests
       env:
         - DESC="example pip+git"
         - TOX_ENV=py36
         - MODULE=pkg_bundle
-      before_install:
-        - ./travis_test_pkg_setup.sh
+        # TODO: what's right for travis?
+        - EXTRA="--dir=/tmp/"   
+      install:
         - pip install git+file://$HOME/$MODULE
-        - cd $HOME/$MODULE      
-      install: true
       script:
-        ### (1) verify installed python package
-        - GIT_VERSION=$(git describe --long) scripts/tmpverify $MODULE
+        - doit $EXTRA verify_installed_version --example=$MODULE
 
+# to be revisited; for testing dependency via param
 #    - <<: *tests
 #      env:
 #        - DESC="example pip+git"
