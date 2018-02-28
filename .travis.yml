@@ -1,11 +1,7 @@
 language: python
 
-git:
-  depth: 250
-
 env:
   global:
-    - DOIT=doit
     - TOX_ENV=py36
 
 # TODO: add appropriate guards (e.g. only deploy on tag matching
@@ -53,7 +49,7 @@ jobs:
         - EXTRA="--dir=/tmp/123"
       before_install:
         - mkdir /tmp/123
-        - pip install pyct tox $DOIT	
+        - pip install pyct tox doit
         - doit $EXTRA copy_example_project --example=$MODULE
         - doit $EXTRA git_init
       install:
