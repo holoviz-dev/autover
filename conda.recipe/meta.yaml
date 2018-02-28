@@ -19,10 +19,12 @@ requirements:
     - python
 
 test:
+  requires:
+    - nose
   imports:
     - autover
   commands:
-    - nosetests -vv --nologcapture --with-doctests
+    - nosetests -vv --nologcapture
 
 about:
   home: {{ sdata['url'] }}
