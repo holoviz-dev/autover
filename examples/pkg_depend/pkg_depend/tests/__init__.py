@@ -2,7 +2,6 @@ import sys
 import pkg_resources._vendor.packaging.version as packaging_version
 import subprocess
 import os
-import sys
 
 
 def main():
@@ -17,8 +16,6 @@ def main():
     ###############
     # (b) following desired 'latest master' version scheme?
     # v0.2.0-5-g85da374 --> 0.2.0.post5+g85da374
-
-    GIT_VERSION = os.environ.get("GIT_VERSION")
 
     if len(sys.argv)==5:
         v=sys.argv[2]
