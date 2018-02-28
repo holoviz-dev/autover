@@ -13,7 +13,7 @@ git:
 stages:
 #  - lint
   - test
-  - name: conda_package
+  - conda_package
 #    if: (branch = master AND type != pull_request) OR (tag IS present)
   - name: pypi_package
     if: tag IS present
