@@ -99,7 +99,7 @@ def task_original_script():
             # 1. verify package generation & installation
             action.CmdAction('tox -e %(tox_python)s -- %(git_version)s',env=env1),
             # 2. verify in git repo
-            action.CmdAction('scripts/tmpverify %(example)s',env=env2),
+            action.CmdAction('python %(example)s/tests/__init__.py %(example)s',env=env2),
             # 3. verify develop install
             action.CmdAction('pip install -e . && mkdir /tmp/9k && cd /tmp/9k && tmpverify %(example)s %(git_version)s',env=env2),
             # TODO: should be some kind of clean up option
