@@ -67,16 +67,10 @@ def task_original_script():
 
     return {
         'getargs': {'git_version': ('get_git_version','git_version')},
-        'params': [
-            example,
-            {'name':'tox_python',
-             'long':'tox_python',
-             'type':str,
-             'default':'py36'}
-        ],
+        'params': [example],
         'actions':[
             # 1. verify package generation & installation
-            action.CmdAction('tox -e %(tox_python)s -- %(git_version)s',env=env1),
+            action.CmdAction('tox -e py -- %(git_version)s',env=env1),
             # 2. verify in git repo
             action.CmdAction('python %(example)s/tests/__init__.py %(example)s',env=env2),
             # 3. verify develop install

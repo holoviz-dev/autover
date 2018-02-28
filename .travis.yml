@@ -3,10 +3,13 @@ language: python
 git:
   depth: 250
 
+python:
+  - "2.7"
+  - "3.6"
+
 env:
   global:
     - DOIT=doit
-    - TOX_ENV=py36
 
 # TODO: add appropriate guards (e.g. only deploy on tag matching
 # certain pattern) before merging back to master.
@@ -22,22 +25,13 @@ stages:
 jobs:
   fast_finish: true
   include:
-    - &tests
-      stage: test
-      python: 3.6
+    - stage: lint
       install: pip install tox
-      script:
-        - tox -e $TOX_ENV
+      script: tox -e lint_checks
 
-    - <<: *tests
-      stage: lint
-      env:
-        - TOX_ENV=lint_checks
-
-    - <<: *tests
-      python: 2.7
-      env:
-        - TOX_ENV=py27
+    - stage: test
+      install: pip install tox
+      script: tox -e py${TRAVIS_PYTHON_VERSION//./}
 
 
 ##############################
@@ -46,14 +40,16 @@ jobs:
 
     - &example_tests
       stage: test
-      python: 3.6
       env:
         - DESC="example"
         - MODULE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       before_install:
         - mkdir /tmp/123
-        - pip install pyct tox $DOIT	
+        - if [ $TRAVIS_PYTHON_VERSION == "2.7" ]; then
+            pip install "doit<0.30";
+          fi
+        - pip install pyct tox
         - doit $EXTRA copy_example_project --example=$MODULE
         - doit $EXTRA git_init
       install:
