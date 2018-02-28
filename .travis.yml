@@ -13,6 +13,7 @@ env:
 # certain pattern) once auto packaging is figured out.
 
 stages:
+  - lint
   - test
   - name: conda_package
 #    if: (branch = master AND type != pull_request) OR (tag IS present)
@@ -22,6 +23,15 @@ stages:
 jobs:
   fast_finish: true
   include:
+    - stage: lint
+      python: 3.6
+      env:
+        - TOX_ENV=lint_checks
+      install:
+        - pip install tox
+      script:
+        - tox -e $TOX_ENV      
+
     - &tests
       stage: test
       python: 3.6
