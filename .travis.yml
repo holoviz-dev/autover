@@ -19,6 +19,7 @@ jobs:
   fast_finish: true
   include:
     - stage: lint
+      python: 3.6
       install: pip install tox
       script: tox -e lint_checks
 
