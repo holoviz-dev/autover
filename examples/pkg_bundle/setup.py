@@ -54,6 +54,9 @@ setup_args = dict(
     packages = ["pkg_bundle"],
     package_data = {'pkg_bundle': ['.version']},
     scripts = ["scripts/tmpverify"],
+    url = "http://",
+    license = "BSD",
+    description = "Example of bundling autover"
 )
 
 

@@ -56,6 +56,9 @@ setup_args = dict(
     package_data = {'pkg_depend': ['.version']},
     install_requires = ['autover'],
     scripts = ["scripts/tmpverify"],
+    url = "http://",
+    license = "BSD",
+    description = "Example of depending on autover"    
 )
 
 
