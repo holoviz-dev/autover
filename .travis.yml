@@ -25,9 +25,7 @@ jobs:
     - &tests
       stage: test
       python: 3.6
-      before_install:
-        - pip install pyct tox $DOIT
-      install: true
+      install: pip install tox
       script:
         - tox -e $TOX_ENV
 
@@ -55,7 +53,7 @@ jobs:
         - EXTRA="--dir=/tmp/123"
       before_install:
         - mkdir /tmp/123
-        - pip install pyct tox
+        - pip install pyct tox $DOIT	
         - doit $EXTRA copy_example_project --example=$MODULE
         - doit $EXTRA git_init
       install:
