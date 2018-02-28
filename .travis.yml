@@ -4,6 +4,10 @@ language: python
 git:
   depth: 200
 
+env:
+  global:
+    - DOIT=doit
+
 # TODO: add appropriate guards (e.g. only deploy on tag matching
 # certain pattern) once auto packaging is figured out.
 
@@ -25,7 +29,7 @@ jobs:
         - TOX_ENV=py36
         - MODULE=autover
       before_install:
-        - pip install pyct tox
+        - pip install pyct tox $DOIT
       install: true
       script:
         - doit original_script --example=$MODULE
@@ -36,6 +40,7 @@ jobs:
         - DESC="from release tag"
         - TOX_ENV=py27
         - MODULE=autover
+        - DOIT="doit<0.30"
       install:
         - doit release_tag
 
@@ -131,64 +136,6 @@ jobs:
       env:
         - DESC="example pip+git"
         - TOX_ENV=py36
-        - MODULE=pkg_bundle
-        - EXTRA="--dir=/tmp/123"
-      install:
-        - pip install git+file:///tmp/123
-      script:
-        - doit $EXTRA verify_installed_version --example=$MODULE
-
-
-
-##############################
-
-# py27 version of previous section
-
-    - <<: *example_tests
-      python: 2.7
-      env:
-        - DESC="example"
-        - TOX_ENV=py27
-        - MODULE=pkg_depend
-        - EXTRA="--dir=/tmp/123"
-
-    - <<: *example_tests
-      python: 2.7
-      env:
-        - DESC="example auto dl"
-        - TOX_ENV=py27
-        - MODULE=pkg_depend
-        - EXTRA="--dir=/tmp/123"
-      install:
-        # build package so it's available for tox
-        - python setup.py bdist_wheel
-
-    - <<: *example_tests
-      python: 2.7
-      env:
-        - DESC="example"
-        - TOX_ENV=py27
-        - MODULE=pkg_bundle
-        - EXTRA="--dir=/tmp/123"
-      install: true
-
-    - <<: *example_tests
-      python: 2.7
-      env:
-        - DESC="example pip+git"
-        - TOX_ENV=py27
-        - MODULE=pkg_depend
-        - EXTRA="--dir=/tmp/123"
-      install:
-        - pip install git+file:///tmp/123
-      script:
-        - doit $EXTRA verify_installed_version --example=$MODULE
-
-    - <<: *example_tests
-      python: 2.7
-      env:
-        - DESC="example pip+git"
-        - TOX_ENV=py27
         - MODULE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
       install:
