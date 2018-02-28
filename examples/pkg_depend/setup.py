@@ -19,6 +19,7 @@ def embed_version(basepath, reponame, ref='v0.2.1'):
     except: from urllib import urlopen
     response = urlopen('https://github.com/ioam/autover/archive/{ref}.zip'.format(ref=ref))
     zf = zipfile.ZipFile(io.BytesIO(response.read()))
+    ref = ref[1:] if ref.startswith('v') else ref
     embed_version = zf.read('autover-{ref}/autover/version.py'.format(ref=ref))
     with open(os.path.join(basepath, reponame, 'version.py'), 'wb') as f:
         f.write(embed_version)
@@ -45,7 +46,6 @@ def get_setup_version(reponame):
         return version.Version.setup_version(basepath, reponame, dirty='strip',
                                              archive_commit="$Format:%h$")
     else:
-        print("WARNING: To get fully up-to-date version information 'pip install autover'.")
         return json.load(open(version_file_path, 'r'))['version_string']
 
 

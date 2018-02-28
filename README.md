@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/ioam/autover.svg?branch=master)](https://travis-ci.org/ioam/autover)
+[![Appveyor build status](https://ci.appveyor.com/api/projects/status/eiy3sn7hja2nf6dc/branch/master?svg=true)](https://ci.appveyor.com/project/ioam/autover/branch/master)
+
+
 
 Autover provides:
 
