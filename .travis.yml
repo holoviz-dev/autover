@@ -158,3 +158,20 @@ jobs:
         user: ${PYPI_USERNAME}
         password: ${PYPI_PASSWORD}
         skip_cleanup: true
+
+
+##############################
+
+
+    - <<: *conda_default
+      stage: test
+      env:
+        - DESC="example conda"
+        - MODULE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install:
+        - mkdir /tmp/123
+        - doit $EXTRA copy_example_project --example=$MODULE
+        - doit $EXTRA git_init
+      script:
+        - doit $EXTRA build_conda_package
