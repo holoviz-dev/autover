@@ -1,8 +1,7 @@
-# TODO: should probably switch to generic
 language: python
 
 git:
-  depth: 200
+  depth: 250
 
 env:
   global:
@@ -10,7 +9,7 @@ env:
     - TOX_ENV=py36
 
 # TODO: add appropriate guards (e.g. only deploy on tag matching
-# certain pattern) once auto packaging is figured out.
+# certain pattern) before merging back to master.
 
 stages:
   - lint
@@ -23,66 +22,24 @@ stages:
 jobs:
   fast_finish: true
   include:
-    - stage: lint
-      python: 3.6
-      env:
-        - TOX_ENV=lint_checks
-      install:
-        - pip install tox
-      script:
-        - tox -e $TOX_ENV      
-
     - &tests
       stage: test
       python: 3.6
-      env:
-        - DESC="from current repo"
-        - MODULE=autover
       before_install:
         - pip install pyct tox $DOIT
       install: true
       script:
-        - doit original_script --example=$MODULE
+        - tox -e $TOX_ENV
+
+    - <<: *tests
+      stage: lint
+      env:
+        - TOX_ENV=lint_checks
 
     - <<: *tests
       python: 2.7
       env:
-        - DESC="from current repo"
         - TOX_ENV=py27
-        - MODULE=autover
-        - DOIT="doit<0.30"
-      script:
-        - doit original_script --example=$MODULE --tox_python=$TOX_ENV
-
-    - <<: *tests
-      env:
-        - DESC="from release tag"
-        - MODULE=autover
-      install:
-        - doit release_tag
-
-    - <<: *tests
-      env:
-        - DESC="from release tag plus commits"
-        - MODULE=autover
-      install:
-        - doit release_tag
-        - doit after_tag
-
-    - <<: *tests
-      env:
-        - DESC="from prerelease tag"
-        - MODULE=autover
-      install:
-        - doit prerelease_tag
-
-    - <<: *tests
-      env:
-        - DESC="from prerelease tag plus commits"
-        - MODULE=autover
-      install:
-        - doit prerelease_tag
-        - doit after_tag
 
 
 ##############################

@@ -38,27 +38,6 @@ def task_git_init():
         ]
     }
 
-def task_release_tag():
-    return {
-        'actions':[
-            action.CmdAction('echo two > two && git add two && git commit -m "two" && git tag -a v2.0.0 -m "two"')
-        ]
-    }
-
-def task_prerelease_tag():
-    return {
-        'actions':[
-            action.CmdAction('echo two > two && git add two && git commit -m "two" && git tag -a v2.0.0a -m "two"')
-        ]
-    }
-
-def task_after_tag():
-    return {
-        'actions':[
-            action.CmdAction('echo three > three && git add three && git commit -m "three"')
-        ]
-    }
-
 
 def task_get_git_version():
     return {'actions': [action.CmdAction('git describe --long',save_out='git_version')]}

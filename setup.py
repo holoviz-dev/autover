@@ -64,9 +64,6 @@ setup_args = dict(
     provides = ["autover"],
     include_package_data=True,
     scripts = ["scripts/autover"],
-    entry_points = {
-        'console_scripts': ['tmpverify=autover.tests:main'],
-    },
     classifiers = [
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 2.7",
