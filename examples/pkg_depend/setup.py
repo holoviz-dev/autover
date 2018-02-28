@@ -4,7 +4,7 @@ import importlib
 
 from setuptools import setup, find_packages
 
-def embed_version(basepath, reponame, ref='0.2.1'):
+def embed_version(basepath, reponame, ref='v0.2.1'):
     """
     Autover is purely a build time dependency in all cases (conda and
     pip) except for when you use pip's remote git support [git+url] as
@@ -19,6 +19,7 @@ def embed_version(basepath, reponame, ref='0.2.1'):
     except: from urllib import urlopen
     response = urlopen('https://github.com/ioam/autover/archive/{ref}.zip'.format(ref=ref))
     zf = zipfile.ZipFile(io.BytesIO(response.read()))
+    ref = ref[1:] if ref.startswith('v') else ref
     embed_version = zf.read('autover-{ref}/autover/version.py'.format(ref=ref))
     with open(os.path.join(basepath, reponame, 'version.py'), 'wb') as f:
         f.write(embed_version)
