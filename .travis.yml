@@ -3,9 +3,9 @@ language: python
 git:
   depth: 250
 
-python:
-  - 2.7
-  - 3.6
+#python:
+#  - 2.7
+#  - 3.6
 
 # TODO: add appropriate guards (e.g. only deploy on tag matching
 # certain pattern) before merging back to master.
