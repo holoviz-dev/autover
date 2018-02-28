@@ -31,6 +31,15 @@ jobs:
         - doit original_script --example=$MODULE
 
     - <<: *tests
+      python: 2.7
+      env:
+        - DESC="from release tag"
+        - TOX_ENV=py27
+        - MODULE=autover
+      install:
+        - doit release_tag
+
+    - <<: *tests
       env:
         - DESC="from release tag"
         - TOX_ENV=py36
