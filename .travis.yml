@@ -7,6 +7,7 @@ git:
 env:
   global:
     - DOIT=doit
+    - TOX_ENV=py36
 
 # TODO: add appropriate guards (e.g. only deploy on tag matching
 # certain pattern) once auto packaging is figured out.
@@ -26,7 +27,6 @@ jobs:
       python: 3.6
       env:
         - DESC="from current repo"
-        - TOX_ENV=py36
         - MODULE=autover
       before_install:
         - pip install pyct tox $DOIT
@@ -47,7 +47,6 @@ jobs:
     - <<: *tests
       env:
         - DESC="from release tag"
-        - TOX_ENV=py36
         - MODULE=autover
       install:
         - doit release_tag
@@ -55,7 +54,6 @@ jobs:
     - <<: *tests
       env:
         - DESC="from release tag plus commits"
-        - TOX_ENV=py36
         - MODULE=autover
       install:
         - doit release_tag
@@ -64,7 +62,6 @@ jobs:
     - <<: *tests
       env:
         - DESC="from prerelease tag"
-        - TOX_ENV=py36
         - MODULE=autover
       install:
         - doit prerelease_tag
@@ -72,7 +69,6 @@ jobs:
     - <<: *tests
       env:
         - DESC="from prerelease tag plus commits"
-        - TOX_ENV=py36
         - MODULE=autover
       install:
         - doit prerelease_tag
@@ -88,7 +84,6 @@ jobs:
       python: 3.6
       env:
         - DESC="example"
-        - TOX_ENV=py36
         - MODULE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       before_install:
@@ -106,7 +101,6 @@ jobs:
     - <<: *example_tests
       env:
         - DESC="example auto dl"
-        - TOX_ENV=py36
         - MODULE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       install:
@@ -116,7 +110,6 @@ jobs:
     - <<: *example_tests
       env:
         - DESC="example"
-        - TOX_ENV=py36
         - MODULE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
       install: true
@@ -124,7 +117,6 @@ jobs:
     - <<: *example_tests
       env:
         - DESC="example pip+git"
-        - TOX_ENV=py36
         - MODULE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       install:
@@ -135,7 +127,6 @@ jobs:
     - <<: *example_tests
       env:
         - DESC="example pip+git"
-        - TOX_ENV=py36
         - MODULE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
       install:
