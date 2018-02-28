@@ -67,6 +67,7 @@ jobs:
 
 ##############################
 
+# test examples of using autover
 
     - &example_tests
       stage: test
@@ -87,7 +88,6 @@ jobs:
         - python setup.py bdist_wheel
       script:
         - doit $EXTRA original_script --example=$MODULE
-
 
     - <<: *example_tests
       env:
@@ -132,6 +132,7 @@ jobs:
 
 ##############################
 
+# auto packaging of autover
 
     - &conda_default
       stage: conda_package
@@ -162,6 +163,7 @@ jobs:
 
 ##############################
 
+# test conda packaging of examples
 
     - <<: *conda_default
       stage: test
