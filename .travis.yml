@@ -130,6 +130,64 @@ jobs:
         - doit $EXTRA verify_installed_version --example=$MODULE
 
 
+
+##############################
+
+# py27 version of previous section
+
+    - <<: *example_tests
+      python: 2.7
+      env:
+        - DESC="example"
+        - TOX_ENV=py27
+        - MODULE=pkg_depend
+        - EXTRA="--dir=/tmp/123"
+
+    - <<: *example_tests
+      python: 2.7
+      env:
+        - DESC="example auto dl"
+        - TOX_ENV=py27
+        - MODULE=pkg_depend
+        - EXTRA="--dir=/tmp/123"
+      install:
+        # build package so it's available for tox
+        - python setup.py bdist_wheel
+
+    - <<: *example_tests
+      python: 2.7
+      env:
+        - DESC="example"
+        - TOX_ENV=py27
+        - MODULE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install: true
+
+    - <<: *example_tests
+      python: 2.7
+      env:
+        - DESC="example pip+git"
+        - TOX_ENV=py27
+        - MODULE=pkg_depend
+        - EXTRA="--dir=/tmp/123"
+      install:
+        - pip install git+file:///tmp/123
+      script:
+        - doit $EXTRA verify_installed_version --example=$MODULE
+
+    - <<: *example_tests
+      python: 2.7
+      env:
+        - DESC="example pip+git"
+        - TOX_ENV=py27
+        - MODULE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install:
+        - pip install git+file:///tmp/123
+      script:
+        - doit $EXTRA verify_installed_version --example=$MODULE
+
+
 ##############################
 
 # auto packaging of autover
