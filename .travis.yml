@@ -7,10 +7,6 @@ python:
   - "2.7"
   - "3.6"
 
-env:
-  global:
-    - DOIT=doit
-
 # TODO: add appropriate guards (e.g. only deploy on tag matching
 # certain pattern) before merging back to master.
 
@@ -33,68 +29,68 @@ jobs:
       install: pip install tox
       script: tox -e py${TRAVIS_PYTHON_VERSION//./}
 
-
-##############################
-
-# test examples of using autover
-
-    - &example_tests
-      stage: test
-      env:
-        - DESC="example"
-        - MODULE=pkg_depend
-        - EXTRA="--dir=/tmp/123"
-      before_install:
-        - mkdir /tmp/123
-        - if [ $TRAVIS_PYTHON_VERSION == "2.7" ]; then
-            pip install "doit<0.30";
-          fi
-        - pip install pyct tox
-        - doit $EXTRA copy_example_project --example=$MODULE
-        - doit $EXTRA git_init
-      install:
-        - pip install -e .
-        # build package so it's available for tox
-        - python setup.py bdist_wheel
-      script:
-        - doit $EXTRA original_script --example=$MODULE
-
-    - <<: *example_tests
-      env:
-        - DESC="example auto dl"
-        - MODULE=pkg_depend
-        - EXTRA="--dir=/tmp/123"
-      install:
-        # build package so it's available for tox
-        - python setup.py bdist_wheel
-
-    - <<: *example_tests
-      env:
-        - DESC="example"
-        - MODULE=pkg_bundle
-        - EXTRA="--dir=/tmp/123"
-      install: true
-
-    - <<: *example_tests
-      env:
-        - DESC="example pip+git"
-        - MODULE=pkg_depend
-        - EXTRA="--dir=/tmp/123"
-      install:
-        - pip install git+file:///tmp/123
-      script:
-        - doit $EXTRA verify_installed_version --example=$MODULE
-
-    - <<: *example_tests
-      env:
-        - DESC="example pip+git"
-        - MODULE=pkg_bundle
-        - EXTRA="--dir=/tmp/123"
-      install:
-        - pip install git+file:///tmp/123
-      script:
-        - doit $EXTRA verify_installed_version --example=$MODULE
-
+#
+###############################
+#
+## test examples of using autover
+#
+#    - &example_tests
+#      stage: test
+#      env:
+#        - DESC="example"
+#        - MODULE=pkg_depend
+#        - EXTRA="--dir=/tmp/123"
+#      before_install:
+#        - mkdir /tmp/123
+#        - if [ $TRAVIS_PYTHON_VERSION == "2.7" ]; then
+#            pip install "doit<0.30";
+#          fi
+#        - pip install pyct tox
+#        - doit $EXTRA copy_example_project --example=$MODULE
+#        - doit $EXTRA git_init
+#      install:
+#        - pip install -e .
+#        # build package so it's available for tox
+#        - python setup.py bdist_wheel
+#      script:
+#        - doit $EXTRA original_script --example=$MODULE
+#
+#    - <<: *example_tests
+#      env:
+#        - DESC="example auto dl"
+#        - MODULE=pkg_depend
+#        - EXTRA="--dir=/tmp/123"
+#      install:
+#        # build package so it's available for tox
+#        - python setup.py bdist_wheel
+#
+#    - <<: *example_tests
+#      env:
+#        - DESC="example"
+#        - MODULE=pkg_bundle
+#        - EXTRA="--dir=/tmp/123"
+#      install: true
+#
+#    - <<: *example_tests
+#      env:
+#        - DESC="example pip+git"
+#        - MODULE=pkg_depend
+#        - EXTRA="--dir=/tmp/123"
+#      install:
+#        - pip install git+file:///tmp/123
+#      script:
+#        - doit $EXTRA verify_installed_version --example=$MODULE
+#
+#    - <<: *example_tests
+#      env:
+#        - DESC="example pip+git"
+#        - MODULE=pkg_bundle
+#        - EXTRA="--dir=/tmp/123"
+#      install:
+#        - pip install git+file:///tmp/123
+#      script:
+#        - doit $EXTRA verify_installed_version --example=$MODULE
+#
 
 ##############################
 
