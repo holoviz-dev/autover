@@ -56,7 +56,7 @@ setup_args = dict(
     package_data = {'pkg_depend': ['.version']},
     install_requires = ['autover'],
     entry_points = {
-        'console_scripts': ['tmpverify=autover.tests:main'],
+        'console_scripts': ['tmpverify=pkg_depend.tests:main'],
     },
     url = "http://",
     license = "BSD",

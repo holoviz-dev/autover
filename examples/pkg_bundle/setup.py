@@ -54,7 +54,7 @@ setup_args = dict(
     packages = find_packages(),
     package_data = {'pkg_bundle': ['.version']},
     entry_points = {
-        'console_scripts': ['tmpverify=autover.tests:main'],
+        'console_scripts': ['tmpverify=pkg_bundle.tests:main'],
     },
     url = "http://",
     license = "BSD",
