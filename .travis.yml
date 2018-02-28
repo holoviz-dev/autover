@@ -25,9 +25,9 @@ jobs:
       install: pip install tox
       script: tox -e lint_checks
 
-    - stage: test
-      install: pip install tox
-      script: tox -e py${TRAVIS_PYTHON_VERSION//./}
+#    - stage: test
+#      install: pip install tox
+#      script: tox -e py${TRAVIS_PYTHON_VERSION//./}
 
 #
 ###############################
