@@ -113,7 +113,7 @@ jobs:
         - MODULE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       install:
-        - pip install git+file://tmp
+        - pip install git+file://tmp/123
       script:
         - doit $EXTRA verify_installed_version --example=$MODULE
 
@@ -124,7 +124,7 @@ jobs:
         - MODULE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
       install:
-        - pip install git+file://$HOME/$MODULE
+        - pip install git+file://tmp/123
       script:
         - doit $EXTRA verify_installed_version --example=$MODULE
 
