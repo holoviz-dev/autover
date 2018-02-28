@@ -1,9 +1,5 @@
 language: python
 
-env:
-  global:
-    - TOX_ENV=py36
-
 # TODO: add appropriate guards (e.g. only deploy on tag matching
 # certain pattern) before merging back to master.
 
@@ -23,17 +19,16 @@ jobs:
       python: 3.6
       install: pip install tox
       script:
-        - tox -e $TOX_ENV
+        - tox -e py${TRAVIS_PYTHON_VERSION//./}
 
-    - <<: *tests
-      stage: lint
-      env:
-        - TOX_ENV=lint_checks
+    - stage: lint
+      python: 3.6
+      install: pip install tox
+      script:
+        - tox -e lint_checks
 
     - <<: *tests
       python: 2.7
-      env:
-        - TOX_ENV=py27
 
 
 ##############################
