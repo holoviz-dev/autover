@@ -22,8 +22,7 @@ test:
   imports:
     - autover
   commands:
-    # verify conda-installed autover
-    - tmpverify autover {{ environ['GIT_DESCRIBE_TAG'] }} {{ environ['GIT_DESCRIBE_NUMBER'] }} {{ environ['GIT_DESCRIBE_HASH'] }}
+    - nosetests -vv --nologcapture --with-doctests
 
 about:
   home: {{ sdata['url'] }}
