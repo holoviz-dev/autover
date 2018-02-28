@@ -129,19 +129,22 @@ jobs:
       script:
         - doit $EXTRA verify_installed_version --example=$MODULE
 
-    - stage: conda_package
-      install:
-        - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-        - bash miniconda.sh -b -p $HOME/miniconda
+
+##############################
+
+
+    - &conda_default
+      stage: conda_package
+      python: 3.6
+      before_install:
+        - pip install pyct && doit install_miniconda && rm -f .doit.db
         - export PATH="$HOME/miniconda/bin:$PATH"
-        - conda config --set always_yes yes --set changeps1 no
-        - conda update conda
-        - conda install conda-build anaconda-client
-      script:
-        - conda build conda.recipe
-      after_success:
-        - export LABEL="--label dev" && [[ ! -z "$TRAVIS_TAG" ]] && LABEL=""
-#        - anaconda --token $CONDA_UPLOAD_TOKEN upload --user cball ${LABEL} $(conda build --output conda.recipe)
+        - conda install -y -c pyviz/label/dev -c conda-forge pyct
+        - doit ci_configure_conda
+      install:
+        - doit build_conda_package
+      script: true
+#        - doit upload_conda_package --token=$CONDA_UPLOAD_TOKEN --label=dev
 
     - <<: *tests
       stage: pypi_package
