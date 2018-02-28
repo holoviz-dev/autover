@@ -74,12 +74,12 @@ jobs:
         - DESC="example"
         - TOX_ENV=py36
         - MODULE=pkg_depend
-        # TODO: what's right for travis?
-        - EXTRA="--dir=/tmp/"
+        - EXTRA="--dir=/tmp/123"
       before_install:
+        - mkdir /tmp/123
         - pip install pyct tox
         - doit $EXTRA copy_example_project --example=$MODULE
-        - doit $EXTRA git_init  
+        - doit $EXTRA git_init
       install:
         - pip install -e .
         # build package so it's available for tox
@@ -93,8 +93,7 @@ jobs:
         - DESC="example auto dl"
         - TOX_ENV=py36
         - MODULE=pkg_depend
-        # TODO: what's right for travis?
-        - EXTRA="--dir=/tmp/"   
+        - EXTRA="--dir=/tmp/123"
       install:
         # build package so it's available for tox
         - python setup.py bdist_wheel
@@ -104,9 +103,8 @@ jobs:
         - DESC="example"
         - TOX_ENV=py36
         - MODULE=pkg_bundle
-        # TODO: what's right for travis?
-        - EXTRA="--dir=/tmp/"   
-      install: true     
+        - EXTRA="--dir=/tmp/123"
+      install: true
 
 # to be revisited; for testing dependency via param
 #    - <<: *tests
@@ -123,8 +121,7 @@ jobs:
         - DESC="example pip+git"
         - TOX_ENV=py36
         - MODULE=pkg_depend
-        # TODO: what's right for travis?
-        - EXTRA="--dir=/tmp/"
+        - EXTRA="--dir=/tmp/123"
       install:
         - pip install git+file://tmp
       script:
@@ -135,8 +132,7 @@ jobs:
         - DESC="example pip+git"
         - TOX_ENV=py36
         - MODULE=pkg_bundle
-        # TODO: what's right for travis?
-        - EXTRA="--dir=/tmp/"   
+        - EXTRA="--dir=/tmp/123"
       install:
         - pip install git+file://$HOME/$MODULE
       script:

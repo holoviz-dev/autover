@@ -31,7 +31,7 @@ def task_copy_example_project():
     }
 
 
-def task_git_init():        
+def task_git_init():
     return {
         'actions':[
             action.CmdAction('git init && git add . && git commit -m "init" && git tag -a v0.0.1 -m "one" && echo two > two && git add two && git commit -m "two"')
@@ -58,7 +58,7 @@ def task_after_tag():
             action.CmdAction('echo three > three && git add three && git commit -m "three"')
         ]
     }
-    
+
 
 def task_get_git_version():
     return {'actions': [action.CmdAction('git describe --long',save_out='git_version')]}
@@ -85,7 +85,7 @@ def task_original_script():
 
     env1 = os.environ.copy()
     env1['SHARED_PACKAGES'] = os.path.join(doit.get_initial_workdir(), "dist")
-    
+
     env2 = os.environ.copy()
     env2['PYTHONPATH'] = os.getcwd() # TODO win
 
