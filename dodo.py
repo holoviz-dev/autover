@@ -80,9 +80,6 @@ def task_verify_installed_version():
 
 # TODO: split up
 def task_original_script():
-    env = os.environ.copy()
-    env['TOX_ENV'] = 'py36' # TODO
-
     env1 = os.environ.copy()
     env1['SHARED_PACKAGES'] = os.path.join(doit.get_initial_workdir(), "dist")
 
@@ -91,10 +88,16 @@ def task_original_script():
 
     return {
         'getargs': {'git_version': ('get_git_version','git_version')},
-        'params': [example],
+        'params': [
+            example,
+            {'name':'tox_python',
+             'long':'tox_python',
+             'type':str,
+             'default':'py36'}
+        ],
         'actions':[
             # 1. verify package generation & installation
-            action.CmdAction('tox -e py36 -- %(git_version)s',env=env1),
+            action.CmdAction('tox -e %(tox_python)s -- %(git_version)s',env=env1),
             # 2. verify in git repo
             action.CmdAction('scripts/tmpverify %(example)s',env=env2),
             # 3. verify develop install

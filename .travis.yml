@@ -37,12 +37,12 @@ jobs:
     - <<: *tests
       python: 2.7
       env:
-        - DESC="from release tag"
+        - DESC="from current repo"
         - TOX_ENV=py27
         - MODULE=autover
         - DOIT="doit<0.30"
-      install:
-        - doit release_tag
+      script:
+        - doit original_script --example=$MODULE --tox_python=$TOX_ENV
 
     - <<: *tests
       env:
