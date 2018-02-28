@@ -45,7 +45,6 @@ def get_setup_version(reponame):
         return version.Version.setup_version(basepath, reponame, dirty='strip',
                                              archive_commit="$Format:%h$")
     else:
-        print("WARNING: To get fully up-to-date version information 'pip install autover'.")
         return json.load(open(version_file_path, 'r'))['version_string']
 
 
