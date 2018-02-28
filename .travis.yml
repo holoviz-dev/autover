@@ -35,7 +35,6 @@ jobs:
         - TOX_ENV=py36
         - MODULE=autover
       install:
-        - doit git_init
         - doit release_tag
 
     - <<: *tests
@@ -44,7 +43,6 @@ jobs:
         - TOX_ENV=py36
         - MODULE=autover
       install:
-        - doit git_init
         - doit release_tag
         - doit after_tag
 
@@ -54,7 +52,6 @@ jobs:
         - TOX_ENV=py36
         - MODULE=autover
       install:
-        - doit git_init
         - doit prerelease_tag
 
     - <<: *tests
@@ -63,7 +60,6 @@ jobs:
         - TOX_ENV=py36
         - MODULE=autover
       install:
-        - doit git_init
         - doit prerelease_tag
         - doit after_tag
 
