@@ -20,9 +20,9 @@ requirements:
 
 test:
   imports:
-    - pkg_depend
+    - pkg_bundle
   commands:
-    - tmpverify pkg_depend {{ environ['GIT_DESCRIBE_TAG'] }} {{ environ['GIT_DESCRIBE_NUMBER'] }} {{ environ['GIT_DESCRIBE_HASH'] }}
+    - tmpverify pkg_bundle {{ environ['GIT_DESCRIBE_TAG'] }} {{ environ['GIT_DESCRIBE_NUMBER'] }} {{ environ['GIT_DESCRIBE_HASH'] }}
 
 about:
   home: {{ sdata['url'] }}
