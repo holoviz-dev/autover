@@ -106,16 +106,6 @@ jobs:
         - EXTRA="--dir=/tmp/123"
       install: true
 
-# to be revisited; for testing dependency via param
-#    - <<: *tests
-#      env:
-#        - DESC="example"
-#        - TOX_ENV=py36
-#        - MODULE=pkg_params
-#      before_install:
-#        - ./travis_test_pkg_setup.sh
-#        - cd $HOME/$MODULE
-
     - <<: *example_tests
       env:
         - DESC="example pip+git"
@@ -137,20 +127,6 @@ jobs:
         - pip install git+file://$HOME/$MODULE
       script:
         - doit $EXTRA verify_installed_version --example=$MODULE
-
-# to be revisited; for testing dependency via param
-#    - <<: *tests
-#      env:
-#        - DESC="example pip+git"
-#        - TOX_ENV=py36
-#        - MODULE=pkg_params
-#      before_install:
-#        - ./travis_test_pkg_setup.sh
-#        - pip install git+file://$HOME/$MODULE
-#      install: true
-#      script:
-#        ### (1) verify installed python package
-#        - GIT_VERSION=$(git describe --long) scripts/tmpverify $MODULE
 
     - stage: conda_package
       install:
