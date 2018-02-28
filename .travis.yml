@@ -1,5 +1,9 @@
 language: python
 
+python:
+  - "2.7"
+  - "3.6"
+
 # TODO: add appropriate guards (e.g. only deploy on tag matching
 # certain pattern) before merging back to master.
 
@@ -14,21 +18,13 @@ stages:
 jobs:
   fast_finish: true
   include:
-    - &tests
-      stage: test
-      python: 3.6
-      install: pip install tox
-      script:
-        - tox -e py${TRAVIS_PYTHON_VERSION//./}
-
     - stage: lint
-      python: 3.6
       install: pip install tox
-      script:
-        - tox -e lint_checks
+      script: tox -e lint_checks
 
-    - <<: *tests
-      python: 2.7
+    - stage: test
+      install: pip install tox
+      script: tox -e py${TRAVIS_PYTHON_VERSION//./}
 
 
 ##############################
@@ -37,14 +33,16 @@ jobs:
 
     - &example_tests
       stage: test
-      python: 3.6
       env:
         - DESC="example"
         - MODULE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       before_install:
         - mkdir /tmp/123
-        - pip install pyct tox doit
+        - if [ $TRAVIS_PYTHON_VERSION == "2.7" ]; then
+            pip install "doit<0.30";
+          fi
+        - pip install pyct tox
         - doit $EXTRA copy_example_project --example=$MODULE
         - doit $EXTRA git_init
       install:
@@ -108,8 +106,7 @@ jobs:
       script: true
 #        - doit upload_conda_package --token=$CONDA_UPLOAD_TOKEN --label=dev
 
-    - <<: *tests
-      stage: pypi_package
+    - stage: pypi_package
       install: true
       script: true
       deploy:
