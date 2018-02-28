@@ -1,7 +1,7 @@
 {% set sdata = load_setup_py_data() %}
 
 package:
-  name: autover
+  name: pkg_bundle
   version: {{ sdata['version'] }}
 
 source:
@@ -19,12 +19,10 @@ requirements:
     - python
 
 test:
-  requires:
-    - nose
   imports:
-    - autover
+    - pkg_bundle
   commands:
-    - nosetests -vv --nologcapture
+    - tmpverify pkg_bundle {{ environ['GIT_DESCRIBE_TAG'] }} {{ environ['GIT_DESCRIBE_NUMBER'] }} {{ environ['GIT_DESCRIBE_HASH'] }}
 
 about:
   home: {{ sdata['url'] }}

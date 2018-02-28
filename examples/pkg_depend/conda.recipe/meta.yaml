@@ -1,7 +1,7 @@
 {% set sdata = load_setup_py_data() %}
 
 package:
-  name: autover
+  name: pkg_depend
   version: {{ sdata['version'] }}
 
 source:
@@ -15,16 +15,16 @@ requirements:
   build:
     - python
     - setuptools
+    - autover
   run:
     - python
+    - autover
 
 test:
-  requires:
-    - nose
   imports:
-    - autover
+    - pkg_depend
   commands:
-    - nosetests -vv --nologcapture
+    - tmpverify pkg_depend {{ environ['GIT_DESCRIBE_TAG'] }} {{ environ['GIT_DESCRIBE_NUMBER'] }} {{ environ['GIT_DESCRIBE_HASH'] }}
 
 about:
   home: {{ sdata['url'] }}
