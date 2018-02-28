@@ -2,7 +2,7 @@ import os
 import json
 import importlib
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 def embed_version(basepath, reponame, ref='pep440-after-pep440_fix'):
     """
@@ -60,10 +60,13 @@ setup_args = dict(
     platforms=['Windows', 'Mac OS X', 'Linux'],
     license='BSD',
     url='http://github.com/ioam/autover/',
-    packages = ["autover"],
+    packages = find_packages(),
     provides = ["autover"],
     include_package_data=True,
-    scripts = ["scripts/autover","scripts/tmpverify"],
+    scripts = ["scripts/autover"],
+    entry_points = {
+        'console_scripts': ['tmpverify=autover.tests:main'],
+    },
     classifiers = [
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 2.7",

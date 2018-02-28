@@ -2,7 +2,7 @@ import os
 import json
 import importlib
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 def embed_version(basepath, reponame, ref='pep440-after-pep440_fix'):
     """
@@ -52,10 +52,12 @@ def get_setup_version(reponame):
 setup_args = dict(
     name='pkg_depend',
     version=get_setup_version("pkg_depend"),
-    packages = ["pkg_depend"],
+    packages = find_packages(),
     package_data = {'pkg_depend': ['.version']},
     install_requires = ['autover'],
-    scripts = ["scripts/tmpverify"],
+    entry_points = {
+        'console_scripts': ['tmpverify=autover.tests:main'],
+    },
     url = "http://",
     license = "BSD",
     description = "Example of depending on autover"    
