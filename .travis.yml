@@ -11,7 +11,7 @@ git:
 # certain pattern) before merging back to master.
 
 stages:
-  - lint
+#  - lint
   - test
   - name: conda_package
 #    if: (branch = master AND type != pull_request) OR (tag IS present)
@@ -21,9 +21,9 @@ stages:
 jobs:
   fast_finish: true
   include:
-    - stage: lint
-      install: pip install tox
-      script: tox -e lint_checks
+#    - stage: lint
+#      install: pip install tox
+#      script: tox -e lint_checks
 
 #    - stage: test
 #      install: pip install tox
