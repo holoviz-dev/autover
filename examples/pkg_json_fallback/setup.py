@@ -24,18 +24,19 @@ def embed_version(basepath, reponame, ref='v0.2.1'):
         f.write(embed_version)
 
 
-def get_setup_version(reponame, auto_embed=True):
+def get_setup_version(reponame):
     """
     Helper to get the current version from either git describe or the
     .version file (if available).
     """
+    # NOTE: This is not the complete function - only testing the final fallback
     basepath = os.path.split(__file__)[0]
     version_file_path = os.path.join(basepath, reponame, '.version')
     return json.load(open(version_file_path, 'r'))['version_string']
 
 setup_args = dict(
     name='pkg_json_fallback',
-    version=get_setup_version("pkg_json_fallback", auto_embed=False),
+    version=get_setup_version("pkg_json_fallback"),
     packages = find_packages(),
     package_data = {'pkg_json_fallback': ['.version']},
     entry_points = {

@@ -25,7 +25,7 @@ def embed_version(basepath, reponame, ref='v0.2.1'):
         f.write(embed_version)
 
 
-def get_setup_version(reponame, auto_embed=True):
+def get_setup_version(reponame):
     """
     Helper to get the current version from either git describe or the
     .version file (if available).
@@ -39,9 +39,8 @@ def get_setup_version(reponame, auto_embed=True):
         except:
             try: from param import version # Try to get it from param
             except:
-                if auto_embed:
-                    embed_version(basepath, reponame)
-                    version = importlib.import_module(reponame + ".version")
+                embed_version(basepath, reponame)
+                version = importlib.import_module(reponame + ".version")
 
     if version is not None:
         return version.Version.setup_version(basepath, reponame, dirty='strip',
