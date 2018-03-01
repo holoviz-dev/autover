@@ -1,7 +1,11 @@
 try:    from autover.version import Version
 except: from .version import Version
-# TODO: Load from .version!
 
-versionobj = Version(release=None, fpath=__file__,
-                     archive_commit="$Format:%h$", reponame="pkg_depend")
-__version__ = str(versionobj)
+try:
+    versionobj = Version(release=None, fpath=__file__,
+                         archive_commit="$Format:%h$", reponame="pkg_depend")
+    __version__ = str(versionobj)
+except:
+    import os, json
+    __version__ = json.load(open(os.path.join(os.path.split(__file__)[0],
+                                              '.version'), 'r'))['version_string']

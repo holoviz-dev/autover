@@ -2,13 +2,23 @@
 Unit test for autover.Version
 """
 import unittest
+import pkg_resources._vendor.packaging.version as packaging_version
 from autover import Version
 
 from collections import OrderedDict
+
+def pep440(version):
+    "Checks for PEP440 compliance and raises if non-compliant, otherwise returns"
+    try:
+        packaging_version.Version(version)
+    except:
+        raise AssertionError("Not PEP440 compliant, cannot be parsed by packaging_version.Version")
+    return version
+
 # Mapping from git describe output to results.
 describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
                                {'kwargs' : dict(release=(1,0,5)),
-                                '__str__': '1.0.5.post42+gabcdefgh',
+                                '__str__': pep440('1.0.5.post42+gabcdefgh'),
                                 'release': (1,0,5),
                                 'commit_count': 42,
                                 'commit': 'abcdefgh',
@@ -17,7 +27,7 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
 
                               ('v0.2.0a1-11-g2fb12e0',
                                {'kwargs' : {},
-                                '__str__': '0.2.0a1.post11+g2fb12e0',
+                                '__str__': pep440('0.2.0a1.post11+g2fb12e0'),
                                 'release': (0,2,0),
                                 'commit_count': 11,
                                 'commit': '2fb12e0',
@@ -26,7 +36,7 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
 
                              ('v0.2.0a1-13-g9edb975-dirty',
                                {'kwargs' : {},
-                                '__str__': '0.2.0a1.post13+g9edb975-dirty',
+                                '__str__': pep440('0.2.0a1.post13+g9edb975-dirty'),
                                 'release': (0,2,0),
                                 'commit_count': 13,
                                 'commit': '9edb975',
@@ -35,7 +45,7 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
 
                              ('v0.5.1rc2-0-g9edb976',
                                {'kwargs' : {},
-                                '__str__': '0.5.1rc2',
+                                '__str__': pep440('0.5.1rc2'),
                                 'release': (0,5,1),
                                 'commit_count': 0,
                                 'commit': '9edb976',
@@ -44,7 +54,7 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
 
                              ('v0.4.1b2-19-g9edb980-dirty',
                                {'kwargs' : dict(commit_count_prefix='_r'),
-                                '__str__': '0.4.1b2_r19+g9edb980-dirty',
+                                '__str__': pep440('0.4.1b2_r19+g9edb980-dirty'),
                                 'release': (0,4,1),
                                 'commit_count': 19,
                                 'commit': '9edb980',
@@ -53,7 +63,7 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
 
                               ('v0.5.7rc2-92-g9edb976',
                                {'kwargs' : dict(archive_commit='1234567'),
-                                '__str__': '0.5.7rc2.post0+g1234567-gitarchive',
+                                '__str__': pep440('0.5.7rc2.post0+g1234567-gitarchive'),
                                 'release': (0,5,7),
                                 'commit_count': None,
                                 'commit': '9edb976',
@@ -78,6 +88,10 @@ class TestVersion(unittest.TestCase):
         self.assertEqual(v.commit, expected['commit'])
         self.assertEqual(v.dirty, expected['dirty'])
         self.assertEqual(v.prerelease, expected['prerelease'])
+
+    def test_invalid_pep440(self):
+        with self.assertRaises(AssertionError):
+            pep440('1.0-not-pep440')
 
     def test_version_init_v1(self):
         Version(release=(1,0))

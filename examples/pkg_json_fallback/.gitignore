@@ -1,0 +1,4 @@
+.doit*
+*.pyc
+*~
+*egg-info

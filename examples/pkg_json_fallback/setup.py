@@ -1,6 +1,5 @@
 import os
 import json
-import importlib
 
 from setuptools import setup, find_packages
 
@@ -30,35 +29,23 @@ def get_setup_version(reponame):
     Helper to get the current version from either git describe or the
     .version file (if available).
     """
+    # NOTE: This is not the complete function - only testing the final JSON fallback
+    # See pkg_bundle or pkg_depend for complete example.
     basepath = os.path.split(__file__)[0]
     version_file_path = os.path.join(basepath, reponame, '.version')
-    version = None
-    try: version = importlib.import_module(reponame + ".version") # Bundled
-    except:  # autover available as package
-        try: from autover import version
-        except:
-            try: from param import version # Try to get it from param
-            except:
-                embed_version(basepath, reponame)
-                version = importlib.import_module(reponame + ".version")
-
-    if version is not None:
-        return version.Version.setup_version(basepath, reponame, dirty='strip',
-                                             archive_commit="$Format:%h$")
-    else:
-        return json.load(open(version_file_path, 'r'))['version_string']
+    return json.load(open(version_file_path, 'r'))['version_string']
 
 setup_args = dict(
-    name='pkg_depend',
-    version=get_setup_version("pkg_depend"),
+    name='pkg_json_fallback',
+    version=get_setup_version("pkg_json_fallback"),
     packages = find_packages(),
-    package_data = {'pkg_depend': ['.version']},
+    package_data = {'pkg_json_fallback': ['.version']},
     entry_points = {
-        'console_scripts': ['tmpverify=pkg_depend.tests:main'],
+        'console_scripts': ['tmpverify=pkg_json_fallback.tests:main'],
     },
     url = "http://",
     license = "BSD",
-    description = "Example of depending on autover"
+    description = "Example of falling back to JSON if all else fails"
 )
 
 
