@@ -54,7 +54,6 @@ setup_args = dict(
     version=get_setup_version("pkg_depend"),
     packages = find_packages(),
     package_data = {'pkg_depend': ['.version']},
-    install_requires = ['autover'],
     entry_points = {
         'console_scripts': ['tmpverify=pkg_depend.tests:main'],
     },
