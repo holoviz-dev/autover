@@ -18,7 +18,6 @@ requirements:
     - autover
   run:
     - python
-    - autover
 
 test:
   imports:
