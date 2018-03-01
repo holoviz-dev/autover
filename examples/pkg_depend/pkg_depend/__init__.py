@@ -6,6 +6,6 @@ try:
                          archive_commit="$Format:%h$", reponame="pkg_depend")
     __version__ = str(versionobj)
 except:
-    import json
-    __version__ = json.load(open('.version', 'r'))['version_string']
-
+    import os, json
+    __version__ = json.load(open(os.path.join(os.path.split(__file__)[0],
+                                              '.version'), 'r'))['version_string']
