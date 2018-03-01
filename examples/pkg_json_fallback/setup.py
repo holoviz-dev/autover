@@ -43,7 +43,7 @@ setup_args = dict(
     },
     url = "http://",
     license = "BSD",
-    description = "Example of depending on autover"
+    description = "Example of falling back to JSON if all else fails"
 )
 
 
