@@ -29,7 +29,8 @@ def get_setup_version(reponame):
     Helper to get the current version from either git describe or the
     .version file (if available).
     """
-    # NOTE: This is not the complete function - only testing the final fallback
+    # NOTE: This is not the complete function - only testing the final JSON fallback
+    # See pkg_bundle or pkg_depend for complete example.
     basepath = os.path.split(__file__)[0]
     version_file_path = os.path.join(basepath, reponame, '.version')
     return json.load(open(version_file_path, 'r'))['version_string']
