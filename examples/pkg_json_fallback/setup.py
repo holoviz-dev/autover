@@ -1,6 +1,5 @@
 import os
 import json
-import importlib
 
 from setuptools import setup, find_packages
 
@@ -44,7 +43,7 @@ setup_args = dict(
     },
     url = "http://",
     license = "BSD",
-    description = "Example of depending on autover"    
+    description = "Example of depending on autover"
 )
 
 
