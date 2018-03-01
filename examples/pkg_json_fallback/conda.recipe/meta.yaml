@@ -1,0 +1,31 @@
+{% set sdata = load_setup_py_data() %}
+
+package:
+  name: pkg_json_fallback
+  version: {{ sdata['version'] }}
+
+source:
+  path: ..
+
+build:
+  noarch: python
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - autover
+  run:
+    - python
+
+test:
+  imports:
+    - pkg_json_fallback
+  commands:
+    - tmpverify pkg_json_fallback {{ environ['GIT_DESCRIBE_TAG'] }} {{ environ['GIT_DESCRIBE_NUMBER'] }} {{ environ['GIT_DESCRIBE_HASH'] }}
+
+about:
+  home: {{ sdata['url'] }}
+  summary: {{ sdata['description'] }}
+  license: {{ sdata['license'] }}
