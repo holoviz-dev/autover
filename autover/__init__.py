@@ -1,8 +1,7 @@
 from .version import Version
 
 try:
-    versionobj = Version(release=None, fpath=__file__,
-                         archive_commit="$Format:%h$", reponame="autover")
+    versionobj = Version(fpath=__file__, archive_commit="$Format:%h$", reponame="autover")
     __version__ = str(versionobj)
 except:
     import json
