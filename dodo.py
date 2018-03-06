@@ -79,3 +79,6 @@ def task_original_script():
             action.CmdAction('pip uninstall -y %(example)s')
         ]
     }
+
+def task_build_param_package():
+    return {'actions': ['git clone https://github.com/ioam/param.git && cd param && python setup.py bdist_wheel']}
