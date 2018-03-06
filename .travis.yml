@@ -282,4 +282,4 @@ jobs:
         - doit $EXTRA copy_example_project --example=$MODULE
         - doit $EXTRA git_init
       script:
-        - doit $EXTRA -c pyviz/label/dev build_conda_package
+        - doit $EXTRA build_conda_package -c pyviz/label/dev
