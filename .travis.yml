@@ -198,6 +198,19 @@ jobs:
       script:
         - doit $EXTRA verify_installed_version --example=$MODULE
 
+##############################
+
+# test that dirty detection works
+# should fail; replace with unit test
+
+    - <<: *example_tests
+      python: 3.6
+      env:
+        - DESC="check dirty"
+        - MODULE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install:
+        - echo '#dirty' >> /tmp/123/setup.py
 
 ##############################
 
