@@ -118,7 +118,9 @@ jobs:
         - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
-        - pip install git+file:///tmp/123
+        - doit build_param_package      
+        # TODO: should move to doit (same comment for other places this is done)
+        - pip install -f $TRAVIS_BUILD_DIR/dist git+file:///tmp/123
       script:
         - doit $EXTRA verify_installed_version --example=$MODULE
 
@@ -191,7 +193,8 @@ jobs:
         - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
-        - pip install git+file:///tmp/123
+        - doit build_param_package
+        - pip install -f $TRAVIS_BUILD_DIR/dist git+file:///tmp/123      
       script:
         - doit $EXTRA verify_installed_version --example=$MODULE
 
