@@ -1,0 +1,32 @@
+{% set sdata = load_setup_py_data() %}
+
+package:
+  name: pkg_params
+  version: {{ sdata['version'] }}
+
+source:
+  path: ..
+
+build:
+  noarch: python
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - param
+  run:
+    - python
+    - param
+
+test:
+  imports:
+    - pkg_params
+  commands:
+    - tmpverify pkg_params {{ environ['GIT_DESCRIBE_TAG'] }} {{ environ['GIT_DESCRIBE_NUMBER'] }} {{ environ['GIT_DESCRIBE_HASH'] }}
+
+about:
+  home: {{ sdata['url'] }}
+  summary: {{ sdata['description'] }}
+  license: {{ sdata['license'] }}

@@ -80,6 +80,16 @@ jobs:
       install: true
 
     - <<: *example_tests
+      python: 3.6
+      env:
+        - DESC="example"
+        - MODULE=pkg_params
+        - EXTRA="--dir=/tmp/123"
+      install:
+        # build param package so it's available for tox
+        - doit build_param_package
+
+    - <<: *example_tests
       python: 3.6    
       env:
         - DESC="example pip+git"
@@ -95,6 +105,17 @@ jobs:
       env:
         - DESC="example pip+git"
         - MODULE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install:
+        - pip install git+file:///tmp/123
+      script:
+        - doit $EXTRA verify_installed_version --example=$MODULE
+
+    - <<: *example_tests
+      python: 3.6    
+      env:
+        - DESC="example pip+git"
+        - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
         - pip install git+file:///tmp/123
@@ -132,6 +153,16 @@ jobs:
       install: true
 
     - <<: *example_tests
+      python: 2.7
+      env:
+        - DESC="example"
+        - MODULE=pkg_params
+        - EXTRA="--dir=/tmp/123"
+      install:
+        # build param package so it's available for tox
+        - doit build_param_package
+
+    - <<: *example_tests
       python: 2.7    
       env:
         - DESC="example pip+git"
@@ -147,6 +178,17 @@ jobs:
       env:
         - DESC="example pip+git"
         - MODULE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install:
+        - pip install git+file:///tmp/123
+      script:
+        - doit $EXTRA verify_installed_version --example=$MODULE
+
+    - <<: *example_tests
+      python: 2.7    
+      env:
+        - DESC="example pip+git"
+        - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
         - pip install git+file:///tmp/123
@@ -228,3 +270,16 @@ jobs:
       script:
         - doit build_conda_package
         - doit $EXTRA build_conda_package
+
+    - <<: *conda_default
+      stage: test
+      env:
+        - DESC="example conda"
+        - MODULE=pkg_params
+        - EXTRA="--dir=/tmp/123"
+      install:
+        - mkdir /tmp/123
+        - doit $EXTRA copy_example_project --example=$MODULE
+        - doit $EXTRA git_init
+      script:
+        - doit $EXTRA build_conda_package -c pyviz/label/dev
