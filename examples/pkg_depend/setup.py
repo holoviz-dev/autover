@@ -53,6 +53,7 @@ setup_args = dict(
     version=get_setup_version("pkg_depend"),
     packages = find_packages(),
     package_data = {'pkg_depend': ['.version']},
+    include_package_data = True,
     entry_points = {
         'console_scripts': ['tmpverify=pkg_depend.tests:main'],
     },

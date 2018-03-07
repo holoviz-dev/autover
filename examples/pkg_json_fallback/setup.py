@@ -3,7 +3,7 @@ import json
 
 from setuptools import setup, find_packages
 
-def embed_version(basepath, reponame, ref='v0.2.1'):
+def embed_version(basepath, ref='v0.2.1'):
     """
     Autover is purely a build time dependency in all cases (conda and
     pip) except for when you use pip's remote git support [git+url] as
@@ -20,7 +20,7 @@ def embed_version(basepath, reponame, ref='v0.2.1'):
     zf = zipfile.ZipFile(io.BytesIO(response.read()))
     ref = ref[1:] if ref.startswith('v') else ref
     embed_version = zf.read('autover-{ref}/autover/version.py'.format(ref=ref))
-    with open(os.path.join(basepath, reponame, 'version.py'), 'wb') as f:
+    with open(os.path.join(basepath, 'version.py'), 'wb') as f:
         f.write(embed_version)
 
 
@@ -40,6 +40,7 @@ setup_args = dict(
     version=get_setup_version("pkg_json_fallback"),
     packages = find_packages(),
     package_data = {'pkg_json_fallback': ['.version']},
+    include_package_data = True,
     entry_points = {
         'console_scripts': ['tmpverify=pkg_json_fallback.tests:main'],
     },

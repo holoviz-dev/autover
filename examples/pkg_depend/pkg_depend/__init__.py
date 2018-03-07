@@ -1,5 +1,4 @@
-try:    from autover.version import Version
-except: from .version import Version
+from autover.version import Version
 
 try:
     versionobj = Version(release=None, fpath=__file__,
