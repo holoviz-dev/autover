@@ -56,7 +56,7 @@ jobs:
         - doit $EXTRA git_init
       install:
         - pip install -e .
-        # build package so it's available for tox
+        # build package so it's available for pip
         - python setup.py bdist_wheel
       script:
         - doit $EXTRA original_script --example=$MODULE
@@ -68,7 +68,7 @@ jobs:
         - MODULE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       install:
-        # build package so it's available for tox
+        # build package so it's available for pip
         - python setup.py bdist_wheel
 
     - <<: *example_tests
@@ -143,7 +143,7 @@ jobs:
         - MODULE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       install:
-        # build package so it's available for tox
+        # build package so it's available for pip
         - python setup.py bdist_wheel
 
     - <<: *example_tests
