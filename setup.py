@@ -43,8 +43,7 @@ def get_setup_version(reponame):
                 version = importlib.import_module(".version")
 
     if version is not None:
-        return version.Version.setup_version(basepath, reponame, dirty='strip',
-                                             archive_commit="$Format:%h$")
+        return version.Version.setup_version(basepath, reponame, archive_commit="$Format:%h$")
     else:
         return json.load(open(version_file_path, 'r'))['version_string']
 
