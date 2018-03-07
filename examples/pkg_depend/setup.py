@@ -4,7 +4,7 @@ import importlib
 
 from setuptools import setup, find_packages
 
-def embed_version(basepath, reponame, ref='v0.2.1'):
+def embed_version(basepath, ref='v0.2.1'):
     """
     Autover is purely a build time dependency in all cases (conda and
     pip) except for when you use pip's remote git support [git+url] as
@@ -21,7 +21,7 @@ def embed_version(basepath, reponame, ref='v0.2.1'):
     zf = zipfile.ZipFile(io.BytesIO(response.read()))
     ref = ref[1:] if ref.startswith('v') else ref
     embed_version = zf.read('autover-{ref}/autover/version.py'.format(ref=ref))
-    with open(os.path.join(basepath, reponame, 'version.py'), 'wb') as f:
+    with open(os.path.join(basepath, 'version.py'), 'wb') as f:
         f.write(embed_version)
 
 
@@ -39,8 +39,8 @@ def get_setup_version(reponame):
         except:
             try: from param import version # Try to get it from param
             except:
-                embed_version(basepath, reponame)
-                version = importlib.import_module(reponame + ".version")
+                embed_version(basepath)
+                version = importlib.import_module("version")
 
     if version is not None:
         return version.Version.setup_version(basepath, reponame, dirty='strip',
