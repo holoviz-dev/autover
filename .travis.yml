@@ -86,7 +86,7 @@ jobs:
         - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
-        # build param package so it's available for tox
+        # build param package so it's available for pip
         - doit build_param_package
 
     - <<: *example_tests
@@ -159,7 +159,7 @@ jobs:
         - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
-        # build param package so it's available for tox
+        # build param package so it's available for pip
         - doit build_param_package
 
     - <<: *example_tests
