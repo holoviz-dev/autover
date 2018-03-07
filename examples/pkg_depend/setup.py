@@ -57,6 +57,7 @@ setup_args = dict(
     entry_points = {
         'console_scripts': ['tmpverify=pkg_depend.tests:main'],
     },
+    install_requires = ['autover'],
     url = "http://",
     license = "BSD",
     description = "Example of depending on autover"
