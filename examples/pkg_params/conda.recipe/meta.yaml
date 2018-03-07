@@ -15,10 +15,10 @@ requirements:
   build:
     - python
     - setuptools
-    - param
+    - param >1.5.1
   run:
     - python
-    - param
+    - param >1.5.1
 
 test:
   imports:
