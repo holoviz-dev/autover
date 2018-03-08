@@ -86,7 +86,7 @@ def task_build_param_package():
     return {'actions': ['git clone https://github.com/ioam/param.git && cd param && python setup.py bdist_wheel -d %s'%shared_packages]}
 
 def task_check_dirty_detection():
-    
+    # TODO: test should be less bash
     return {'actions':[
         'echo "#dirty" >> setup.py',
         '! python setup.py sdist > test-dirty-check 2>&1',
