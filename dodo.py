@@ -87,10 +87,14 @@ def task_build_param_package():
 
 def task_check_dirty_detection():
     # TODO: test should be less bash
-    return {'actions':[
-        'echo "#dirty" >> setup.py',
-        '! python setup.py sdist > test-dirty-check 2>&1',
-        'grep "AssertionError: Repository is in a dirty state." test-dirty-check'
-    ]}
+    return {
+        'actions':[
+            'echo "#dirty" >> setup.py',
+            'git describe --dirty --long',
+            '! python setup.py sdist > test-dirty-check 2>&1',
+            'grep "AssertionError: Repository is in a dirty state." test-dirty-check'
+        ],
+        'teardown':[
+            'cat test-dirty-check'
+        ]}
 
-        
