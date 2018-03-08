@@ -208,8 +208,7 @@ jobs:
         - DESC="check dirty"
         - MODULE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
-      install:
-        - echo '#dirty' >> /tmp/123/setup.py
+      install: true
       script:
         - doit $EXTRA check_dirty_detection
 
