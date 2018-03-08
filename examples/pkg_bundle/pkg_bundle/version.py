@@ -461,7 +461,7 @@ class Version(object):
             return vstring
 
     @classmethod
-    def setup_version(cls, setup_path, reponame, archive_commit=None, dirty='strip'):
+    def setup_version(cls, setup_path, reponame, archive_commit=None, dirty='raise'):
         vstring =  Version.get_setup_version(setup_path,
                                              reponame,
                                              describe=False,
