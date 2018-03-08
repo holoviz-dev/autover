@@ -18,6 +18,12 @@ requirements:
     - autover
   run:
     - python
+    # autover is listed in setup.py install_requires; when the console
+    # script (tmpverify) is run, python will attempt to install
+    # autover if autover's not already installed. Therefore, make
+    # runtime dependency explicit here. (Alternative would be to add
+    # autover under 'test requires'?)
+    - autover
 
 test:
   imports:

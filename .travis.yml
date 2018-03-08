@@ -56,7 +56,7 @@ jobs:
         - doit $EXTRA git_init
       install:
         - pip install -e .
-        # build package so it's available for tox
+        # build package so it's available for pip
         - python setup.py bdist_wheel
       script:
         - doit $EXTRA original_script --example=$MODULE
@@ -68,7 +68,7 @@ jobs:
         - MODULE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       install:
-        # build package so it's available for tox
+        # build package so it's available for pip
         - python setup.py bdist_wheel
 
     - <<: *example_tests
@@ -86,7 +86,7 @@ jobs:
         - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
-        # build param package so it's available for tox
+        # build param package so it's available for pip
         - doit build_param_package
 
     - <<: *example_tests
@@ -118,7 +118,9 @@ jobs:
         - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
-        - pip install git+file:///tmp/123
+        - doit build_param_package      
+        # TODO: should move to doit (same comment for other places this is done)
+        - pip install -f $TRAVIS_BUILD_DIR/dist git+file:///tmp/123
       script:
         - doit $EXTRA verify_installed_version --example=$MODULE
 
@@ -141,7 +143,7 @@ jobs:
         - MODULE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       install:
-        # build package so it's available for tox
+        # build package so it's available for pip
         - python setup.py bdist_wheel
 
     - <<: *example_tests
@@ -159,7 +161,7 @@ jobs:
         - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
-        # build param package so it's available for tox
+        # build param package so it's available for pip
         - doit build_param_package
 
     - <<: *example_tests
@@ -191,10 +193,24 @@ jobs:
         - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
-        - pip install git+file:///tmp/123
+        - doit build_param_package
+        - pip install -f $TRAVIS_BUILD_DIR/dist git+file:///tmp/123      
       script:
         - doit $EXTRA verify_installed_version --example=$MODULE
 
+##############################
+
+# test that dirty detection works
+
+    - <<: *example_tests
+      python: 3.6
+      env:
+        - DESC="check dirty"
+        - MODULE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install: true
+      script:
+        - doit $EXTRA check_dirty_detection
 
 ##############################
 

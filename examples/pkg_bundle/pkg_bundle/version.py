@@ -168,7 +168,7 @@ class Version(object):
     supplied."""
 
     def __init__(self, release=None, fpath=None, commit=None, reponame=None,
-                 commit_count_prefix='.post', archive_commit=None):
+                 commit_count_prefix='.post', archive_commit=None, **kwargs):
         """
         :release:      Release tuple (corresponding to the current VCS tag)
         :commit        Short SHA. Set to '$Format:%h$' for git archive support.
@@ -177,6 +177,10 @@ class Version(object):
         """
         self.fpath = fpath
         self._expected_commit = commit
+
+        if release is not None or 'commit_count' in kwargs:
+            print('WARNING: param.Version now supports PEP440 and a new tag based workflow. See param/version.py for more details')
+
         self.expected_release = release
 
         self._commit = None if (commit is None or commit.startswith("$Format")) else commit
@@ -419,7 +423,7 @@ class Version(object):
 
     @classmethod
     def get_setup_version(cls, setup_path, reponame, describe=False,
-                          dirty='strip', archive_commit=None):
+                          dirty='raise', archive_commit=None):
         """
         Helper for use in setup.py to get the version from the .version file (if available)
         or more up-to-date information from git describe (if available).
@@ -457,7 +461,7 @@ class Version(object):
             return vstring
 
     @classmethod
-    def setup_version(cls, setup_path, reponame, archive_commit=None, dirty='strip'):
+    def setup_version(cls, setup_path, reponame, archive_commit=None, dirty='raise'):
         vstring =  Version.get_setup_version(setup_path,
                                              reponame,
                                              describe=False,

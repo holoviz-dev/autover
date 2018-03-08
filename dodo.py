@@ -59,8 +59,9 @@ def task_verify_installed_version():
 
 # TODO: split up
 def task_original_script():
+    shared_packages = os.path.join(doit.get_initial_workdir(), "dist")
     env1 = os.environ.copy()
-    env1['SHARED_PACKAGES'] = os.path.join(doit.get_initial_workdir(), "dist")
+    env1['SHARED_PACKAGES'] = shared_packages
 
     env2 = os.environ.copy()
     env2['PYTHONPATH'] = os.getcwd() # TODO win
@@ -74,7 +75,7 @@ def task_original_script():
             # 2. verify in git repo
             action.CmdAction('python %(example)s/tests/__init__.py %(example)s',env=env2),
             # 3. verify develop install
-            action.CmdAction('pip install -e . && mkdir /tmp/9k && cd /tmp/9k && tmpverify %(example)s %(git_version)s',env=env2),
+            action.CmdAction('pip install -f ' + shared_packages + ' -e . && mkdir /tmp/9k && cd /tmp/9k && tmpverify %(example)s %(git_version)s',env=env2),
             # TODO: should be some kind of clean up option
             action.CmdAction('pip uninstall -y %(example)s')
         ]
@@ -83,3 +84,17 @@ def task_original_script():
 def task_build_param_package():
     shared_packages = os.path.join(doit.get_initial_workdir(), "dist")    
     return {'actions': ['git clone https://github.com/ioam/param.git && cd param && python setup.py bdist_wheel -d %s'%shared_packages]}
+
+def task_check_dirty_detection():
+    # TODO: test should be less bash
+    return {
+        'actions':[
+            'echo "#dirty" >> setup.py',
+            'git describe --dirty --long',
+            '! python setup.py sdist > test-dirty-check 2>&1',
+            'grep "AssertionError: Repository is in a dirty state." test-dirty-check'
+        ],
+        'teardown':[
+            'cat test-dirty-check'
+        ]}
+
