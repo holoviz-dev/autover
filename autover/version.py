@@ -460,6 +460,12 @@ class Version(object):
         else:
             return vstring
 
+
+    @classmethod
+    def extract_directory_tag(setup_path, reponame):
+        return None
+
+
     @classmethod
     def setup_version(cls, setup_path, reponame, archive_commit=None, dirty='raise'):
         vstring =  Version.get_setup_version(setup_path,
