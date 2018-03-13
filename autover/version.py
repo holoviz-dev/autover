@@ -357,9 +357,12 @@ class Version(object):
         """
         known_stale = self._known_stale()
         if self.release is None and not known_stale:
-            return 'None'
+            extracted_directory_tag = self._output_from_file(entry='extracted_directory_tag')
+            return 'None' if extracted_directory_tag is None else extracted_directory_tag
         elif self.release is None and known_stale:
-            return '0.0.0+g{SHA}-gitarchive'.format(SHA=self.archive_commit)
+            extracted_directory_tag = self._output_from_file(entry='extracted_directory_tag')
+            release = '0.0.0' if extracted_directory_tag is None else extracted_directory_tag
+            return '{release}+g{SHA}-gitarchive'.format(release=release, SHA=self.archive_commit)
 
         release = '.'.join(str(el) for el in self.release)
         prerelease = '' if self.prerelease is None else self.prerelease
