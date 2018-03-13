@@ -466,6 +466,13 @@ class Version(object):
 
     @classmethod
     def extract_directory_tag(setup_path, reponame):
+        setup_dir = os.path.split(setup_path)[-1] # Directory containing setup.py
+        prefix = reponame + '-' # Prefix to match
+        if setup_dir.startswith(prefix):
+            tag = setup_dir[len(prefix):]
+            # Assuming the tag is a version if it isn't empty, 'master' and has a dot in it
+            if tag not in ['', 'master'] and ('.' in tag):
+                return tag
         return None
 
 
