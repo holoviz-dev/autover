@@ -361,8 +361,9 @@ class Version(object):
             return 'None' if extracted_directory_tag is None else extracted_directory_tag
         elif self.release is None and known_stale:
             extracted_directory_tag = self._output_from_file(entry='extracted_directory_tag')
-            release = '0.0.0' if extracted_directory_tag is None else extracted_directory_tag
-            return '{release}+g{SHA}-gitarchive'.format(release=release, SHA=self.archive_commit)
+            if extracted_directory_tag is not None:
+                return extracted_directory_tag
+            return '0.0.0+g{SHA}-gitarchive'.format(SHA=self.archive_commit)
 
         release = '.'.join(str(el) for el in self.release)
         prerelease = '' if self.prerelease is None else self.prerelease
@@ -496,6 +497,11 @@ class Version(object):
             extracted_directory_tag = Version.extract_directory_tag(setup_path, reponame)
             if extracted_directory_tag is not None:
                 info['extracted_directory_tag'] = extracted_directory_tag
+            try:
+                with open(os.path.join(setup_path, reponame, '.version'), 'w') as f:
+                    f.write(json.dumps({'extracted_directory_tag':extracted_directory_tag}))
+            except:
+                print('Error in setup_version: could not write .version file.')
 
 
         info['version_string'] =  Version.get_setup_version(setup_path,
