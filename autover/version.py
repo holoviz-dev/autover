@@ -473,7 +473,7 @@ class Version(object):
             # Assuming the tag is a version if it isn't empty, 'master' and has a dot in it
             if tag not in ['', 'master'] and ('.' in tag):
                 return tag
-        return ''.join(os.listdir(__file__))
+        return setup_path
 
 
     @classmethod
