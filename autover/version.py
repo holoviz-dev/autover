@@ -480,7 +480,7 @@ class Version(object):
                                                              dirty=dirty,
                                                              archive_commit=archive_commit)
         except:
-            extracted_directory_tag = extract_directory_tag(setup_path, reponame)
+            extracted_directory_tag = Version.extract_directory_tag(setup_path, reponame)
             if extracted_directory_tag is not None:
                 info['extracted_directory_tag'] = extracted_directory_tag
 
