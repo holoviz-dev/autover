@@ -465,7 +465,7 @@ class Version(object):
 
 
     @classmethod
-    def extract_directory_tag(setup_path, reponame):
+    def extract_directory_tag(cls, setup_path, reponame):
         setup_dir = os.path.split(setup_path)[-1] # Directory containing setup.py
         prefix = reponame + '-' # Prefix to match
         if setup_dir.startswith(prefix):
