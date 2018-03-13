@@ -468,20 +468,28 @@ class Version(object):
 
     @classmethod
     def setup_version(cls, setup_path, reponame, archive_commit=None, dirty='raise'):
-        vstring =  Version.get_setup_version(setup_path,
-                                             reponame,
-                                             describe=False,
-                                             dirty=dirty,
-                                             archive_commit=archive_commit)
+        info = {}
         try:
             # Will only work if in a git repo and git is available
-            describe_string = Version.get_setup_version(setup_path,
-                                                        reponame,
-                                                        describe=True,
-                                                        dirty=dirty,
-                                                        archive_commit=archive_commit)
+            info['git_describe'] = Version.get_setup_version(setup_path,
+                                                             reponame,
+                                                             describe=True,
+                                                             dirty=dirty,
+                                                             archive_commit=archive_commit)
+        except:
+            extracted_directory_tag = extract_directory_tag(setup_path, reponame)
+            if extracted_directory_tag is not None:
+                info['extracted_directory_tag'] = extracted_directory_tag
+
+        info['version_string'] =  Version.get_setup_version(setup_path,
+                                                            reponame,
+                                                            describe=False,
+                                                            dirty=dirty,
+                                                            archive_commit=archive_commit)
+        try:
             with open(os.path.join(setup_path, reponame, '.version'), 'w') as f:
-                f.write(json.dumps({'git_describe':  describe_string,
-                                    'version_string': vstring}))
-        except: pass
-        return vstring
+                f.write(json.dumps(info))
+        except:
+            print('Error in setup_version: could not write .version file.')
+
+        return info['version_string']
