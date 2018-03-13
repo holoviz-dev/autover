@@ -308,7 +308,7 @@ class Version(object):
         if known_stale: self._commit_count = None
         return known_stale
 
-    def _output_from_file(self):
+    def _output_from_file(self, entry='git_describe'):
         """
         Read the version from a .version file that may exist alongside __init__.py.
 
@@ -319,7 +319,7 @@ class Version(object):
         try:
             vfile = os.path.join(os.path.dirname(self.fpath), '.version')
             with open(vfile, 'r') as f:
-                return json.loads(f.read())['git_describe']
+                return json.loads(f.read()).get(entry, None)
         except: # File may be missing if using pip + git archive
             return None
 
