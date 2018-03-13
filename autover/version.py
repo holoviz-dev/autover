@@ -493,11 +493,10 @@ class Version(object):
         except: pass
 
         if git_describe is None:
-            try:
-                extracted_directory_tag = Version.extract_directory_tag(setup_path, reponame)
-                if extracted_directory_tag is not None:
-                    info['extracted_directory_tag'] = extracted_directory_tag
-            except: pass
+            extracted_directory_tag = Version.extract_directory_tag(setup_path, reponame)
+            if extracted_directory_tag is not None:
+                info['extracted_directory_tag'] = extracted_directory_tag
+
 
         info['version_string'] =  Version.get_setup_version(setup_path,
                                                             reponame,
