@@ -466,22 +466,38 @@ class Version(object):
 
     @classmethod
     def extract_directory_tag(setup_path, reponame):
-        return '5.0.0'
+        setup_dir = os.path.split(setup_path)[-1] # Directory containing setup.py
+        prefix = reponame + '-' # Prefix to match
+        if setup_dir.startswith(prefix):
+            tag = setup_dir[len(prefix):]
+            # Assuming the tag is a version if it isn't empty, 'master' and has a dot in it
+            if tag not in ['', 'master'] and ('.' in tag):
+                return tag
+        return None
+
 
     @classmethod
     def setup_version(cls, setup_path, reponame, archive_commit=None, dirty='raise'):
         info = {}
+        git_describe = None
         try:
             # Will only work if in a git repo and git is available
-            info['git_describe'] = Version.get_setup_version(setup_path,
-                                                             reponame,
-                                                             describe=True,
-                                                             dirty=dirty,
-                                                             archive_commit=archive_commit)
-        except:
-            extracted_directory_tag = Version.extract_directory_tag(setup_path, reponame)
-            if extracted_directory_tag is not None:
-                info['extracted_directory_tag'] = extracted_directory_tag
+            git_describe  = Version.get_setup_version(setup_path,
+                                                      reponame,
+                                                      describe=True,
+                                                      dirty=dirty,
+                                                      archive_commit=archive_commit)
+
+            if git_describe is not None:
+                info['git_describe'] = git_describe
+        except: pass
+
+        if git_describe is None:
+            try:
+                extracted_directory_tag = Version.extract_directory_tag(setup_path, reponame)
+                if extracted_directory_tag is not None:
+                    info['extracted_directory_tag'] = extracted_directory_tag
+            except: pass
 
         info['version_string'] =  Version.get_setup_version(setup_path,
                                                             reponame,
