@@ -30,7 +30,7 @@ def get_setup_version(reponame):
     Helper to get the current version from either git describe or the
     .version file (if available).
     """
-    basepath = os.path.split(__file__)[0]
+    basepath = os.path.split(os.path.abspath(__file__))[0]
     version_file_path = os.path.join(basepath, reponame, '.version')
     version = None
     try: version = importlib.import_module(reponame + ".version") # Bundled
