@@ -50,7 +50,6 @@ setup_args = dict(
     name='pkg_bundle',
     version=get_setup_version("pkg_bundle"),
     packages = find_packages(),
-    package_data = {'pkg_bundle': ['.version']},
     include_package_data=True,    
     entry_points = {
         'console_scripts': ['tmpverify=pkg_bundle.tests:main'],
