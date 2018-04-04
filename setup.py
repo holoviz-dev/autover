@@ -39,7 +39,7 @@ def get_setup_version(reponame):
             try: from param import version # Try to get it from param
             except:
                 embed_version(basepath)
-                version = importlib.import_module(".version")
+                version = importlib.import_module("version")
 
     if version is not None:
         return version.Version.setup_version(basepath, reponame, archive_commit="$Format:%h$")
