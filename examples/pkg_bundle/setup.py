@@ -30,19 +30,19 @@ def get_setup_version(reponame):
     basepath = os.path.dirname(os.path.abspath(__file__))
     version_file_path = os.path.join(basepath, reponame, '.version')
     version = None
-    try: version = importlib.import_module(reponame + ".version") # Bundled
-    except:  # autover available as package
-        try: from autover import version
+    try: version = importlib.import_module("version") # bundled
+    except:
+        try: from autover import version # available as package
         except:
-            try: from param import version # Try to get it from param
+            try: from param import version # available via param
             except:
-                embed_version(basepath)
+                embed_version(basepath) # download
                 version = importlib.import_module("version")
 
     if version is not None:
         return version.Version.setup_version(basepath, reponame, archive_commit="$Format:%h$")
     else:
-        print("WARNING: autover unavailable. If you are installing a package, this warning can safely be ignored. If you are creating a package or otherwise operating in a git repository, you should refer to autover's documentation to bundle autover or add it as a dependency.")        
+        print("WARNING: autover unavailable. If you are installing a package, this warning can safely be ignored. If you are creating a package or otherwise operating in a git repository, you should refer to autover's documentation to bundle autover or add it as a dependency.")
         return json.load(open(version_file_path, 'r'))['version_string']
 
 
