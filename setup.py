@@ -32,13 +32,13 @@ def get_setup_version(reponame):
     basepath = os.path.dirname(os.path.abspath(__file__))
     version_file_path = os.path.join(basepath, reponame, '.version')
     version = None
-    try: version = importlib.import_module(reponame + ".version") # Bundled
-    except:  # autover available as package
-        try: from autover import version
+    try: version = importlib.import_module("version") # bundled
+    except:
+        try: from autover import version # available as package
         except:
-            try: from param import version # Try to get it from param
+            try: from param import version # available via param
             except:
-                embed_version(basepath)
+                embed_version(basepath) # download
                 version = importlib.import_module("version")
 
     if version is not None:
