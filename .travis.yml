@@ -24,6 +24,14 @@ jobs:
       install: pip install tox
       script: tox -e lint_checks
 
+    - stage: lint
+      python: 3.6
+      install: true
+      # TODO: move into dodo.py
+      script:
+        # did you update pkg_bundle? (doesn't catch changes to setup.py)
+        - diff autover/version.py examples/pkg_bundle/version.py
+
     - stage: test
       python: 3.6
       install: pip install tox

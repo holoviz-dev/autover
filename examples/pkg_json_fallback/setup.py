@@ -1,6 +1,3 @@
-import os
-import json
-
 from setuptools import setup, find_packages
 
 def embed_version(basepath, ref='v0.2.1'):
@@ -13,7 +10,7 @@ def embed_version(basepath, ref='v0.2.1'):
     This function acts as a fallback to make Version available until
     PEP518 is commonly supported by pip to express build dependencies.
     """
-    import io, zipfile
+    import io, zipfile, os
     try:    from urllib.request import urlopen
     except: from urllib import urlopen
     response = urlopen('https://github.com/ioam/autover/archive/{ref}.zip'.format(ref=ref))
@@ -31,7 +28,8 @@ def get_setup_version(reponame):
     """
     # NOTE: This is not the complete function - only testing the final JSON fallback
     # See pkg_bundle or pkg_depend for complete example.
-    basepath = os.path.split(__file__)[0]
+    import os, json
+    basepath = os.path.dirname(__file__)
     version_file_path = os.path.join(basepath, reponame, '.version')
     return json.load(open(version_file_path, 'r'))['version_string']
 
@@ -39,7 +37,6 @@ setup_args = dict(
     name='pkg_json_fallback',
     version=get_setup_version("pkg_json_fallback"),
     packages = find_packages(),
-    package_data = {'pkg_json_fallback': ['.version']},
     include_package_data = True,
     entry_points = {
         'console_scripts': ['tmpverify=pkg_json_fallback.tests:main'],
