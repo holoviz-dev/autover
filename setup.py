@@ -29,7 +29,7 @@ def get_setup_version(reponame):
     .version file (if available).
     """
     import json, importlib, os
-    basepath = os.path.split(os.path.abspath(__file__))[0]
+    basepath = os.path.dirname(os.path.abspath(__file__))
     version_file_path = os.path.join(basepath, reponame, '.version')
     version = None
     try: version = importlib.import_module(reponame + ".version") # Bundled
