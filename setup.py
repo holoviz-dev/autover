@@ -1,6 +1,4 @@
 import os
-import json
-import importlib
 
 from setuptools import setup, find_packages
 
@@ -14,7 +12,7 @@ def embed_version(basepath, ref='v0.2.1'):
     This function acts as a fallback to make Version available until
     PEP518 is commonly supported by pip to express build dependencies.
     """
-    import io, zipfile
+    import io, zipfile, os
     try:    from urllib.request import urlopen
     except: from urllib import urlopen
     response = urlopen('https://github.com/ioam/autover/archive/{ref}.zip'.format(ref=ref))
@@ -30,6 +28,7 @@ def get_setup_version(reponame):
     Helper to get the current version from either git describe or the
     .version file (if available).
     """
+    import json, importlib, os
     basepath = os.path.split(os.path.abspath(__file__))[0]
     version_file_path = os.path.join(basepath, reponame, '.version')
     version = None
