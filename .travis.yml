@@ -93,9 +93,7 @@ jobs:
         - DESC="example"
         - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
-      install:
-        # build param package so it's available for pip
-        - doit build_param_package
+      install: true
 
     - <<: *example_tests
       python: 3.6    
@@ -126,7 +124,6 @@ jobs:
         - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
-        - doit build_param_package      
         # TODO: should move to doit (same comment for other places this is done)
         - pip install -f $TRAVIS_BUILD_DIR/dist git+file:///tmp/123
       script:
@@ -168,9 +165,7 @@ jobs:
         - DESC="example"
         - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
-      install:
-        # build param package so it's available for pip
-        - doit build_param_package
+      install: true
 
     - <<: *example_tests
       python: 2.7    
@@ -201,7 +196,6 @@ jobs:
         - MODULE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
-        - doit build_param_package
         - pip install -f $TRAVIS_BUILD_DIR/dist git+file:///tmp/123      
       script:
         - doit $EXTRA verify_installed_version --example=$MODULE

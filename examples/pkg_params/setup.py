@@ -54,8 +54,6 @@ setup_args = dict(
     entry_points = {
         'console_scripts': ['tmpverify=pkg_params.tests:main'],
     },
-    # TODO: need to investigate pip's handling of the postN+gSHA scheme...
-    # note: .post required (>1.5.1 won't match 1.5.1.postN+gSHA releases)
     install_requires = ['param >=1.6.0'],
     url = "http://",
     license = "BSD",
