@@ -81,10 +81,6 @@ def task_original_script():
         ]
     }
 
-def task_build_param_package():
-    shared_packages = os.path.join(doit.get_initial_workdir(), "dist")    
-    return {'actions': ['git clone https://github.com/ioam/param.git && cd param && python setup.py bdist_wheel -d %s'%shared_packages]}
-
 def task_check_dirty_detection():
     # TODO: test should be less bash
     return {
