@@ -25,7 +25,7 @@ test:
     - autover
   commands:
     - nosetests -vv --nologcapture
-    - autover report autover
+    - autover report autover python
 
 about:
   home: {{ sdata['url'] }}
