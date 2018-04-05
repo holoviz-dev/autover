@@ -1,14 +1,11 @@
-#!/usr/bin/env python
-# Import and print the library version and filesystem location for each Python package or shell command specified
-#
-# bash usage: $ autover numpy pandas python conda
-# python usage: >>> import autover ; autover("numpy","pandas","python","conda")
-
 from __future__ import print_function
 import os.path, importlib, subprocess
 
-def autover(*packages):
-    """Import and print location and version information for specified Python packages"""
+def report(*packages):
+    """Import and print the library version and filesystem location for
+    each Python package or shell command specified.
+
+    """
     for package in packages:
         loc = "not installed in this environment"
         ver = "unknown"
@@ -21,7 +18,7 @@ def autover(*packages):
                 ver = str(module.__version__)
             except Exception:
                 pass
-        
+
         except (ImportError, ModuleNotFoundError):
             try:
                 # See if there is a command by that name and check its --version if so
@@ -39,10 +36,5 @@ def autover(*packages):
                         break
             except Exception as e:
                 pass
-        
+
         print("{0:30} # {1}".format(package + "=" + ver,loc))
-
-
-if __name__ == "__main__":
-    import sys
-    autover(*(sys.argv[1:]))
