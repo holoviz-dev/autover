@@ -56,7 +56,7 @@ setup_args = dict(
     },
     # TODO: need to investigate pip's handling of the postN+gSHA scheme...
     # note: .post required (>1.5.1 won't match 1.5.1.postN+gSHA releases)
-    install_requires = ['param >=1.6.0a4'],
+    install_requires = ['param >=1.6.0'],
     url = "http://",
     license = "BSD",
     description = "Example of depending on autover via param"
