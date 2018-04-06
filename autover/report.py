@@ -22,7 +22,20 @@ def report(*packages):
         except (ImportError, ModuleNotFoundError):
             try:
                 # See if there is a command by that name and check its --version if so
-                loc = subprocess.check_output(['which', package]).decode().strip()
+
+                # which not usually available on windows, though it
+                # could be (e.g. running in some kind of bash for
+                # windows, or which binary has been installed,
+                # etc...), so try it first. (And -a to match the list
+                # you get from where; might want to report more than
+                # one in the future if investigating confusion over
+                # what command runs when someone types 'command'.)
+                try:
+                    loc = subprocess.check_output(['which','-a',      package]).decode().splitlines()[0].strip()
+                except:
+                    # .exe in case powershell (otherwise wouldn't need it)
+                    loc = subprocess.check_output(['where.exe',       package]).decode().splitlines()[0].strip()
+
                 out = ""
                 try:
                     out = subprocess.check_output([package, '--version'], stderr=subprocess.STDOUT)
