@@ -19,7 +19,7 @@ def report(*packages):
             except Exception:
                 pass
 
-        except (ImportError, ModuleNotFoundError):
+        except ImportError:
             try:
                 # See if there is a command by that name and check its --version if so
 
