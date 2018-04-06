@@ -61,5 +61,5 @@ except:
 
 There are alternative ways to use autover, including [via
 param](https://github.com/ioam/autover/tree/master/examples/pkg_params)
-or [depending on
+(convenient if your project already depends on param) or [depending on
 autover](https://github.com/ioam/autover/tree/master/examples/pkg_depend).
