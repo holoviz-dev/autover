@@ -25,6 +25,9 @@ test:
     - autover
   commands:
     - nosetests -vv --nologcapture
+    - autover --help
+    - autover --version
+    - autover report --help	   
     - autover report autover python which
 
 about:
