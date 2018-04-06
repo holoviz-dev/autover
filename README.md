@@ -19,7 +19,7 @@ Authors: Jean-Luc Stevens, Chris Ball and James A. Bednar
 
 (some intro)
 
-## Usage
+## Installing
 
 The expected way for your-package to use autover is by bundling
 version.py.  An outline of how to do this is below, but you can also
@@ -27,10 +27,10 @@ follow the example [bundle
 autover](https://github.com/ioam/autover/tree/master/examples/pkg_bundle)
 package.
 
-  1. copy autover.py into your project's git root directory and commit
+  1. copy version.py into your project's git root directory and commit
      to git.
   
-  2. `import autover` and call `autover.get_setup_version(...)` in
+  2. `import version` and call `version.get_setup_version(...)` in
      your `setup.py` to get up to date version.
   
   3. make sure at package time that the `.version` json file is included
@@ -63,3 +63,18 @@ There are alternative ways to use autover, including [via
 param](https://github.com/ioam/autover/tree/master/examples/pkg_params)
 (convenient if your project already depends on param) or [depending on
 autover](https://github.com/ioam/autover/tree/master/examples/pkg_depend).
+
+
+## Using
+
+If you tag your repo (e.g. `git tag -a v0.0.1 -m "some message"`),
+autover will then provide up to date, useful versions from then on. In
+this case, the version will be reported as `v0.0.1`. If you
+subsequently add a commit after this tag, the version will be reported
+as `v0.0.1post1+g842fdc7` (where `842fdc7` is the commit's SHA).
+
+Note: ? tags to use as the basis for releases should be on master.
+
+Autover gets the version via `git describe` where possible. Otherwise,
+it uses a simple json file (`your-package/.version`) to store the
+version (e.g. for generated packages).
