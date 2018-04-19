@@ -427,13 +427,14 @@ class Version(object):
 
     @classmethod
     def get_setup_version(cls, setup_path, reponame, describe=False,
-                          dirty='raise', archive_commit=None):
+                          dirty='raise', pkgname=None, archive_commit=None):
         """
         Helper for use in setup.py to get the version from the .version file (if available)
         or more up-to-date information from git describe (if available).
 
         Assumes the __init__.py will be found in the directory
-        {reponame}/__init__.py relative to setup.py.
+        {reponame}/__init__.py relative to setup.py unless pkgname is
+        explicitly specified in which case that name is used instead.
 
         If describe is True, the raw string obtained from git described is
         returned which is useful for updating the .version file.
@@ -446,11 +447,12 @@ class Version(object):
         be useful if you want to make sure packages are not built from a
         dirty repository state.
         """
+        pkgname = reponame if pkgname is None else pkgname
         policies = ['raise','report', 'strip']
         if dirty not in policies:
             raise AssertionError("get_setup_version dirty policy must be in %r" % policies)
 
-        fpath = os.path.join(setup_path, reponame, "__init__.py")
+        fpath = os.path.join(setup_path, pkgname, "__init__.py")
         version = Version(fpath=fpath, reponame=reponame, archive_commit=archive_commit)
         if describe:
             vstring = version.git_fetch(as_string=True)
@@ -478,15 +480,18 @@ class Version(object):
 
 
     @classmethod
-    def setup_version(cls, setup_path, reponame, archive_commit=None, dirty='raise'):
+    def setup_version(cls, setup_path, reponame, archive_commit=None,
+                      pkgname=None, dirty='raise'):
         info = {}
         git_describe = None
+        pkgname = reponame if pkgname is None else pkgname
         try:
             # Will only work if in a git repo and git is available
             git_describe  = Version.get_setup_version(setup_path,
                                                       reponame,
                                                       describe=True,
                                                       dirty=dirty,
+                                                      pkgname=pkgname,
                                                       archive_commit=archive_commit)
 
             if git_describe is not None:
@@ -498,7 +503,7 @@ class Version(object):
             if extracted_directory_tag is not None:
                 info['extracted_directory_tag'] = extracted_directory_tag
             try:
-                with open(os.path.join(setup_path, reponame, '.version'), 'w') as f:
+                with open(os.path.join(setup_path, pkgname, '.version'), 'w') as f:
                     f.write(json.dumps({'extracted_directory_tag':extracted_directory_tag}))
             except:
                 print('Error in setup_version: could not write .version file.')
@@ -508,9 +513,10 @@ class Version(object):
                                                             reponame,
                                                             describe=False,
                                                             dirty=dirty,
+                                                            pkgname=pkgname,
                                                             archive_commit=archive_commit)
         try:
-            with open(os.path.join(setup_path, reponame, '.version'), 'w') as f:
+            with open(os.path.join(setup_path, pkgname, '.version'), 'w') as f:
                 f.write(json.dumps(info))
         except:
             print('Error in setup_version: could not write .version file.')
