@@ -23,14 +23,16 @@ def embed_version(basepath, ref='v0.2.2'):
         f.write(embed_version)
 
 
-def get_setup_version(reponame):
+def get_setup_version(reponame, pkgname=None):
     """
     Helper to get the current version from either git describe or the
-    .version file (if available).
+    .version file (if available). Set pkgname to the package name if it
+    is different from the repository name.
     """
     import json, importlib, os
+    pkgname = reponame if pkgname is None else pkgname
     basepath = os.path.dirname(os.path.abspath(__file__))
-    version_file_path = os.path.join(basepath, reponame, '.version')
+    version_file_path = os.path.join(basepath, pkgname, '.version')
     version = None
     try: version = importlib.import_module("version") # bundled
     except:
@@ -42,7 +44,8 @@ def get_setup_version(reponame):
                 version = importlib.import_module("version")
 
     if version is not None:
-        return version.Version.setup_version(basepath, reponame, archive_commit="$Format:%h$")
+        return version.Version.setup_version(basepath, reponame, pkgname=pkgname,
+                                             archive_commit="$Format:%h$")
     else:
         print("WARNING: autover unavailable. If you are installing a package, this warning can safely be ignored. If you are creating a package or otherwise operating in a git repository, you should refer to autover's documentation to bundle autover or add it as a dependency.")
         return json.load(open(version_file_path, 'r'))['version_string']
