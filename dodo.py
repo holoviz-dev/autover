@@ -74,7 +74,7 @@ def task_original_script():
             action.CmdAction('tox -e py -- %(git_version)s',env=env1),
 
             # dev install, then...
-            action.CmdAction('pip install -r ' + shared_packages + ' -e .',env=env2),
+            action.CmdAction('pip install -f ' + shared_packages + ' -e .',env=env2),
             
             # 2. ...verify in git repo (TODO: could just be "tmpverify %(example)s", I think)
             action.CmdAction('python %(example)s/tests/__init__.py %(example)s',env=env2),
