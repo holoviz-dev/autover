@@ -54,3 +54,6 @@ def main():
             assert module.__version__ == setup.setup_args['version'], '%s.__version__ %r does not match setup version %r'%(module_name,module.__version__, setup.setup_args['version'])
     else:
         print("No setup.py in %s; skipping test."%os.getcwd())
+
+if __name__ == "__main__":
+    main()

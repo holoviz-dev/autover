@@ -47,6 +47,8 @@ jobs:
 
 # test examples of using autover
 
+    # TODO: clean up doit/pyct usage when pyct 0.3 is released
+
     - &example_tests
       stage: test
       python: 3.6
@@ -59,7 +61,7 @@ jobs:
         - if [ $TRAVIS_PYTHON_VERSION == "2.7" ]; then
             pip install "doit<0.30";
           fi
-        - pip install pyct tox
+        - pip install "pyct <0.2.1" tox
         - doit $EXTRA copy_example_project --example=$MODULE
         - doit $EXTRA git_init
       install:
@@ -222,9 +224,9 @@ jobs:
       stage: conda_package
       python: 3.6
       before_install:
-        - pip install pyct && doit install_miniconda && rm -f .doit.db
+        - pip install "pyct <0.2.1" && doit install_miniconda && rm -f .doit.db
         - export PATH="$HOME/miniconda/bin:$PATH"
-        - conda install -y -c pyviz/label/dev -c conda-forge pyct
+        - conda install -y -c pyviz/label/dev -c conda-forge "pyct <0.2.1"
         - doit ci_configure_conda
       install:
         - doit build_conda_package
