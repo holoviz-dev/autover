@@ -231,7 +231,7 @@ jobs:
       env:
         - DESC="example"
         - EXAMPLE=PkgBundle
-	- EXAMPLE_PKGNAME="pkg_bundle"
+        - EXAMPLE_PKGNAME="pkg_bundle"
         - EXTRA="--dir=/tmp/123"
       install: true
 
