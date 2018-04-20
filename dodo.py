@@ -1,14 +1,12 @@
 # TODO:
 # - tmp dirs
 
-
-import shutil
 import os
 
 import doit
 from doit import action
 
-from pyct import *
+from pyct import *  # noqa
 
 
 example = {
