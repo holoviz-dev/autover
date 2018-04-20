@@ -3,6 +3,8 @@
 # each thing for 2.7 and 3.6 with build stages. So for now things
 # are duplicated.
 
+# TODO: more should move to doit so can run on win
+
 language: python
 
 env:
@@ -132,8 +134,8 @@ jobs:
         - EXAMPLE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
-        # TODO: should move to doit (same comment for other places this is done)
-        - pip install -f $TRAVIS_BUILD_DIR/dist git+file:///tmp/123
+        # TODO: need prerelease param just now; update after release    
+        - pip install --pre --index-url=https://test.pypi.org/simple/ --extra-index-url=https://pypi.org/simple git+file:///tmp/123     
       script:
         - doit $EXTRA verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
 
@@ -204,7 +206,8 @@ jobs:
         - EXAMPLE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install:
-        - pip install -f $TRAVIS_BUILD_DIR/dist git+file:///tmp/123      
+        # TODO: need prerelease param just now; update after release
+        - pip install --pre --index-url=https://test.pypi.org/simple/ --extra-index-url=https://pypi.org/simple git+file:///tmp/123      
       script:
         - doit $EXTRA verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
 
