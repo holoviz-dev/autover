@@ -218,6 +218,18 @@ jobs:
 
 ##############################
 
+# test ok with repository name != package name
+
+    - <<: *example_tests
+      python: 3.6
+      env:
+        - DESC="example"
+        - MODULE=PkgBundle
+        - EXTRA="--dir=/tmp/123"
+      install: true
+
+##############################
+
 # auto packaging of autover
 
     - &conda_default
