@@ -57,7 +57,7 @@ setup_args = dict(
     entry_points = {
         'console_scripts': ['tmpverify=pkg_params.tests:main'],
     },
-    install_requires = ['param >=1.6.0'],
+    install_requires = ['param >=1.6.1a0'],
     url = "http://",
     license = "BSD",
     description = "Example of depending on autover via param"
