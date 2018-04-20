@@ -90,7 +90,7 @@ def task_original_script():
             action.CmdAction('pip install -f ' + shared_packages + ' -e .',env=env2),
 
             # 2. ...verify in git repo (TODO: could just be "tmpverify %(example)s", I think)
-            action.CmdAction(lambda example,example_pkgname: 'python %(example)s/tests/__init__.py '+_x(example,example_pkgname),env=env2),
+            action.CmdAction(lambda example,example_pkgname: 'python '+ _x(example,example_pkgname)+'/tests/__init__.py '+_x(example,example_pkgname),env=env2),
             # 3. ...verify outside git repo
             action.CmdAction(lambda example,example_pkgname: 'mkdir /tmp/9k && cd /tmp/9k && tmpverify '+_x(example,example_pkgname) +' %(git_version)s',env=env2),
 
