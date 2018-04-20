@@ -29,8 +29,9 @@ jobs:
       install: true
       # TODO: move into dodo.py
       script:
-        # did you update pkg_bundle? (doesn't catch changes to setup.py)
+        # did you update bundled examples? (note: doesn't catch changes to setup.py)
         - diff autover/version.py examples/pkg_bundle/version.py
+        - diff autover/version.py examples/PkgBundle/version.py
 
     - stage: test
       python: 3.6
