@@ -306,7 +306,7 @@ jobs:
       script: doit $EXTRA check_dirty_package_name
 
     # test on autover itself
-    - <<: conda_default
+    - <<: *conda_default
       stage: test
       env: DESC="check dirty conda"
       install: true
