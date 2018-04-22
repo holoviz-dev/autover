@@ -204,7 +204,7 @@ jobs:
 
 ##############################
 
-# test that dirty detection works
+# test that -dirty appears in package name for dirty repo
 
     - <<: *example_tests
       python: 3.6
@@ -214,7 +214,7 @@ jobs:
         - EXTRA="--dir=/tmp/123"
       install: true
       script:
-        - doit $EXTRA check_dirty_detection
+        - doit $EXTRA check_dirty_package_name
 
 ##############################
 
