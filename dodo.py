@@ -92,12 +92,16 @@ def task_check_dirty_package_name():
         'actions':[
             'echo "#dirty" >> setup.py',
             'git describe --dirty --long',
-
-            # for pip
             'python setup.py sdist',
             'python -c "import os,glob; assert len(glob.glob(\'dist/*+g*.dirty.tar.gz\'))==1, os.listdir(\'dist\')"',
+        ]}
 
-            # for conda
+def task_check_dirty_fails_conda_package():
+    # TODO: test should be less bash
+    return {
+        'actions':[
+            'echo "#dirty" >> setup.py',
+            'git describe --dirty --long',
             '! conda build conda.recipe > conda-dirty-check 2>&1',
             'grep "Error: bad character \'-\' in package/version" conda-dirty-check'
         ],
