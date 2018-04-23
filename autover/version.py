@@ -427,7 +427,7 @@ class Version(object):
 
     @classmethod
     def get_setup_version(cls, setup_path, reponame, describe=False,
-                          dirty='raise', archive_commit=None):
+                          dirty='report', archive_commit=None):
         """
         Helper for use in setup.py to get the version from the .version file (if available)
         or more up-to-date information from git describe (if available).
@@ -478,7 +478,7 @@ class Version(object):
 
 
     @classmethod
-    def setup_version(cls, setup_path, reponame, archive_commit=None, dirty='raise'):
+    def setup_version(cls, setup_path, reponame, archive_commit=None, dirty='report'):
         info = {}
         git_describe = None
         try:
