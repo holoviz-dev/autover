@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-def embed_version(basepath, ref='v0.2.3'):
+def embed_version(basepath, ref='v0.2.2'):
     """
     Autover is purely a build time dependency in all cases (conda and
     pip) except for when you use pip's remote git support [git+url] as
@@ -30,7 +30,7 @@ def get_setup_version(reponame, pkgname=None):
     import json, importlib, os
     pkgname = reponame if pkgname is None else pkgname
     basepath = os.path.dirname(os.path.abspath(__file__))
-    version_file_path = os.path.join(basepath, pkgname, '.version')
+    version_file_path = os.path.join(basepath, reponame, '.version')
     version = None
     try: version = importlib.import_module("version") # bundled
     except:
@@ -48,14 +48,15 @@ def get_setup_version(reponame, pkgname=None):
         print("WARNING: autover unavailable. If you are installing a package, this warning can safely be ignored. If you are creating a package or otherwise operating in a git repository, you should refer to autover's documentation to bundle autover or add it as a dependency.")
         return json.load(open(version_file_path, 'r'))['version_string']
 
+package_name = "pkg_bundle"
 
 setup_args = dict(
-    name='pkg_bundle',
-    version=get_setup_version("pkg_bundle"),
+    name=package_name,
+    version=get_setup_version("PkgBundle",package_name),
     packages = find_packages(),
     include_package_data=True,    
     entry_points = {
-        'console_scripts': ['tmpverify=pkg_bundle.tests:main'],
+        'console_scripts': ['tmpverify=%s.tests:main'%package_name],
     },
     url = "http://",
     license = "BSD",

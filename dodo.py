@@ -1,14 +1,12 @@
 # TODO:
 # - tmp dirs
 
-
-import shutil
 import os
 
 import doit
 from doit import action
 
-from pyct import *
+from pyct import *  # noqa
 
 
 example = {
@@ -16,6 +14,13 @@ example = {
     'long':'example',
     'type':str,
     'default':'pkg_depend'
+}
+
+example_pkgname = {
+    'name':'example_pkgname',
+    'long':'example-pkgname',
+    'type':str,
+    'default':''
 }
 
 from distutils.dir_util import copy_tree
@@ -43,6 +48,11 @@ def task_get_git_version():
     return {'actions': [action.CmdAction('git describe --long',save_out='git_version')]}
 
 
+def _x(example,example_pkgname):
+    # more param computing :(
+    return example_pkgname if example_pkgname!='' else example
+
+
 # TODO: this task - like develop install below - should be done in a
 # throwaway environment. Should probably just use tox here too.
 
@@ -50,9 +60,10 @@ def task_verify_installed_version():
     return {
         'getargs': {'git_version': ('get_git_version','git_version')},
         'uptodate': [False],
-        'params': [example],
+        'params': [example,example_pkgname],
         'actions':[
-            action.CmdAction('mkdir /tmp/9k && cd /tmp/9k && tmpverify %(example)s %(git_version)s'),
+            action.CmdAction(
+                lambda example,example_pkgname: 'mkdir /tmp/9k && cd /tmp/9k && tmpverify %s'%_x(example,example_pkgname) +' %(git_version)s'),
         ]
     }
 
@@ -68,21 +79,22 @@ def task_original_script():
 
     return {
         'getargs': {'git_version': ('get_git_version','git_version')},
-        'params': [example],
+        'params': [example,example_pkgname],
         'actions':[
             # 1. verify package generation & installation
             action.CmdAction('tox -e py -- %(git_version)s',env=env1),
 
             # dev install, then...
-            action.CmdAction('pip install -f ' + shared_packages + ' -e .',env=env2),
-            
+            # TODO: need prerelease param just now; remove pre & index urls after release
+            action.CmdAction('pip install -f ' + shared_packages + '--pre --index-url=https://test.pypi.org/simple/ --extra-index-url=https://pypi.org/simple -e .',env=env2),
+
             # 2. ...verify in git repo (TODO: could just be "tmpverify %(example)s", I think)
-            action.CmdAction('python %(example)s/tests/__init__.py %(example)s',env=env2),
+            action.CmdAction(lambda example,example_pkgname: 'python '+ _x(example,example_pkgname)+'/tests/__init__.py '+_x(example,example_pkgname),env=env2),
             # 3. ...verify outside git repo
-            action.CmdAction('mkdir /tmp/9k && cd /tmp/9k && tmpverify %(example)s %(git_version)s',env=env2),
-            
+            action.CmdAction(lambda example,example_pkgname: 'mkdir /tmp/9k && cd /tmp/9k && tmpverify '+_x(example,example_pkgname) +' %(git_version)s',env=env2),
+
             # TODO: should be some kind of clean up option
-            action.CmdAction('pip uninstall -y %(example)s')
+            action.CmdAction(lambda example,example_pkgname: 'pip uninstall -y '+_x(example,example_pkgname))
         ]
     }
 
