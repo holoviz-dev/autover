@@ -213,20 +213,6 @@ jobs:
 
 ##############################
 
-# test that dirty detection works
-
-    - <<: *example_tests
-      python: 3.6
-      env:
-        - DESC="check dirty"
-        - EXAMPLE=pkg_bundle
-        - EXTRA="--dir=/tmp/123"
-      install: true
-      script:
-        - doit $EXTRA check_dirty_detection
-
-##############################
-
 # test ok with repository name != package name
 
     - <<: *example_tests
