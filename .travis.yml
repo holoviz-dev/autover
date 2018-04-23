@@ -325,3 +325,24 @@ jobs:
         - doit $EXTRA git_init
       script:
         - doit $EXTRA build_conda_package -c pyviz/label/dev
+
+
+##############################
+
+# test that -dirty appears in package name for dirty repo
+
+    - <<: *example_tests
+      python: 3.6
+      env:
+        - DESC="check dirty pip"
+        - MODULE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install: true
+      script: doit $EXTRA check_dirty_package_name
+
+    # test on autover itself
+    - <<: *conda_default
+      stage: test
+      env: DESC="check dirty conda"
+      install: true
+      script: doit $EXTRA check_dirty_fails_conda_package

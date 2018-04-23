@@ -98,15 +98,25 @@ def task_original_script():
         ]
     }
 
-def task_check_dirty_detection():
+def task_check_dirty_package_name():
     # TODO: test should be less bash
     return {
         'actions':[
             'echo "#dirty" >> setup.py',
             'git describe --dirty --long',
-            '! python setup.py sdist > test-dirty-check 2>&1',
-            'grep "AssertionError: Repository is in a dirty state." test-dirty-check'
+            'python setup.py sdist',
+            'python -c "import os,glob; assert len(glob.glob(\'dist/*+g*.dirty.tar.gz\'))==1, os.listdir(\'dist\')"',
+        ]}
+
+def task_check_dirty_fails_conda_package():
+    # TODO: test should be less bash
+    return {
+        'actions':[
+            'echo "#dirty" >> setup.py',
+            'git describe --dirty --long',
+            '! conda build conda.recipe > conda-dirty-check 2>&1',
+            'grep "Error: bad character \'-\' in package/version" conda-dirty-check'
         ],
         'teardown':[
-            'cat test-dirty-check'
+            'python -c "print(open(\'conda-dirty-check\').read())"'
         ]}
