@@ -321,7 +321,7 @@ jobs:
       python: 3.6
       env:
         - DESC="check dirty pip"
-        - MODULE=pkg_bundle
+        - EXAMPLE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
       install: true
       script: doit $EXTRA check_dirty_package_name
