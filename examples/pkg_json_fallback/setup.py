@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-def embed_version(basepath, ref='v0.2.4'):
+def embed_version(basepath, ref='v0.2.5'):
     """
     Autover is purely a build time dependency in all cases (conda and
     pip) except for when you use pip's remote git support [git+url] as
