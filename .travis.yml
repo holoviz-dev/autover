@@ -332,7 +332,7 @@ jobs:
         - DESC="check dirty 0 distance"
         - EXAMPLE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
-      install: cd /tmp/123 && git tag -a v5000.0.0 -m "Final version"
+      install: pushd /tmp/123 && git tag -a v5000.0.0 -m "Final version" && popd
       script: doit $EXTRA check_dirty_package_name
 
     # test on autover itself
