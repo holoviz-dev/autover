@@ -368,7 +368,7 @@ class Version(object):
         release = '.'.join(str(el) for el in self.release)
         prerelease = '' if self.prerelease is None else self.prerelease
 
-        if self.commit_count == 0:
+        if self.commit_count == 0  and not self.dirty:
             return release + prerelease
 
         commit = self.commit
