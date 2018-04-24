@@ -326,6 +326,15 @@ jobs:
       install: true
       script: doit $EXTRA check_dirty_package_name
 
+    - <<: *example_tests
+      python: 3.6
+      env:
+        - DESC="check dirty 0 distance"
+        - EXAMPLE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install: pushd /tmp/123 && git tag -a v5000.0.0 -m "Final version" && popd
+      script: doit $EXTRA check_dirty_package_name
+
     # test on autover itself
     - <<: *conda_default
       stage: test
