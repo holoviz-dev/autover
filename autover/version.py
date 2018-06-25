@@ -551,15 +551,14 @@ def get_setup_version(location, reponame, pkgname=None, archive_commit=None):
 
 
 def get_setup_version2():
-    """As get_setup_version(), but configure via setup.cfg:
+    """As get_setup_version(), but configure via [tool:autover] in setup.cfg.
+
+    If the repository name is different from the package name, specify `reponame`, e.g.
 
     ```
     [tool:autover]
-    reponame = x
+    reponame = mypackage
     ```
-
-    Can also specify an optional `pkgname` if different from
-    `reponame`.
 
     To ensure git information is included in a git archive, add
     setup.cfg to .gitattributes (in addition to __init__):
@@ -586,8 +585,8 @@ def get_setup_version2():
     cfg = "setup.cfg"
     config = configparser.ConfigParser()
     config.read(cfg)
-    reponame = config.get('tool:autover','reponame')
-    pkgname = config.get('tool:autover','pkgname',vars={'pkgname':reponame})
+    pkgname = config.get('metadata','name')
+    reponame = config.get('tool:autover','reponame',vars={'reponame':pkgname})
 
     ###
     # hack archive_commit into section heading; see docstring
@@ -597,4 +596,4 @@ def get_setup_version2():
         if section.startswith(archive_commit_key):
             archive_commit = re.match(".*=\s*(\S*)\s*",section).group(1)
     ###
-    return get_setup_version(cfg,reponame,pkgname=pkgname,archive_commit=archive_commit)
+    return get_setup_version(cfg,reponame=reponame,pkgname=pkgname,archive_commit=archive_commit)
