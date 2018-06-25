@@ -553,8 +553,17 @@ def get_setup_version(location, reponame, pkgname=None, archive_commit=None):
 def get_setup_version2():
     """As get_setup_version(), but configure via setup.cfg.
 
-    If the repository name is different from the package name, specify `reponame`, e.g.
+    If your project uses setup.cfg to configure setuptools, and hence has
+    at least a "name" key in the [metadata] section, you can
+    set the version as follows:
+    ```
+    [metadata]
+    name = mypackage
+    version = attr: autover.version.get_setup_version2
+    ```
 
+    If the repository name is different from the package name, specify
+    `reponame` as a [tool:autover] option:
     ```
     [tool:autover]
     reponame = mypackage
