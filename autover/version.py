@@ -551,7 +551,7 @@ def get_setup_version(location, reponame, pkgname=None, archive_commit=None):
 
 
 def get_setup_version2():
-    """As get_setup_version(), but configure via [tool:autover] in setup.cfg.
+    """As get_setup_version(), but configure via setup.cfg.
 
     If the repository name is different from the package name, specify `reponame`, e.g.
 
@@ -572,9 +572,9 @@ def get_setup_version2():
     [tool:autover.configparser_workaround.archive_commit=$Format:%h$]
     ```
 
-    The above being a section heading rather than just a key is that
-    setuptools requires % to be escaped with %, or it can't parse
-    setup.cfg...but then git export-subst would not work.
+    The above being a section heading rather than just a key is
+    because setuptools requires % to be escaped with %, or it can't
+    parse setup.cfg...but then git export-subst would not work.
 
     """
     try:
