@@ -1,9 +1,5 @@
-# TODO: couldn't get build matrix expansion to work. Adding python:
-# 2.7, 3.6 to the top of the travis file doesn't seem to just repeat
-# each thing for 2.7 and 3.6 with build stages. So for now things
-# are duplicated.
-
-# TODO: more should move to doit so can run on win
+# TODO: switch to pyctdev and clean up doit/pyct usage; more should
+# move to doit so can run on win
 
 language: python
 
@@ -55,15 +51,15 @@ jobs:
 
 # test examples of using autover
 
-    # TODO: clean up doit/pyct usage when pyct 0.3 is released
-
-    - &example_tests
+    #### depend
+    
+    - &pkg_depend
       stage: test
-      python: 3.6
       env:
         - DESC="example"
         - EXAMPLE=pkg_depend
         - EXTRA="--dir=/tmp/123"
+      python: 3.6
       before_install:
         - mkdir /tmp/123
         - if [ $TRAVIS_PYTHON_VERSION == "2.7" ]; then
@@ -73,150 +69,112 @@ jobs:
         - doit $EXTRA copy_example_project --example=$EXAMPLE
         - doit $EXTRA git_init
       install:
+        # install autover
         - pip install -e .
-        # build package so it's available for pip
+        # build autover package so it's available for pip
         - python setup.py bdist_wheel
       script:
         - doit $EXTRA original_script --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
 
-    - <<: *example_tests
-      python: 3.6    
+    - &pkg_depend_autodl
+      <<: *pkg_depend
       env:
         - DESC="example auto dl"
         - EXAMPLE=pkg_depend
         - EXTRA="--dir=/tmp/123"
-      install:
-        # build package so it's available for pip
-        - python setup.py bdist_wheel
+      # build package so it's available for pip
+      install: python setup.py bdist_wheel
 
-    - <<: *example_tests
-      python: 3.6
-      env:
-        - DESC="example"
-        - EXAMPLE=pkg_bundle
-        - EXTRA="--dir=/tmp/123"
-      install: true
-
-    - <<: *example_tests
-      python: 3.6
-      env:
-        - DESC="example"
-        - EXAMPLE=pkg_params
-        - EXTRA="--dir=/tmp/123"
-      install: true
-
-    - <<: *example_tests
-      python: 3.6    
+    - &pkg_depend_pipgit
+      <<: *pkg_depend
       env:
         - DESC="example pip+git"
         - EXAMPLE=pkg_depend
         - EXTRA="--dir=/tmp/123"
-      install:
-        - pip install git+file:///tmp/123
-      script:
-        - doit $EXTRA verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
+      install: pip install git+file:///tmp/123
+      script: doit $EXTRA verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
 
-    - <<: *example_tests
-      python: 3.6    
+
+    #### bundle
+
+    - &pkg_bundle
+      <<: *pkg_depend
+      stage: test
+      env:
+        - DESC="example"
+        - EXAMPLE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install: true
+
+    - &pkg_bundle_pipgit
+      <<: *pkg_bundle
       env:
         - DESC="example pip+git"
         - EXAMPLE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
-      install:
-        - pip install git+file:///tmp/123
-      script:
-        - doit $EXTRA verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
+      install: pip install git+file:///tmp/123
+      script: doit $EXTRA verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
 
-    - <<: *example_tests
-      python: 3.6    
+
+    #### params
+    
+    - &pkg_params
+      <<: *pkg_depend
+      stage: test
+      env:
+        - DESC="example"
+        - EXAMPLE=pkg_params
+        - EXTRA="--dir=/tmp/123"
+      install: true
+
+    - &pkg_params_pipgit
+      <<: *pkg_params
       env:
         - DESC="example pip+git"
         - EXAMPLE=pkg_params
         - EXTRA="--dir=/tmp/123"
-      install:
-        # TODO: need prerelease param just now; update after release    
-        - pip install --pre --index-url=https://test.pypi.org/simple/ --extra-index-url=https://pypi.org/simple git+file:///tmp/123     
-      script:
-        - doit $EXTRA verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
+      # TODO: need prerelease param just now; update after param release        
+      install: pip install --pre --index-url=https://test.pypi.org/simple/ --extra-index-url=https://pypi.org/simple git+file:///tmp/123     
+      script: doit $EXTRA verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
 
 
 ##############################
 
 # repeat above but with py 2.7
 
-    - <<: *example_tests
+    #### depends
+
+    - <<: *pkg_depend
       python: 2.7
-      env:
-        - DESC="example"
-        - EXAMPLE=pkg_depend
-        - EXTRA="--dir=/tmp/123"
 
-    - <<: *example_tests
-      python: 2.7    
-      env:
-        - DESC="example auto dl"
-        - EXAMPLE=pkg_depend
-        - EXTRA="--dir=/tmp/123"
-      install:
-        # build package so it's available for pip
-        - python setup.py bdist_wheel
-
-    - <<: *example_tests
+    - <<: *pkg_depend_autodl
       python: 2.7
-      env:
-        - DESC="example"
-        - EXAMPLE=pkg_bundle
-        - EXTRA="--dir=/tmp/123"
-      install: true
 
-    - <<: *example_tests
+    - <<: *pkg_depend_pipgit
       python: 2.7
-      env:
-        - DESC="example"
-        - EXAMPLE=pkg_params
-        - EXTRA="--dir=/tmp/123"
-      install: true
 
-    - <<: *example_tests
-      python: 2.7    
-      env:
-        - DESC="example pip+git"
-        - EXAMPLE=pkg_depend
-        - EXTRA="--dir=/tmp/123"
-      install:
-        - pip install git+file:///tmp/123
-      script:
-        - doit $EXTRA verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
+    #### bundle
 
-    - <<: *example_tests
-      python: 2.7    
-      env:
-        - DESC="example pip+git"
-        - EXAMPLE=pkg_bundle
-        - EXTRA="--dir=/tmp/123"
-      install:
-        - pip install git+file:///tmp/123
-      script:
-        - doit $EXTRA verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
+    - <<: *pkg_bundle
+      python:2.7
+      
+    - <<: *pkg_bundle_pipgit
+      python: 2.7
 
-    - <<: *example_tests
-      python: 2.7    
-      env:
-        - DESC="example pip+git"
-        - EXAMPLE=pkg_params
-        - EXTRA="--dir=/tmp/123"
-      install:
-        # TODO: need prerelease param just now; update after release
-        - pip install --pre --index-url=https://test.pypi.org/simple/ --extra-index-url=https://pypi.org/simple git+file:///tmp/123      
-      script:
-        - doit $EXTRA verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
+    #### params
+    
+    - <<: *pkg_params
+      python: 2.7
+
+    - <<: *pkg_params_pipgit
+      python: 2.7
 
 ##############################
 
 # test ok with repository name != package name
 
-    - <<: *example_tests
-      python: 3.6
+    - <<: *pkg_depend
+      stage: test
       env:
         - DESC="example"
         - EXAMPLE=PkgBundle
@@ -236,8 +194,7 @@ jobs:
         - export PATH="$HOME/miniconda/bin:$PATH"
         - conda install -y -c pyviz/label/dev -c conda-forge "pyct <0.2.1"
         - doit ci_configure_conda
-      install:
-        - doit build_conda_package
+      install: doit build_conda_package
       script: true
 #        - doit upload_conda_package --token=$CONDA_UPLOAD_TOKEN --label=dev
 
@@ -258,7 +215,8 @@ jobs:
 
 # test conda packaging of examples
 
-    - <<: *conda_default
+    - &conda_example_tests
+      <<: *conda_default
       stage: test
       env:
         - DESC="example conda"
@@ -268,57 +226,39 @@ jobs:
         - mkdir /tmp/123
         - doit $EXTRA copy_example_project --example=$EXAMPLE
         - doit $EXTRA git_init
-      script:
-        - doit $EXTRA build_conda_package
+      script: doit $EXTRA build_conda_package
 
-    - <<: *conda_default
-      stage: test
+    - <<: *conda_example_tests
       env:
         - DESC="example conda"
         - EXAMPLE=pkg_depend
         - EXTRA="--dir=/tmp/123"
-      install:
-        - mkdir /tmp/123
-        - doit $EXTRA copy_example_project --example=$EXAMPLE
-        - doit $EXTRA git_init
       script:
         - doit build_conda_package
         - doit $EXTRA build_conda_package
 
-    - <<: *conda_default
-      stage: test
+    - <<: *conda_example_tests
       env:
         - DESC="example conda"
         - EXAMPLE=pkg_json_fallback
         - EXTRA="--dir=/tmp/123"
-      install:
-        - mkdir /tmp/123
-        - doit $EXTRA copy_example_project --example=$EXAMPLE
-        - doit $EXTRA git_init
       script:
         - doit build_conda_package
         - doit $EXTRA build_conda_package
 
-    - <<: *conda_default
-      stage: test
+    - <<: *conda_example_tests
       env:
         - DESC="example conda"
         - EXAMPLE=pkg_params
         - EXTRA="--dir=/tmp/123"
-      install:
-        - mkdir /tmp/123
-        - doit $EXTRA copy_example_project --example=$EXAMPLE
-        - doit $EXTRA git_init
-      script:
-        - doit $EXTRA build_conda_package -c pyviz/label/dev
+      script: doit $EXTRA build_conda_package -c pyviz/label/dev
 
 
 ##############################
 
 # test that -dirty appears in package name for dirty repo
 
-    - <<: *example_tests
-      python: 3.6
+    - <<: *pkg_depend
       env:
         - DESC="check dirty pip"
         - EXAMPLE=pkg_bundle
@@ -326,8 +266,7 @@ jobs:
       install: true
       script: doit $EXTRA check_dirty_package_name
 
-    - <<: *example_tests
-      python: 3.6
+    - <<: *pkg_depend
       env:
         - DESC="check dirty 0 distance"
         - EXAMPLE=pkg_bundle
