@@ -130,9 +130,6 @@ jobs:
     - <<: *pkg_depend
       python: 2.7
 
-    - <<: *pkg_depend_autodl
-      python: 2.7
-
     - <<: *pkg_depend_pipgit
       python: 2.7
 
