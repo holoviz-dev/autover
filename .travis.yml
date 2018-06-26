@@ -17,7 +17,6 @@ stages:
   - lint
   - test
   - example
-  - example_autodl
   - example_pipgit
   - conda_example
   - check_dirty
@@ -79,13 +78,6 @@ jobs:
         - python setup.py bdist_wheel
       script:
         - doit $DIR_EXAMPLE original_script --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
-
-    - &pkg_depend_autodl
-      <<: *pkg_depend
-      stage: example_autodl
-      env: EXAMPLE=pkg_depend
-      # build package so it's available for pip
-      install: python setup.py bdist_wheel
 
     - &pkg_depend_pipgit
       <<: *pkg_depend
