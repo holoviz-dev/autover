@@ -14,6 +14,11 @@ env:
 stages:
   - lint
   - test
+  - example
+  - example_autodl
+  - example_pipgit
+  - conda_example
+  - check_dirty
   - name: conda_package
 #    if: (branch = master AND type != pull_request) OR (tag IS present)
   - name: pypi_package
@@ -54,9 +59,8 @@ jobs:
     #### depend
     
     - &pkg_depend
-      stage: test
+      stage: example
       env:
-        - DESC="example"
         - EXAMPLE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       python: 3.6
@@ -78,8 +82,8 @@ jobs:
 
     - &pkg_depend_autodl
       <<: *pkg_depend
+      stage: example_autodl
       env:
-        - DESC="example auto dl"
         - EXAMPLE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       # build package so it's available for pip
@@ -87,8 +91,8 @@ jobs:
 
     - &pkg_depend_pipgit
       <<: *pkg_depend
+      stage: example_pipgit
       env:
-        - DESC="example pip+git"
         - EXAMPLE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       install: pip install git+file:///tmp/123
@@ -99,17 +103,16 @@ jobs:
 
     - &pkg_bundle
       <<: *pkg_depend
-      stage: test
+      stage: example
       env:
-        - DESC="example"
         - EXAMPLE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
       install: true
 
     - &pkg_bundle_pipgit
       <<: *pkg_bundle
+      stage: example_pipgit
       env:
-        - DESC="example pip+git"
         - EXAMPLE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
       install: pip install git+file:///tmp/123
@@ -120,17 +123,15 @@ jobs:
     
     - &pkg_params
       <<: *pkg_depend
-      stage: test
       env:
-        - DESC="example"
         - EXAMPLE=pkg_params
         - EXTRA="--dir=/tmp/123"
       install: true
 
     - &pkg_params_pipgit
       <<: *pkg_params
+      stage: example_pipgit
       env:
-        - DESC="example pip+git"
         - EXAMPLE=pkg_params
         - EXTRA="--dir=/tmp/123"
       # TODO: need prerelease param just now; update after param release        
@@ -174,9 +175,8 @@ jobs:
 # test ok with repository name != package name
 
     - <<: *pkg_depend
-      stage: test
+      stage: example
       env:
-        - DESC="example"
         - EXAMPLE=PkgBundle
         - EXAMPLE_PKGNAME="pkg_bundle"
         - EXTRA="--dir=/tmp/123"
@@ -217,9 +217,8 @@ jobs:
 
     - &conda_example_tests
       <<: *conda_default
-      stage: test
+      stage: conda_example
       env:
-        - DESC="example conda"
         - EXAMPLE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
       install:
@@ -230,7 +229,6 @@ jobs:
 
     - <<: *conda_example_tests
       env:
-        - DESC="example conda"
         - EXAMPLE=pkg_depend
         - EXTRA="--dir=/tmp/123"
       script:
@@ -239,7 +237,6 @@ jobs:
 
     - <<: *conda_example_tests
       env:
-        - DESC="example conda"
         - EXAMPLE=pkg_json_fallback
         - EXTRA="--dir=/tmp/123"
       script:
@@ -248,7 +245,6 @@ jobs:
 
     - <<: *conda_example_tests
       env:
-        - DESC="example conda"
         - EXAMPLE=pkg_params
         - EXTRA="--dir=/tmp/123"
       script: doit $EXTRA build_conda_package -c pyviz/label/dev
@@ -259,16 +255,17 @@ jobs:
 # test that -dirty appears in package name for dirty repo
 
     - <<: *pkg_depend
+      stage: check_dirty
       env:
-        - DESC="check dirty pip"
         - EXAMPLE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
       install: true
       script: doit $EXTRA check_dirty_package_name
 
     - <<: *pkg_depend
+      stage: check_dirty
       env:
-        - DESC="check dirty 0 distance"
+        - NOTE="0 distance"
         - EXAMPLE=pkg_bundle
         - EXTRA="--dir=/tmp/123"
       install: pushd /tmp/123 && git tag -a v5000.0.0 -m "Final version" && popd
@@ -276,7 +273,7 @@ jobs:
 
     # test on autover itself
     - <<: *conda_default
-      stage: test
-      env: DESC="check dirty conda"
+      stage: check_dirty
+      env: NOTE="conda"
       install: true
       script: doit $EXTRA check_dirty_fails_conda_package
