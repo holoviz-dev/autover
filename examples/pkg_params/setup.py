@@ -1,5 +1,7 @@
 from setuptools import setup, find_packages
 
+# TODO: update to use param.version.get_setup_version when param is updated
+
 def embed_version(basepath, ref='v0.2.5'):
     """
     Autover is purely a build time dependency in all cases (conda and

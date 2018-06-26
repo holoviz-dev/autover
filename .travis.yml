@@ -17,7 +17,6 @@ stages:
   - lint
   - test
   - example
-  - example_autodl
   - example_pipgit
   - conda_example
   - check_dirty
@@ -65,11 +64,15 @@ jobs:
       env: EXAMPLE=pkg_depend
       python: 3.6
       before_install:
+        # need pip>=10
+        - pip install --upgrade pip
         - mkdir /tmp/123
         - if [ $TRAVIS_PYTHON_VERSION == "2.7" ]; then
             pip install "doit<0.30";
           fi
         - pip install "pyct <0.2.1" tox
+        # until https://github.com/tox-dev/tox/issues/850 resolved (would also be resolved by switching to pyctdev)
+        - pip install --upgrade --force-reinstall git+https://github.com/ceball/tox.git@pep-518
         - doit $DIR_EXAMPLE copy_example_project --example=$EXAMPLE
         - doit $DIR_EXAMPLE git_init
       install:
@@ -80,18 +83,15 @@ jobs:
       script:
         - doit $DIR_EXAMPLE original_script --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
 
-    - &pkg_depend_autodl
-      <<: *pkg_depend
-      stage: example_autodl
-      env: EXAMPLE=pkg_depend
-      # build package so it's available for pip
-      install: python setup.py bdist_wheel
-
     - &pkg_depend_pipgit
       <<: *pkg_depend
       stage: example_pipgit
       env: EXAMPLE=pkg_depend
-      install: pip install git+file:///tmp/123
+      install:
+        # build autover package so it's available for pip...
+        - python setup.py bdist_wheel
+        # ...and install from local dir only
+        - pip install -f file://${TRAVIS_BUILD_DIR}/dist --pre --no-index git+file:///tmp/123
       script: doit $DIR_EXAMPLE verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
 
 
@@ -134,9 +134,6 @@ jobs:
     #### depends
 
     - <<: *pkg_depend
-      python: 2.7
-
-    - <<: *pkg_depend_autodl
       python: 2.7
 
     - <<: *pkg_depend_pipgit
@@ -214,6 +211,8 @@ jobs:
       env: EXAMPLE=pkg_depend
       script:
         - doit build_conda_package
+        # autover required for conda-build *before* build time (for templated version)
+        - conda install -y --use-local autover
         - doit $DIR_EXAMPLE build_conda_package
 
     - <<: *conda_example_tests
