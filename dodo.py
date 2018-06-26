@@ -86,7 +86,7 @@ def task_original_script():
 
             # dev install, then...
             # TODO: need prerelease param just now; remove pre & index urls after release
-            action.CmdAction('pip install -f ' + shared_packages + '--pre --index-url=https://test.pypi.org/simple/ --extra-index-url=https://pypi.org/simple -e .',env=env2),
+            action.CmdAction('pip install -f ' + shared_packages + ' --pre --index-url=https://test.pypi.org/simple/ --extra-index-url=https://pypi.org/simple -e .',env=env2),
 
             # 2. ...verify in git repo (TODO: could just be "tmpverify %(example)s", I think)
             action.CmdAction(lambda example,example_pkgname: 'python '+ _x(example,example_pkgname)+'/tests/__init__.py '+_x(example,example_pkgname),env=env2),
