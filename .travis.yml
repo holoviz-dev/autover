@@ -153,14 +153,14 @@ jobs:
     - <<: *pkg_depend_pipgit
       python: 2.7
 
-#    #### bundle
-#
-#    - <<: *pkg_bundle
-#      python:2.7
-#      
-#    - <<: *pkg_bundle_pipgit
-#      python: 2.7
-#
+    #### bundle
+
+    - <<: *pkg_bundle
+      python: 2.7
+      
+    - <<: *pkg_bundle_pipgit
+      python: 2.7
+
     #### params
     
     - <<: *pkg_params
