@@ -138,37 +138,37 @@ jobs:
       script: doit $EXTRA verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
 
 
-###############################
-#
-## repeat above but with py 2.7
-#
-#    #### depends
-#
-#    - <<: *pkg_depend
-#      python: 2.7
-#
-#    - <<: *pkg_depend_autodl
-#      python: 2.7
-#
-#    - <<: *pkg_depend_pipgit
-#      python: 2.7
-#
-#    #### bundle
-#
-#    - <<: *pkg_bundle
-#      python:2.7
-#      
-#    - <<: *pkg_bundle_pipgit
-#      python: 2.7
-#
-#    #### params
-#    
-#    - <<: *pkg_params
-#      python: 2.7
-#
-#    - <<: *pkg_params_pipgit
-#      python: 2.7
-#
+##############################
+
+# repeat above but with py 2.7
+
+    #### depends
+
+    - <<: *pkg_depend
+      python: 2.7
+
+    - <<: *pkg_depend_autodl
+      python: 2.7
+
+    - <<: *pkg_depend_pipgit
+      python: 2.7
+
+    #### bundle
+
+    - <<: *pkg_bundle
+      python:2.7
+      
+    - <<: *pkg_bundle_pipgit
+      python: 2.7
+
+    #### params
+    
+    - <<: *pkg_params
+      python: 2.7
+
+    - <<: *pkg_params_pipgit
+      python: 2.7
+
 ###############################
 #
 ## test ok with repository name != package name
