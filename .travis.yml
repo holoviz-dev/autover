@@ -90,7 +90,6 @@ jobs:
       install:
         # build autover package so it's available for pip...
         - python setup.py bdist_wheel
-        - ls -l ${TRAVIS_BUILD_DIR}/dist
         # ...and install from local dir only
         - pip install -f file://${TRAVIS_BUILD_DIR}/dist --pre --no-index git+file:///tmp/123
       script: doit $DIR_EXAMPLE verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
@@ -212,6 +211,8 @@ jobs:
       env: EXAMPLE=pkg_depend
       script:
         - doit build_conda_package
+        # autover required for conda-build *before* build time (for templated version)
+        - conda install --use-local autover
         - doit $DIR_EXAMPLE build_conda_package
 
     - <<: *conda_example_tests
