@@ -169,114 +169,114 @@ jobs:
     - <<: *pkg_params_pipgit
       python: 2.7
 
-###############################
-#
-## test ok with repository name != package name
-#
-#    - <<: *pkg_depend
-#      stage: test
-#      env:
-#        - DESC="example"
-#        - EXAMPLE=PkgBundle
-#        - EXAMPLE_PKGNAME="pkg_bundle"
-#        - EXTRA="--dir=/tmp/123"
-#      install: true
-#
-###############################
-#
-## auto packaging of autover
-#
-#    - &conda_default
-#      stage: conda_package
-#      python: 3.6
-#      before_install:
-#        - pip install "pyct <0.2.1" && doit install_miniconda && rm -f .doit.db
-#        - export PATH="$HOME/miniconda/bin:$PATH"
-#        - conda install -y -c pyviz/label/dev -c conda-forge "pyct <0.2.1"
-#        - doit ci_configure_conda
-#      install: doit build_conda_package
-#      script: true
-##        - doit upload_conda_package --token=$CONDA_UPLOAD_TOKEN --label=dev
-#
-#    - stage: pypi_package
-#      install: true
-#      script: true
-#      deploy:
-#        provider: pypi
-#        # could instead use real pypi when tag is release style
-#        server: https://test.pypi.org/legacy/
-#        distributions: "sdist bdist_wheel"
-#        user: ${PYPI_USERNAME}
-#        password: ${PYPI_PASSWORD}
-#        skip_cleanup: true
-#
-#
-###############################
-#
-## test conda packaging of examples
-#
-#    - &conda_example_tests
-#      <<: *conda_default
-#      stage: test
-#      env:
-#        - DESC="example conda"
-#        - EXAMPLE=pkg_bundle
-#        - EXTRA="--dir=/tmp/123"
-#      install:
-#        - mkdir /tmp/123
-#        - doit $EXTRA copy_example_project --example=$EXAMPLE
-#        - doit $EXTRA git_init
-#      script: doit $EXTRA build_conda_package
-#
-#    - <<: *conda_example_tests
-#      env:
-#        - DESC="example conda"
-#        - EXAMPLE=pkg_depend
-#        - EXTRA="--dir=/tmp/123"
-#      script:
-#        - doit build_conda_package
-#        - doit $EXTRA build_conda_package
-#
-#    - <<: *conda_example_tests
-#      env:
-#        - DESC="example conda"
-#        - EXAMPLE=pkg_json_fallback
-#        - EXTRA="--dir=/tmp/123"
-#      script:
-#        - doit build_conda_package
-#        - doit $EXTRA build_conda_package
-#
-#    - <<: *conda_example_tests
-#      env:
-#        - DESC="example conda"
-#        - EXAMPLE=pkg_params
-#        - EXTRA="--dir=/tmp/123"
-#      script: doit $EXTRA build_conda_package -c pyviz/label/dev
-#
-#
-###############################
-#
-## test that -dirty appears in package name for dirty repo
-#
-#    - <<: *pkg_depend
-#      env:
-#        - DESC="check dirty pip"
-#        - EXAMPLE=pkg_bundle
-#        - EXTRA="--dir=/tmp/123"
-#      install: true
-#      script: doit $EXTRA check_dirty_package_name
-#
-#    - <<: *pkg_depend
-#      env:
-#        - DESC="check dirty 0 distance"
-#        - EXAMPLE=pkg_bundle
-#        - EXTRA="--dir=/tmp/123"
-#      install: pushd /tmp/123 && git tag -a v5000.0.0 -m "Final version" && popd
-#      script: doit $EXTRA check_dirty_package_name
-#
-#    # test on autover itself
-#    - <<: *conda_default
-#      stage: test
-#      env: DESC="check dirty conda"
-#      install: true
-#      script: doit $EXTRA check_dirty_fails_conda_package
+##############################
+
+# test ok with repository name != package name
+
+    - <<: *pkg_depend
+      stage: test
+      env:
+        - DESC="example"
+        - EXAMPLE=PkgBundle
+        - EXAMPLE_PKGNAME="pkg_bundle"
+        - EXTRA="--dir=/tmp/123"
+      install: true
+
+##############################
+
+# auto packaging of autover
+
+    - &conda_default
+      stage: conda_package
+      python: 3.6
+      before_install:
+        - pip install "pyct <0.2.1" && doit install_miniconda && rm -f .doit.db
+        - export PATH="$HOME/miniconda/bin:$PATH"
+        - conda install -y -c pyviz/label/dev -c conda-forge "pyct <0.2.1"
+        - doit ci_configure_conda
+      install: doit build_conda_package
+      script: true
+#        - doit upload_conda_package --token=$CONDA_UPLOAD_TOKEN --label=dev
+
+    - stage: pypi_package
+      install: true
+      script: true
+      deploy:
+        provider: pypi
+        # could instead use real pypi when tag is release style
+        server: https://test.pypi.org/legacy/
+        distributions: "sdist bdist_wheel"
+        user: ${PYPI_USERNAME}
+        password: ${PYPI_PASSWORD}
+        skip_cleanup: true
+
+
+##############################
+
+# test conda packaging of examples
+
+    - &conda_example_tests
+      <<: *conda_default
+      stage: test
+      env:
+        - DESC="example conda"
+        - EXAMPLE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install:
+        - mkdir /tmp/123
+        - doit $EXTRA copy_example_project --example=$EXAMPLE
+        - doit $EXTRA git_init
+      script: doit $EXTRA build_conda_package
+
+    - <<: *conda_example_tests
+      env:
+        - DESC="example conda"
+        - EXAMPLE=pkg_depend
+        - EXTRA="--dir=/tmp/123"
+      script:
+        - doit build_conda_package
+        - doit $EXTRA build_conda_package
+
+    - <<: *conda_example_tests
+      env:
+        - DESC="example conda"
+        - EXAMPLE=pkg_json_fallback
+        - EXTRA="--dir=/tmp/123"
+      script:
+        - doit build_conda_package
+        - doit $EXTRA build_conda_package
+
+    - <<: *conda_example_tests
+      env:
+        - DESC="example conda"
+        - EXAMPLE=pkg_params
+        - EXTRA="--dir=/tmp/123"
+      script: doit $EXTRA build_conda_package -c pyviz/label/dev
+
+
+##############################
+
+# test that -dirty appears in package name for dirty repo
+
+    - <<: *pkg_depend
+      env:
+        - DESC="check dirty pip"
+        - EXAMPLE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install: true
+      script: doit $EXTRA check_dirty_package_name
+
+    - <<: *pkg_depend
+      env:
+        - DESC="check dirty 0 distance"
+        - EXAMPLE=pkg_bundle
+        - EXTRA="--dir=/tmp/123"
+      install: pushd /tmp/123 && git tag -a v5000.0.0 -m "Final version" && popd
+      script: doit $EXTRA check_dirty_package_name
+
+    # test on autover itself
+    - <<: *conda_default
+      stage: test
+      env: DESC="check dirty conda"
+      install: true
+      script: doit $EXTRA check_dirty_fails_conda_package
