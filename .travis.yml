@@ -212,7 +212,7 @@ jobs:
       script:
         - doit build_conda_package
         # autover required for conda-build *before* build time (for templated version)
-        - conda install --use-local autover
+        - conda install -y --use-local autover
         - doit $DIR_EXAMPLE build_conda_package
 
     - <<: *conda_example_tests
