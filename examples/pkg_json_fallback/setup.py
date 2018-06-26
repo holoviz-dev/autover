@@ -1,25 +1,5 @@
 from setuptools import setup, find_packages
 
-def embed_version(basepath, ref='v0.2.5'):
-    """
-    Autover is purely a build time dependency in all cases (conda and
-    pip) except for when you use pip's remote git support [git+url] as
-    1) you need a dynamically changing version and 2) the environment
-    starts off clean with zero dependencies installed.
-
-    This function acts as a fallback to make Version available until
-    PEP518 is commonly supported by pip to express build dependencies.
-    """
-    import io, zipfile, os
-    try:    from urllib.request import urlopen
-    except: from urllib import urlopen
-    response = urlopen('https://github.com/ioam/autover/archive/{ref}.zip'.format(ref=ref))
-    zf = zipfile.ZipFile(io.BytesIO(response.read()))
-    ref = ref[1:] if ref.startswith('v') else ref
-    embed_version = zf.read('autover-{ref}/autover/version.py'.format(ref=ref))
-    with open(os.path.join(basepath, 'version.py'), 'wb') as f:
-        f.write(embed_version)
-
 
 def get_setup_version(reponame):
     """
