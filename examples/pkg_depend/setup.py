@@ -1,5 +1,7 @@
 from setuptools import setup, find_packages
 
+import autover.version
+
 setup_args = dict(
     name='pkg_depend',
     version=autover.version.get_setup_version(__file__,"pkg_depend",archive_commit="$Format:%h$"),
