@@ -23,6 +23,8 @@ test:
     - nose
   imports:
     - autover
+  source_files:
+    - tests
   commands:
     - nosetests -vv --nologcapture
 
