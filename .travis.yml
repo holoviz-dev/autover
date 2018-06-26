@@ -153,22 +153,22 @@ jobs:
     - <<: *pkg_depend_pipgit
       python: 2.7
 
-    #### bundle
-
-    - <<: *pkg_bundle
-      python:2.7
-      
-    - <<: *pkg_bundle_pipgit
-      python: 2.7
-
-    #### params
-    
-    - <<: *pkg_params
-      python: 2.7
-
-    - <<: *pkg_params_pipgit
-      python: 2.7
-
+#    #### bundle
+#
+#    - <<: *pkg_bundle
+#      python:2.7
+#      
+#    - <<: *pkg_bundle_pipgit
+#      python: 2.7
+#
+#    #### params
+#    
+#    - <<: *pkg_params
+#      python: 2.7
+#
+#    - <<: *pkg_params_pipgit
+#      python: 2.7
+#
 ###############################
 #
 ## test ok with repository name != package name
