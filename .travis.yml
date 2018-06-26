@@ -64,6 +64,8 @@ jobs:
       env: EXAMPLE=pkg_depend
       python: 3.6
       before_install:
+        # need pip>=10
+        - pip install --upgrade pip
         - mkdir /tmp/123
         - if [ $TRAVIS_PYTHON_VERSION == "2.7" ]; then
             pip install "doit<0.30";
