@@ -1,0 +1,5 @@
+[build-system]
+# todo: specify minimum autover
+requires = [
+    "autover"
+]
