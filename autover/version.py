@@ -550,7 +550,7 @@ def get_setup_version(location, reponame, pkgname=None, archive_commit=None):
     return Version.setup_version(os.path.dirname(os.path.abspath(location)),reponame,pkgname=pkgname,archive_commit=archive_commit)
 
 
-def get_setup_version2():
+def get_setupcfg_version():
     """As get_setup_version(), but configure via setup.cfg.
 
     If your project uses setup.cfg to configure setuptools, and hence has
