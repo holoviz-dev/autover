@@ -525,8 +525,6 @@ class Version(object):
 
 
 
-# TODO: should these be available via Version instead?
-
 def get_setup_version(location, reponame, pkgname=None, archive_commit=None):
     """Helper for use in setup.py to get the current version from either
     git describe or the .version file (if available).
