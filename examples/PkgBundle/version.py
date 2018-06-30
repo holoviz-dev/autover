@@ -362,7 +362,7 @@ class Version(object):
             # didn't find a version from git; try the .version file
             version_info = self._output_from_file()
             if version_info is not None:
-                self._update_from_vcs()
+                self._update_from_vcs(version_info)
         if self.release is None and not known_stale:
             extracted_directory_tag = self._output_from_file(entry='extracted_directory_tag')
             return 'None' if extracted_directory_tag is None else extracted_directory_tag
