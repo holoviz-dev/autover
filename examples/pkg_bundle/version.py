@@ -254,14 +254,16 @@ class Version(object):
                 # Verify this is the correct repository (since fpath could
                 # be an unrelated git repository, and autover could just have
                 # been copied/installed into it).
+                # Note: correct repository = "there's no remote, or 
+                # any remote matches the repo name"
                 output = run_cmd([cmd, 'remote', '-v'],
                                  cwd=os.path.dirname(self.fpath))
-                repo_matches = ['', # No remote set
-                                '/' + self.reponame + '.git' ,
+                repo_matches = ['/' + self.reponame + '.git' ,
                                 # A remote 'server:reponame.git' can also be referred
                                 # to (i.e. cloned) as `server:reponame`.
                                 '/' + self.reponame + ' ']
-                if not any(m in output for m in repo_matches):
+                # output is '' if no remote
+                if output!='' and not any(m in output for m in repo_matches):
                     return self
 
             output = run_cmd([cmd, 'describe', '--long', '--match',
@@ -356,6 +358,11 @@ class Version(object):
         (with "v" prefix removed).
         """
         known_stale = self._known_stale()
+        if self.release is None and not known_stale:
+            # didn't find a version from git; try the .version file
+            version_info = self._output_from_file()
+            if version_info is not None:
+                self._update_from_vcs()
         if self.release is None and not known_stale:
             extracted_directory_tag = self._output_from_file(entry='extracted_directory_tag')
             return 'None' if extracted_directory_tag is None else extracted_directory_tag
