@@ -124,8 +124,10 @@ def task_check_dirty_fails_conda_package():
 
 def task_check_repo_name_matching():
 
+    # TODO: the splitlines() shouldn't be necessary, but autover sometimes returns other output for --version
+
     def _thing(expected,what):
-        return 'python -c \'import subprocess; v=subprocess.check_output(["python", "setup.py", "--version"]).decode().strip(); assert v.startswith("%s"), v+" does not start with %s (for %s)"\''%(expected,expected,what)
+        return 'python -c \'import subprocess; v=subprocess.check_output(["python", "setup.py", "--version"]).decode().strip().splitlines()[-1]; assert v.startswith("%s"), v+ " does not start with %s (test was for: %s)"\''%(expected,expected,what)
 
     expected_match = "0.0.1.post1+"
     expected_no_match = "None" # or 0.0.0+unknown, or what?
