@@ -109,7 +109,7 @@ https://github.com/ioam/autover/blob/master/autover/__init__.py
 
 __author__ = 'Jean-Luc Stevens'
 
-import os, subprocess, json, traceback
+import os, subprocess, json
 
 def run_cmd(args, cwd=None):
     proc = subprocess.Popen(args, stdout=subprocess.PIPE,
@@ -508,7 +508,6 @@ class Version(object):
                 with open(os.path.join(setup_path, pkgname, '.version'), 'w') as f:
                     f.write(json.dumps({'extracted_directory_tag':extracted_directory_tag}))
             except:
-                traceback.print_exc()
                 print('Error in setup_version: could not write .version file.')
 
 
@@ -522,7 +521,6 @@ class Version(object):
             with open(os.path.join(setup_path, pkgname, '.version'), 'w') as f:
                 f.write(json.dumps(info))
         except:
-            traceback.print_exc()            
             print('Error in setup_version: could not write .version file.')
 
         return info['version_string']
