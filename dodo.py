@@ -120,3 +120,23 @@ def task_check_dirty_fails_conda_package():
         'teardown':[
             'python -c "print(open(\'conda-dirty-check\').read())"'
         ]}
+
+
+def task_check_repo_name_matching():
+
+    def _thing(expected,what):
+        return 'python -c \'import subprocess; v=subprocess.check_output(["python", "setup.py", "--version"]).decode().strip(); assert v.startswith("%s"), v+" does not start with %s (for %s)"\''%(expected,expected,what)
+
+    expected_match = "0.0.1.post1+"
+    expected_no_match = "None" # or 0.0.0+unknown, or what?
+
+    # not sure looking at the remotes this way makes sense - might be better to check
+    # package? (see point 2 at https://github.com/pyviz/autover/pull/55#issue-198496332)
+    return {
+        'actions':[
+            CmdAction(_thing(expected_match,"no remote")),
+            'git remote add test1 https://github.com/wrong-package',
+            CmdAction(_thing(expected_no_match,"only wrong remotes")), 
+            'git remote add test2 https://github.com/something/pkg_bundle.git',
+            CmdAction(_thing(expected_match,"one right remote"))
+        ]}

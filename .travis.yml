@@ -16,6 +16,7 @@ env:
 stages:
   - lint
   - test
+  - check_repo_matching
   - example
   - example_pipgit
   - conda_example
@@ -248,3 +249,12 @@ jobs:
       env: NOTE="conda"
       install: true
       script: doit check_dirty_fails_conda_package
+
+
+# test of repo matching
+
+    - <<: *pkg_bundle
+      stage: check_repo_matching
+      env: EXAMPLE=pkg_bundle
+      install: true
+      script: doit $DIR_EXAMPLE check_repo_name_matching
