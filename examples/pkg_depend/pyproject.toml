@@ -1,5 +1,8 @@
 [build-system]
 # todo: specify minimum autover
 requires = [
-    "autover"
+    "autover",
+    "setuptools >=40.8.0",
+    "wheel"
 ]
+# todo: build backend stuff missing
