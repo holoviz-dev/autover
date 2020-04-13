@@ -1,4 +1,4 @@
-[![Travis build Status](https://travis-ci.org/pyviz/autover.svg?branch=master)](https://travis-ci.org/pyviz/autover)
+[![Travis build Status](https://travis-ci.org/pyviz-dev/autover.svg?branch=master)](https://travis-ci.org/pyviz-dev/autover)
 [![Appveyor build status](https://ci.appveyor.com/api/projects/status/s9nutfr6759kvipn/branch/master?svg=true)](https://ci.appveyor.com/project/pyviz/autover/branch/master)
 
 
@@ -13,4 +13,4 @@ Autover provides:
      location for each Python package specified; see the [autover
      script](https://github.com/ioam/autover/blob/master/scripts/autover).
 
-Authors: Jean-Luc Stevens, Chris Ball and James A. Bednar
+Authors: Jean-Luc Stevens and James A. Bednar
