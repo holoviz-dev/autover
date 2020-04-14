@@ -15,8 +15,14 @@ miniconda_url = {
     "Linux": "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh",
     "Darwin": "https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh"
 }
-def task_miniconda_download():
-    """Download Miniconda3-latest"""
+def task_download_miniconda():
+    import platform
+
+    try:
+        from urllib.request import urlretrieve
+    except ImportError:
+        from urllib import urlretrieve
+    
     url = miniconda_url[platform.system()]
     miniconda_installer = url.split('/')[-1]
 
