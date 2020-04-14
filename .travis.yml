@@ -90,7 +90,9 @@ jobs:
       install:
         # build autover package so it's available for pip...
         - python setup.py bdist_wheel
-        # ...and install from local dir only
+        # ...and install from local dir ONLY (i.e. avoid getting some other version of autover!),
+        # making sure the other build deps are also available
+        - pushd ${TRAVIS_BUILD_DIR}/dist && pip download setuptools wheel && popd	
         - pip install -f file://${TRAVIS_BUILD_DIR}/dist --pre --no-index git+file:///tmp/123
       script: doit $DIR_EXAMPLE verify_installed_version --example=$EXAMPLE --example-pkgname=$EXAMPLE_PKGNAME
 
