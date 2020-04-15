@@ -44,7 +44,7 @@ jobs:
 
     - stage: test
       python: 3.6
-      install: pip install tox gunicorn uvicorn starlette
+      install: pip install tox
       script: tox -e py${TRAVIS_PYTHON_VERSION//./}
 
     - stage: test
