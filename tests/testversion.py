@@ -1,7 +1,11 @@
 """
 Unit test for autover.Version
 """
+import os
 import unittest
+import subprocess
+import sys
+import time
 import pkg_resources._vendor.packaging.version as packaging_version
 from autover import Version
 
@@ -75,6 +79,7 @@ describe_tests = OrderedDict([('v1.0.5-42-gabcdefgh',
 
 
 class TestVersion(unittest.TestCase):
+    maxDiff=None
 
 
     def git_describe_check(self, describe_tests, index):
@@ -159,6 +164,31 @@ class TestVersion(unittest.TestCase):
 
     def test_git_describe_5(self):
         self.git_describe_check(describe_tests, 5)
+
+    #=======================================#
+    #  Compatibility with ASGI applications #
+    #=======================================#
+
+    def test_run_asgi_server(self):
+        if sys.version[0] == "3":
+            serverfile_dir = os.path.abspath(os.path.join(__file__, os.pardir))
+            logfile_path = os.path.abspath(os.path.join(__file__, os.pardir, "stderr_gunicorn.log"))
+            subprocess.Popen(["gunicorn", "-D", "--log-level", "ERROR", 
+                              "--chdir", serverfile_dir,
+                              "-k", "uvicorn.workers.UvicornWorker", 
+                              "--error-logfile", logfile_path,
+                              "--bind", "unix:/tmp/gunicorn.sock", 
+                              "test_asgi_server:app"])
+            time.sleep(5)
+            with open(logfile_path, "r") as gunicorn_log_file:
+                stderr_log = gunicorn_log_file.read()
+
+            subprocess.Popen(["pkill", "-f", "gunicorn"])
+            time.sleep(5)
+            os.remove(logfile_path)
+        else:
+            stderr_log = ""
+        self.assertEqual(stderr_log, "")
 
 if __name__ == "__main__":
     import nose
