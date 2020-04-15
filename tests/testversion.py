@@ -170,6 +170,7 @@ class TestVersion(unittest.TestCase):
     #=======================================#
 
     def test_run_asgi_server(self):
+        """test_run_asgi_server (An ASGI app that uses autover and is launched with Gunicorn should not crash)"""
         if sys.version[0] == "3":
             serverfile_dir = os.path.abspath(os.path.join(__file__, os.pardir))
             logfile_path = os.path.abspath(os.path.join(__file__, os.pardir, "stderr_gunicorn.log"))
