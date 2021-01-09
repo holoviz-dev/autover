@@ -256,12 +256,15 @@ class Version(object):
                 # been copied/installed into it).
                 output = run_cmd([cmd, 'remote', '-v'],
                                  cwd=os.path.dirname(self.fpath))
-                repo_matches = ['', # No remote set
-                                '/' + self.reponame + '.git' ,
+                repo_matches = ['/' + self.reponame + '.git' ,
                                 # A remote 'server:reponame.git' can also be referred
                                 # to (i.e. cloned) as `server:reponame`.
                                 '/' + self.reponame + ' ']
                 if not any(m in output for m in repo_matches):
+                    try:
+                        self._update_from_vcs(self._output_from_file())
+                    except:
+                        pass
                     return self
 
             output = run_cmd([cmd, 'describe', '--long', '--match',
