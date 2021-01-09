@@ -262,8 +262,10 @@ class Version(object):
                                 '/' + self.reponame + ' ']
                 if not any(m in output for m in repo_matches):
                     try:
-                        self._update_from_vcs(self._output_from_file())
-                        return self
+                        output = self._output_from_file()
+                        if output is not None:
+                            self._update_from_vcs(output)
+                            return self
                     except:
                         pass
 
