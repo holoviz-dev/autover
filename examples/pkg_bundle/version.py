@@ -236,6 +236,11 @@ class Version(object):
             self._commit = self._expected_commit
             return self
 
+        output = self._output_from_file()
+        if output is not None:
+            self._update_from_vcs(output)
+            return self
+
          # Only git right now but easily extended to SVN, Mercurial, etc.
         for cmd in ['git', 'git.cmd', 'git.exe']:
             try:
