@@ -263,9 +263,9 @@ class Version(object):
                 if not any(m in output for m in repo_matches):
                     try:
                         self._update_from_vcs(self._output_from_file())
+                        return self
                     except:
                         pass
-                    return self
 
             output = run_cmd([cmd, 'describe', '--long', '--match',
                               "v[0-9]*.[0-9]*.[0-9]*", '--dirty'],
