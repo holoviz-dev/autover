@@ -189,6 +189,7 @@ class TestVersion(unittest.TestCase):
             os.remove(logfile_path)
         else:
             stderr_log = ""
+        print(stderr_log)
         self.assertEqual(stderr_log, "")
 
 if __name__ == "__main__":
