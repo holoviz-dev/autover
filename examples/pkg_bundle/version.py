@@ -117,10 +117,9 @@ def run_cmd(args, cwd=None):
                             cwd=cwd)
     output, error = (str(s.decode()).strip() for s in proc.communicate())
 
-    # Checking length of stderr as subprocess.Popen() is not always
-    # async-friendly when spawned from an os fork instruction. This
-    # means it can misreport the return code as zero when there is an
-    # error.
+    # Detects errors as _either_ a non-zero return code _or_ messages
+    # printed to stderr, because the return code is erroneously fixed at 
+    # zero in some cases (see https://github.com/holoviz/param/pull/389).
     if proc.returncode != 0 or len(error) > 0:
         raise Exception(proc.returncode, error)
     return output
