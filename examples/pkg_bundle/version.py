@@ -539,7 +539,7 @@ class Version(object):
                                          describe=False,
                                          dirty=dirty,
                                          pkgname=pkgname,
-                                         archive_commit=archive_commit)['version_string']
+                                         archive_commit=archive_commit)
 
 
 
