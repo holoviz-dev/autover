@@ -531,7 +531,7 @@ class Version(object):
 
     @classmethod
     def setup_version(cls, setup_path, reponame, archive_commit=None,
-                      pkgname=None, dirty='report', record_version=False):
+                      pkgname=None, dirty='report', record_version=True):
         if record_version:
             cls.record_version(setup_path, reponame, archive_commit=archive_commit,
                                pkgname=pkgname, dirty=dirty)
