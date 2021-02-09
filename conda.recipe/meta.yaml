@@ -26,7 +26,6 @@ test:
   source_files:
     - tests
   commands:
-    - conda install -y -c conda-forge gunicorn uvicorn starlette uvloop
     - nosetests -vv --nologcapture
 
 about:
