@@ -531,7 +531,7 @@ class Version(object):
 
     @classmethod
     def setup_version(cls, setup_path, reponame, archive_commit=None,
-                      pkgname=None, dirty='report', record_version=True):
+                      pkgname=None, dirty='report', record_version=False):
         if record_version:
             cls.record_version(setup_path, reponame, archive_commit=archive_commit,
                                pkgname=pkgname, dirty=dirty)
@@ -544,7 +544,7 @@ class Version(object):
 
 
 def get_setup_version(location, reponame, pkgname=None, archive_commit=None,
-                      record_version=False):
+                      record_version=True):
     """Helper for use in setup.py to get the current version from either
     git describe or the .version file (if available).
 
