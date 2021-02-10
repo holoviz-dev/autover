@@ -107,7 +107,7 @@ def task_original_script():
         'params': [example,example_pkgname],
         'actions':[
             # 1. Create .version file for tox
-            action.CmdAction(lambda example,example_pkgname: """python -c 'import os; from autover import Version; Version.record_version(os.getcwd(), """ + "\"%r\"" % example_pkgname + """, archive_commit="$Format:%h$")'""",env=env1),
+            action.CmdAction(lambda example,example_pkgname: """python -c 'import os; from autover import Version; Version.record_version(os.getcwd(), """ + "\"%s\"" % example_pkgname + """, archive_commit="$Format:%%h$")'""",env=env1),
             # 1. verify package generation & installation
             action.CmdAction('tox -e py -- %(git_version)s',env=env1),
 
