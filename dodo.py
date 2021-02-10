@@ -106,6 +106,8 @@ def task_original_script():
         'getargs': {'git_version': ('get_git_version','git_version')},
         'params': [example,example_pkgname],
         'actions':[
+            # 1. Create .version file for tox
+            action.CmdAction("""python -c 'import os; from autover import Version; Version.record_version(os.getcwd(), %(example_pkgname)r, archive_commit="$Format:%h$")'""",env=env1),
             # 1. verify package generation & installation
             action.CmdAction('tox -e py -- %(git_version)s',env=env1),
 
