@@ -102,12 +102,27 @@ def task_original_script():
     env2 = os.environ.copy()
     env2['PYTHONPATH'] = os.getcwd() # TODO win
 
+    def record_pkg_bundle_version(example,example_pkgname):
+        return """python -c 'import os; from version import Version; Version.record_version(os.getcwd(), """ + "\"%s\"" % example_pkgname + """, archive_commit="$Format:%%h$")'"""
+
+    def record_pkg_depend_version(example,example_pkgname):
+        return """python -c 'import os; from autover import Version; Version.record_version(os.getcwd(), """ + "\"%s\"" % example_pkgname + """, archive_commit="$Format:%%h$")'"""
+
+    def record_pkg_params_version(example,example_pkgname):
+        return """python -c 'import os; from param.version import Version; Version.record_version(os.getcwd(), """ + "\"%s\"" % example_pkgname + """, archive_commit="$Format:%%h$")'"""
+
+    record_mapping={'pkg_bundle':record_pkg_bundle_version,
+                    'PkgBundle':record_pkg_bundle_version,
+                    'pkg_depend':record_pkg_depend_version,
+                    'pkg_params':record_pkg_params_version}
+
     return {
         'getargs': {'git_version': ('get_git_version','git_version')},
         'params': [example,example_pkgname],
         'actions':[
-            # 1. Create .version file for tox
-            action.CmdAction(lambda example,example_pkgname: """python -c 'import os; from version import Version; Version.record_version(os.getcwd(), """ + "\"%s\"" % example_pkgname + """, archive_commit="$Format:%%h$")'""",env=env1),
+            # 0. Create .version file for tox
+            action.CmdAction(lambda example,example_pkgname: record_mapping[example_pkgname](example,example_pkgname),
+                             env=env1),
             # 1. verify package generation & installation
             action.CmdAction('tox -e py -- %(git_version)s',env=env1),
 
