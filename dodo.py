@@ -108,6 +108,12 @@ def task_original_script():
     def record_pkg_skip(example,example_pkgname):
         return """python -c 'print(\"Not recording .version\")'"""
 
+    def remove_version_file(example,example_pkgname):
+        return (("rm ./%s/.version" % example_pkgname)
+                if example_pkgname in ['pkg_bundle', 'PkgBundle']
+                else "echo 'Skipping removal of .version'")
+
+
     record_mapping={'pkg_bundle':record_pkg_bundle_version,
                     'PkgBundle': record_pkg_bundle_version}
     return {
@@ -119,6 +125,8 @@ def task_original_script():
                              env=env1),
             # 1. verify package generation & installation
             action.CmdAction('tox -e py -- %(git_version)s',env=env1),
+            # 2. Remove .version file
+            action.CmdAction(remove_version_file, env=env1),
 
             # dev install, then...
             # TODO: need prerelease param just now; remove pre & index urls after release
