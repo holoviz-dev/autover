@@ -103,16 +103,18 @@ def task_original_script():
     env2['PYTHONPATH'] = os.getcwd() # TODO win
 
     def record_pkg_bundle_version(example,example_pkgname):
+        pkgname = _x(example,example_pkgname)
         return ("""python -c 'import os; from version import Version;"""
                 + ('print("Writing .version for %s in %s");' % (example_pkgname, example))
-                + """Version.record_version(os.getcwd(), """ + "\"%s\"" % example_pkgname + """, archive_commit="$Format:%%h$")'""")
+                + """Version.record_version(os.getcwd(), """ + "\"%s\"" % pkgname + """, archive_commit="$Format:%%h$")'""")
 
     def record_pkg_skip(example,example_pkgname):
         return """python -c 'print(\"Not recording .version\")'"""
 
     def remove_version_file(example,example_pkgname):
-        return (("rm ./%s/.version" % example_pkgname)
-                if example_pkgname in ['pkg_bundle', 'PkgBundle']
+        pkgname = _x(example,example_pkgname)
+        return (("rm ./%s/.version" % pkgname)
+                if pkgname in ['pkg_bundle', 'PkgBundle']
                 else ("echo 'Skipping removal of .version for %s in %s'"
                       % (example_pkgname, example)))
 
