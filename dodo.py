@@ -126,7 +126,7 @@ def task_original_script():
         'params': [example,example_pkgname],
         'actions':[
             # 0. Create .version file for tox
-            action.CmdAction(lambda example,example_pkgname: record_mapping.get(example_pkgname,record_pkg_skip)(example,example_pkgname),
+            action.CmdAction(lambda example,example_pkgname: record_mapping.get(_x(example,example_pkgname),record_pkg_skip)(example,example_pkgname),
                              env=env1),
             # 1. verify package generation & installation
             action.CmdAction('tox -e py -- %(git_version)s',env=env1),
