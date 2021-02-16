@@ -544,7 +544,7 @@ class Version(object):
 
 
 def get_setup_version(location, reponame, pkgname=None, archive_commit=None,
-                      record_version=True):
+                      record_version=False):
     """Helper for use in setup.py to get the current version from either
     git describe or the .version file (if available).
 
