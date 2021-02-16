@@ -277,6 +277,7 @@ class Version(object):
                                  cwd=os.path.dirname(self.fpath))
             if as_string: return output
         except Exception as e1:
+            print('Git describe exception: %s' % str(e1))
             try:
                 output = self._output_from_file()
                 if output is not None:
