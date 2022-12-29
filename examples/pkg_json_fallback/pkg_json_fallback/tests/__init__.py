@@ -14,7 +14,7 @@ def main():
     packaging_version.Version(module.__version__)
 
     ###############
-    # (b) following desired 'latest master' version scheme?
+    # (b) following desired 'latest main' version scheme?
     # v0.2.0-5-g85da374 --> 0.2.0.post5+g85da374
 
     if len(sys.argv)==5:

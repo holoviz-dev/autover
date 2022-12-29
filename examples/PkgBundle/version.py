@@ -102,7 +102,7 @@ any kind expressed or implied.  Anyone is free to copy, modify,
 publish, use, compile, sell, or distribute it under any license, for
 any purpose, commercial or non-commercial, and by any means.  The
 original file is maintained at:
-https://github.com/ioam/autover/blob/master/autover/__init__.py
+https://github.com/ioam/autover/blob/main/autover/__init__.py
 
 """
 
@@ -479,8 +479,8 @@ class Version(object):
         prefix = reponame + '-' # Prefix to match
         if setup_dir.startswith(prefix):
             tag = setup_dir[len(prefix):]
-            # Assuming the tag is a version if it isn't empty, 'master' and has a dot in it
-            if tag not in ['', 'master'] and ('.' in tag):
+            # Assuming the tag is a version if it isn't empty, 'master', 'main' and has a dot in it
+            if tag not in ['', 'master', 'main'] and ('.' in tag):
                 return tag
         return None
 
