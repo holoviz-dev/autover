@@ -11,7 +11,7 @@ env:
     - EXAMPLE_PKGNAME=''
 
 # TODO: add appropriate guards (e.g. only deploy on tag matching
-# certain pattern) before merging back to master.
+# certain pattern) before merging back to main.
 
 stages:
   - lint
@@ -21,7 +21,7 @@ stages:
   - conda_example
   - check_dirty
   - name: conda_package
-#    if: (branch = master AND type != pull_request) OR (tag IS present)
+#    if: (branch = main AND type != pull_request) OR (tag IS present)
   - name: pypi_package
     if: tag IS present
 
