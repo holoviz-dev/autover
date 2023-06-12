@@ -1,4 +1,4 @@
-[![Travis build Status](https://travis-ci.org/pyviz-dev/autover.svg?branch=main)](https://travis-ci.org/pyviz-dev/autover)
+[![Travis build Status](https://travis-ci.org/holoviz-dev/autover.svg?branch=main)](https://travis-ci.org/holoviz-dev/autover)
 [![Appveyor build status](https://ci.appveyor.com/api/projects/status/s9nutfr6759kvipn/branch/main?svg=true)](https://ci.appveyor.com/project/pyviz/autover/branch/main)
 
 
