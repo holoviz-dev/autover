@@ -239,6 +239,11 @@ class Version(object):
             self._commit = self._expected_commit
             return self
 
+        output = self._output_from_file()
+        if output is not None:
+            self._update_from_vcs(output)
+            return self
+
          # Only git right now but easily extended to SVN, Mercurial, etc.
         for cmd in ['git', 'git.cmd', 'git.exe']:
             try:
@@ -275,6 +280,7 @@ class Version(object):
                                  cwd=os.path.dirname(self.fpath))
             if as_string: return output
         except Exception as e1:
+            print('Git describe exception: %s' % str(e1))
             try:
                 output = self._output_from_file()
                 if output is not None:
@@ -486,7 +492,7 @@ class Version(object):
 
 
     @classmethod
-    def setup_version(cls, setup_path, reponame, archive_commit=None,
+    def record_version(cls, setup_path, reponame, archive_commit=None,
                       pkgname=None, dirty='report'):
         info = {}
         git_describe = None
@@ -527,11 +533,22 @@ class Version(object):
         except:
             print('Error in setup_version: could not write .version file.')
 
-        return info['version_string']
+    @classmethod
+    def setup_version(cls, setup_path, reponame, archive_commit=None,
+                      pkgname=None, dirty='report', record_version=False):
+        if record_version:
+            cls.record_version(setup_path, reponame, archive_commit=archive_commit,
+                               pkgname=pkgname, dirty=dirty)
+        return Version.get_setup_version(setup_path, reponame,
+                                         describe=False,
+                                         dirty=dirty,
+                                         pkgname=pkgname,
+                                         archive_commit=archive_commit)
 
 
 
-def get_setup_version(location, reponame, pkgname=None, archive_commit=None):
+def get_setup_version(location, reponame, pkgname=None, archive_commit=None,
+                      record_version=False):
     """Helper for use in setup.py to get the current version from either
     git describe or the .version file (if available).
 
@@ -551,7 +568,9 @@ def get_setup_version(location, reponame, pkgname=None, archive_commit=None):
     pkgname = reponame if pkgname is None else pkgname
     if archive_commit is None:
         warnings.warn("No archive commit available; git archives will not contain version information")
-    return Version.setup_version(os.path.dirname(os.path.abspath(location)),reponame,pkgname=pkgname,archive_commit=archive_commit)
+    return Version.setup_version(os.path.dirname(os.path.abspath(location)),reponame,
+                                 pkgname=pkgname, archive_commit=archive_commit,
+                                 record_version=record_version)
 
 
 def get_setupcfg_version():

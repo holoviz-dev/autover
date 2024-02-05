@@ -102,12 +102,36 @@ def task_original_script():
     env2 = os.environ.copy()
     env2['PYTHONPATH'] = os.getcwd() # TODO win
 
+    def record_pkg_bundle_version(example,example_pkgname):
+        pkgname = _x(example,example_pkgname)
+        return ("""python -c 'import os; from version import Version;"""
+                + ('print("Writing .version for %s in %s");' % (example_pkgname, example))
+                + """Version.record_version(os.getcwd(), """ + "\"%s\"" % pkgname + """, archive_commit="$Format:%%h$")'""")
+
+    def record_pkg_skip(example,example_pkgname):
+        return """python -c 'print(\"Not recording .version\")'"""
+
+    def remove_version_file(example,example_pkgname):
+        pkgname = _x(example,example_pkgname)
+        return (("rm ./%s/.version" % pkgname)
+                if pkgname in ['pkg_bundle', 'PkgBundle']
+                else ("echo 'Skipping removal of .version for %s in %s'"
+                      % (example_pkgname, example)))
+
+
+    record_mapping={'pkg_bundle':record_pkg_bundle_version,
+                    'PkgBundle': record_pkg_bundle_version}
     return {
         'getargs': {'git_version': ('get_git_version','git_version')},
         'params': [example,example_pkgname],
         'actions':[
+            # 0. Create .version file for tox
+            action.CmdAction(lambda example,example_pkgname: record_mapping.get(_x(example,example_pkgname),record_pkg_skip)(example,example_pkgname),
+                             env=env1),
             # 1. verify package generation & installation
             action.CmdAction('tox -e py -- %(git_version)s',env=env1),
+            # 2. Remove .version file
+            action.CmdAction(remove_version_file, env=env1),
 
             # dev install, then...
             # TODO: need prerelease param just now; remove pre & index urls after release
